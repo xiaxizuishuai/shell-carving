@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D IP形象 - 贝贝 (JSON定制版)</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: radial-gradient(circle at center, #ffffff, #eef2f5);
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            font-size: 1.2rem;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            z-index: 10;
+        }
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #8898aa;
+            pointer-events: none;
+            user-select: none;
+            z-index: 5;
+        }
+
+        /* 聊天界面样式 */
+        #chat-interface {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            height: 450px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+            overflow: hidden;
+            border: 2px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        #chat-header {
+            background: linear-gradient(135deg, #F4C6E8, #B7E8F7);
+            padding: 15px;
+            color: #555;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #chat-header span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: #B7E8F7;
+            color: #333;
+            border-bottom-right-radius: 2px;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+            color: #333;
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.loading {
+            align-self: flex-start;
+            background-color: #f9f9f9;
+            color: #999;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        #chat-input-area {
+            padding: 10px;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 8px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #user-input:focus {
+            border-color: #F4C6E8;
+        }
+
+        #send-btn {
+            background: linear-gradient(135deg, #F4C6E8, #B7E8F7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        #send-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #send-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #chat-messages::-webkit-scrollbar { width: 6px; }
+        #chat-messages::-webkit-scrollbar-track { background: transparent; }
+        #chat-messages::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.1); border-radius: 3px; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <div id="loading">正在加载 JSON 定制版贝贝...</div>
+    <div id="canvas-container"></div>
+    <div class="controls-info">拖动旋转 • 滚动缩放</div>
+
+    <div id="chat-interface">
+        <div id="chat-header">
+            <span>🐻 贝贝 (JSON Edition)</span>
+            <span style="font-size: 12px; opacity: 0.7;">AI Powered ✨</span>
+        </div>
+        <div id="chat-messages">
+            <div class="message bot">你好呀！我是按照新设计图升级的贝贝！你看我的裙子会发光哦✨</div>
+        </div>
+        <div id="chat-input-area">
+            <input type="text" id="user-input" placeholder="和贝贝聊天..." autocomplete="off">
+            <button id="send-btn">✨</button>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = ""; 
+
+        window.addEventListener('load', init);
+
+        let scene, camera, renderer, controls;
+        let bearGroup, wingsGroup, headGroup, skirtGroup;
+        let clock = new THREE.Clock();
+        
+        let isJumping = false;
+        let jumpTime = 0;
+
+        // JSON Spec Colors
+        const colors = {
+            fur: 0xEAC8A8,         // Base fur
+            earInner: 0xC89F6C,    // JSON: #C89F6C
+            cheek: 0xFFB6C1,       // JSON: #FFB6C1
+            eye: 0x3A2F25,         // JSON: #3A2F25
+            nose: 0x2E2A26,        // JSON: #2E2A26
+            
+            shellLeft: 0xF4C6E8,   // JSON: #F4C6E8
+            shellRight: 0xB7E8F7,  // JSON: #B7E8F7
+            
+            pearl: 0xFFFFFF,       // JSON: #FFFFFF
+            
+            dressTop: new THREE.Color(0xF4C6E8),    // JSON: #F4C6E8
+            dressBottom: new THREE.Color(0xB7E8F7), // JSON: #B7E8F7
+            dressOutline: 0x5DA9BC,                 // JSON: #5DA9BC
+            
+            bowCenter: 0xF4C6E8,   // JSON: #F4C6E8
+            bowOutline: 0x5DA9BC,  // JSON: #5DA9BC
+            
+            pawPad: 0xC89F6C       // JSON: #C89F6C
+        };
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = null; 
+
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 1.5, 9);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(5, 10, 7);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            scene.add(dirLight);
+            
+            const fillLight = new THREE.DirectionalLight(0xE6E6FA, 0.5);
+            fillLight.position.set(-5, 2, -5);
+            scene.add(fillLight);
+
+            createCharacter();
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 4;
+            controls.maxDistance = 15;
+            controls.target.set(0, 0, 0);
+
+            document.getElementById('loading').style.opacity = 0;
+
+            animate();
+            window.addEventListener('resize', onWindowResize);
+            initChat();
+        }
+
+        function createCharacter() {
+            bearGroup = new THREE.Group();
+            scene.add(bearGroup);
+
+            const toonMat = (color) => new THREE.MeshToonMaterial({ color: color });
+            const phongMat = (color, shininess = 30) => new THREE.MeshPhongMaterial({ color: color, shininess: shininess });
+
+            // --- Head ---
+            headGroup = new THREE.Group();
+            // JSON Ratio: Head 0.48, Body 0.52. 
+            // Let's set Head radius ~1.2, Body total height ~1.3
+            bearGroup.add(headGroup);
+
+            const headGeo = new THREE.SphereGeometry(1.25, 32, 32);
+            const headMat = toonMat(colors.fur);
+            const head = new THREE.Mesh(headGeo, headMat);
+            head.scale.set(1.05, 1, 1.02);
+            head.castShadow = true;
+            headGroup.add(head);
+
+            // --- Ears (Rounded Heart Inner) ---
+            const earGeo = new THREE.SphereGeometry(0.45, 32, 32);
+            // Inner ear (simplified rounded heart shape via scaling)
+            const earInnerGeo = new THREE.SphereGeometry(0.28, 32, 32);
+            const earInnerMat = toonMat(colors.earInner);
+
+            // Left
+            const leftEar = new THREE.Mesh(earGeo, headMat);
+            leftEar.position.set(-1.0, 1.0, 0);
+            headGroup.add(leftEar);
+            
+            const leftEarInner = new THREE.Mesh(earInnerGeo, earInnerMat);
+            leftEarInner.position.set(-1.0, 1.0, 0.38);
+            leftEarInner.scale.set(1, 1, 0.5);
+            headGroup.add(leftEarInner);
+
+            // Right
+            const rightEar = new THREE.Mesh(earGeo, headMat);
+            rightEar.position.set(1.0, 1.0, 0);
+            headGroup.add(rightEar);
+
+            const rightEarInner = new THREE.Mesh(earInnerGeo, earInnerMat);
+            rightEarInner.position.set(1.0, 1.0, 0.38);
+            rightEarInner.scale.set(1, 1, 0.5);
+            headGroup.add(rightEarInner);
+
+            // --- Face ---
+            // Snout (Flattened)
+            const snoutGeo = new THREE.SphereGeometry(0.38, 32, 32);
+            const snoutMat = toonMat(colors.fur); // Same as fur but protruding slightly, usually lighter but json doesn't specify snout color diff, sticking to fur or slightly lighter
+            const snout = new THREE.Mesh(snoutGeo, new THREE.MeshToonMaterial({ color: 0xFFF5E6 })); // Slight off-white for contrast
+            snout.scale.set(1.4, 1.0, 0.6);
+            snout.position.set(0, -0.15, 1.15);
+            headGroup.add(snout);
+
+            // Nose (Rounded Triangle - approximated)
+            const noseGeo = new THREE.ConeGeometry(0.1, 0.1, 32);
+            const noseMat = toonMat(colors.nose);
+            const nose = new THREE.Mesh(noseGeo, noseMat);
+            nose.position.set(0, -0.05, 1.38);
+            nose.rotation.x = -Math.PI / 2; // Pointing out
+            nose.scale.set(1, 0.8, 1); // Flatten slightly
+            headGroup.add(nose);
+            // Add a small sphere to round the tip
+            const noseTip = new THREE.Mesh(new THREE.SphereGeometry(0.06), noseMat);
+            noseTip.position.set(0, -0.05, 1.4);
+            headGroup.add(noseTip);
+
+            // Mouth (Thin vertical then curve)
+            const mouthLineGeo = new THREE.TorusGeometry(0.12, 0.015, 8, 16, Math.PI);
+            const mouth = new THREE.Mesh(mouthLineGeo, noseMat);
+            mouth.position.set(0, -0.22, 1.35);
+            mouth.rotation.x = 0.2; 
+            mouth.rotation.z = Math.PI; // Smile
+            headGroup.add(mouth);
+            
+            const mouthVertical = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.1), noseMat);
+            mouthVertical.position.set(0, -0.15, 1.36);
+            headGroup.add(mouthVertical);
+
+            // Eyes (Vertical Oval)
+            const eyeGeo = new THREE.SphereGeometry(0.12, 32, 32);
+            const eyeMat = toonMat(colors.eye);
+            const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+            leftEye.scale.set(0.8, 1.1, 0.6); // Vertical oval
+            leftEye.position.set(-0.45, 0.15, 1.2);
+            headGroup.add(leftEye);
+
+            const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+            rightEye.scale.set(0.8, 1.1, 0.6);
+            rightEye.position.set(0.45, 0.15, 1.2);
+            headGroup.add(rightEye);
+
+            // Eye Highlights
+            const highlightGeo = new THREE.SphereGeometry(0.03);
+            const highlightMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const lh = new THREE.Mesh(highlightGeo, highlightMat);
+            lh.position.set(-0.48, 0.2, 1.26);
+            headGroup.add(lh);
+            const rh = new THREE.Mesh(highlightGeo, highlightMat);
+            rh.position.set(0.42, 0.2, 1.26);
+            headGroup.add(rh);
+
+            // Cheeks (Small Oval)
+            const cheekGeo = new THREE.SphereGeometry(0.16, 32, 32);
+            const cheekMat = toonMat(colors.cheek);
+            const leftCheek = new THREE.Mesh(cheekGeo, cheekMat);
+            leftCheek.scale.set(1.2, 0.8, 0.5);
+            leftCheek.position.set(-0.8, -0.05, 1.1);
+            headGroup.add(leftCheek);
+            
+            const rightCheek = new THREE.Mesh(cheekGeo, cheekMat);
+            rightCheek.scale.set(1.2, 0.8, 0.5);
+            rightCheek.position.set(0.8, -0.05, 1.1);
+            headGroup.add(rightCheek);
+
+            // --- Head Accessory: Conch Shell (3 segments, gradient) ---
+            const shellGroup = new THREE.Group();
+            shellGroup.position.set(0.4, 1.15, 0.8); // "slightly_right_front"
+            shellGroup.rotation.z = -0.3;
+            headGroup.add(shellGroup);
+
+            // Simulate segments
+            const shellMatL = phongMat(colors.shellLeft, 60); // pinkish
+            const shellMatR = phongMat(colors.shellRight, 60); // bluish
+            const shellGeo = new THREE.SphereGeometry(0.25, 32, 32);
+            
+            const seg1 = new THREE.Mesh(shellGeo, shellMatL);
+            seg1.scale.set(1.4, 0.8, 0.8);
+            seg1.position.set(-0.2, 0, 0);
+            
+            const seg2 = new THREE.Mesh(shellGeo, shellMatR); // Middle gradient transition
+            seg2.scale.set(1.2, 1.0, 0.9);
+            seg2.position.set(0, 0.05, 0.05);
+
+            const seg3 = new THREE.Mesh(shellGeo, shellMatR);
+            seg3.scale.set(1.0, 0.7, 0.7);
+            seg3.position.set(0.2, 0, 0);
+            
+            shellGroup.add(seg1, seg2, seg3);
+
+            // --- Body & Dress ---
+            const bodyGroup = new THREE.Group();
+            bodyGroup.position.y = -1.1; // Lower body
+            bearGroup.add(bodyGroup);
+
+            // Dress: Gradient Bell Skirt
+            skirtGroup = new THREE.Group();
+            bodyGroup.add(skirtGroup);
+
+            // Create geometry with vertex colors for gradient
+            const skirtGeo = new THREE.CylinderGeometry(0.6, 1.5, 1.6, 64, 10, true);
+            const count = skirtGeo.attributes.position.count;
+            skirtGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(count * 3), 3));
+            
+            const pos = skirtGeo.attributes.position;
+            const col = skirtGeo.attributes.color;
+            const colorTop = colors.dressTop;
+            const colorBottom = colors.dressBottom;
+
+            for (let i = 0; i < count; i++) {
+                const y = pos.getY(i);
+                // y ranges from 0.8 (top) to -0.8 (bottom) roughly
+                const t = (y + 0.8) / 1.6; // 0 at bottom, 1 at top
+                // JSON says top_to_bottom gradient.
+                const finalColor = new THREE.Color().lerpColors(colorBottom, colorTop, t);
+                col.setXYZ(i, finalColor.r, finalColor.g, finalColor.b);
+            }
+
+            const skirtMat = new THREE.MeshPhongMaterial({ 
+                vertexColors: true, 
+                side: THREE.DoubleSide,
+                shininess: 10 // Silky mat
+            });
+            const skirt = new THREE.Mesh(skirtGeo, skirtMat);
+            skirt.position.y = 0.1;
+            skirtGroup.add(skirt);
+
+            // Sparkle Dots (White spheres scattered)
+            const sparkleGeo = new THREE.SphereGeometry(0.02, 8, 8);
+            const sparkleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            for(let i=0; i<30; i++) { // Density medium
+                const mesh = new THREE.Mesh(sparkleGeo, sparkleMat);
+                const theta = Math.random() * Math.PI * 2;
+                const h = (Math.random() - 0.5) * 1.4; // height spread
+                const r = 0.6 + ((0.8 - h)/1.6) * 0.9; // approx radius at height
+                mesh.position.set(Math.sin(theta) * r, h + 0.1, Math.cos(theta) * r);
+                // Only place if visible (front half mostly or random)
+                if(Math.random() > 0.3) skirtGroup.add(mesh);
+            }
+
+            // Trims: Double line border
+            const hemTorus1 = new THREE.TorusGeometry(1.5, 0.03, 16, 100);
+            const trimMat = new THREE.MeshBasicMaterial({ color: colors.dressOutline });
+            const hem1 = new THREE.Mesh(hemTorus1, trimMat);
+            hem1.rotation.x = Math.PI / 2;
+            hem1.position.y = -0.7;
+            skirtGroup.add(hem1);
+
+            const hemTorus2 = new THREE.TorusGeometry(1.5, 0.03, 16, 100);
+            const hem2 = new THREE.Mesh(hemTorus2, trimMat);
+            hem2.rotation.x = Math.PI / 2;
+            hem2.position.y = -0.62; // Double line
+            skirtGroup.add(hem2);
+
+            // Bow (Double Layered)
+            const bowGroup = new THREE.Group();
+            bowGroup.position.set(0, 0.9, 0.85);
+            bodyGroup.add(bowGroup);
+
+            const bowMat = new THREE.MeshToonMaterial({ color: colors.bowCenter });
+            const bowOutlineMat = new THREE.MeshBasicMaterial({ color: colors.bowOutline }); // Simplify outline as separate object
+
+            // Center Knot
+            const knot = new THREE.Mesh(new THREE.SphereGeometry(0.18), bowMat);
+            bowGroup.add(knot);
+
+            // Wings of bow
+            const bowWingGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.1, 32);
+            // Left
+            const lb = new THREE.Mesh(bowWingGeo, bowMat);
+            lb.rotation.x = Math.PI / 2;
+            lb.rotation.z = Math.PI / 4;
+            lb.position.set(-0.3, 0, 0);
+            lb.scale.set(1, 0.5, 1);
+            bowGroup.add(lb);
+            // Outline approximation (slightly larger)
+            const lb_o = new THREE.Mesh(bowWingGeo, bowOutlineMat);
+            lb_o.rotation.x = Math.PI / 2;
+            lb_o.rotation.z = Math.PI / 4;
+            lb_o.position.set(-0.3, 0, -0.01);
+            lb_o.scale.set(1.1, 0.55, 0.9);
+            bowGroup.add(lb_o);
+
+            // Right
+            const rb = new THREE.Mesh(bowWingGeo, bowMat);
+            rb.rotation.x = Math.PI / 2;
+            rb.rotation.z = -Math.PI / 4;
+            rb.position.set(0.3, 0, 0);
+            rb.scale.set(1, 0.5, 1);
+            bowGroup.add(rb);
+
+            const rb_o = new THREE.Mesh(bowWingGeo, bowOutlineMat);
+            rb_o.rotation.x = Math.PI / 2;
+            rb_o.rotation.z = -Math.PI / 4;
+            rb_o.position.set(0.3, 0, -0.01);
+            rb_o.scale.set(1.1, 0.55, 0.9);
+            bowGroup.add(rb_o);
+
+
+            // Necklace (14 count, high gloss)
+            const necklaceGroup = new THREE.Group();
+            const pearlCount = 14;
+            const pearlGeo = new THREE.SphereGeometry(0.13, 16, 16);
+            const pearlMat = phongMat(colors.pearl, 100); // High gloss
+
+            for(let i=0; i<pearlCount; i++) {
+                const angle = (i / (pearlCount-1)) * Math.PI - Math.PI; // Full circle
+                // Only front visible effectively for simple placement
+                const r = 0.85;
+                if(Math.cos(angle) > -0.5) {
+                   const p = new THREE.Mesh(pearlGeo, pearlMat);
+                   p.position.set(Math.sin(angle)*r, 1.05, Math.cos(angle)*r);
+                   bodyGroup.add(p);
+                }
+            }
+
+            // --- Arms (Paw Pads) ---
+            const armGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.7, 16, 1);
+            
+            // Left Arm
+            const leftArmGroup = new THREE.Group();
+            leftArmGroup.position.set(-1.0, 0.3, 0);
+            leftArmGroup.rotation.z = Math.PI / 6;
+            bodyGroup.add(leftArmGroup);
+
+            const lArmMesh = new THREE.Mesh(armGeo, headMat);
+            leftArmGroup.add(lArmMesh);
+            
+            // Paw Pad
+            const padGeo = new THREE.SphereGeometry(0.08, 16, 16);
+            const padMat = toonMat(colors.pawPad);
+            const pad = new THREE.Mesh(padGeo, padMat);
+            pad.position.set(0, -0.2, 0.18); // Palm area
+            pad.scale.set(1, 1.2, 0.5);
+            leftArmGroup.add(pad);
+
+            // Right Arm
+            const rightArmGroup = new THREE.Group();
+            rightArmGroup.position.set(1.0, 0.3, 0);
+            rightArmGroup.rotation.z = -Math.PI / 6;
+            bodyGroup.add(rightArmGroup);
+            
+            const rArmMesh = new THREE.Mesh(armGeo, headMat);
+            rightArmGroup.add(rArmMesh);
+
+            const rPad = new THREE.Mesh(padGeo, padMat);
+            rPad.position.set(0, -0.2, 0.18);
+            rPad.scale.set(1, 1.2, 0.5);
+            rightArmGroup.add(rPad);
+
+            // Legs
+            const legGeo = new THREE.CylinderGeometry(0.28, 0.25, 0.55, 16, 1);
+            const leftLeg = new THREE.Mesh(legGeo, headMat);
+            leftLeg.position.set(-0.45, -1.0, 0);
+            bodyGroup.add(leftLeg);
+
+            const rightLeg = new THREE.Mesh(legGeo, headMat);
+            rightLeg.position.set(0.45, -1.0, 0);
+            bodyGroup.add(rightLeg);
+
+            // --- Wings (Shell Fan Shape, Gradient, Lines) ---
+            wingsGroup = new THREE.Group();
+            wingsGroup.position.set(0, 0.6, -0.5);
+            bodyGroup.add(wingsGroup);
+
+            // Since ExtrudeGeometry gradient is hard, we simulate the look with flattened spheres or custom shader. 
+            // Let's use flattened spheres for segments to get the "rounded shell fan" look.
+            
+            const createWingHalf = (isLeft) => {
+                const g = new THREE.Group();
+                const wingMatTop = phongMat(colors.shellLeft, 40);
+                const wingMatBot = phongMat(colors.shellRight, 40);
+                
+                // Segment 1 (Top)
+                const s1 = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 16), wingMatTop);
+                s1.scale.set(1, 0.4, 0.1);
+                s1.position.set(0.4, 0.6, 0);
+                s1.rotation.z = 0.5;
+                g.add(s1);
+
+                // Segment 2 (Mid)
+                const s2 = new THREE.Mesh(new THREE.SphereGeometry(0.6, 32, 16), wingMatTop);
+                s2.scale.set(1.2, 0.5, 0.1);
+                s2.position.set(0.6, 0.2, 0);
+                g.add(s2);
+
+                // Segment 3 (Bot) - Bluish
+                const s3 = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 16), wingMatBot);
+                s3.scale.set(1.0, 0.5, 0.1);
+                s3.position.set(0.5, -0.3, 0);
+                s3.rotation.z = -0.3;
+                g.add(s3);
+                
+                if (isLeft) {
+                   g.scale.x = -1;
+                   g.position.x = -0.2;
+                } else {
+                   g.position.x = 0.2;
+                }
+                return g;
+            };
+
+            const lw = createWingHalf(true);
+            const rw = createWingHalf(false);
+            wingsGroup.add(lw, rw);
+            
+            bearGroup.position.y = 0.4;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = clock.getElapsedTime();
+
+            if (isJumping) {
+                jumpTime += 0.1;
+                bearGroup.position.y = 0.4 + Math.sin(jumpTime) * 0.6;
+                if (jumpTime > Math.PI) {
+                    isJumping = false;
+                    jumpTime = 0;
+                    bearGroup.position.y = 0.4;
+                }
+            } else {
+                bearGroup.position.y = Math.sin(time * 1.5) * 0.08 + 0.4;
+            }
+
+            if (wingsGroup) {
+                const speed = isJumping ? 15 : 6;
+                wingsGroup.children[0].rotation.y = Math.sin(time * speed) * 0.2;
+                wingsGroup.children[1].rotation.y = -Math.sin(time * speed) * 0.2;
+            }
+
+            if (headGroup) {
+                headGroup.rotation.z = Math.sin(time * 1.2) * 0.03;
+                headGroup.rotation.y = Math.sin(time * 0.8) * 0.04;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function initChat() {
+            const sendBtn = document.getElementById('send-btn');
+            const userInput = document.getElementById('user-input');
+
+            sendBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+
+        async function sendMessage() {
+            const inputEl = document.getElementById('user-input');
+            const message = inputEl.value.trim();
+            if (!message) return;
+
+            addMessageToChat(message, 'user');
+            inputEl.value = '';
+            
+            const loadingMsgId = addMessageToChat('贝贝正在思考...', 'loading');
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+
+            const systemPrompt = "你叫贝贝(Beibei)，一只可爱的3D小熊，有仙女翅膀。你住在数字世界里。你性格活泼、友善，喜欢吃蜂蜜、甜点，还喜欢亮晶晶的宝石。你的回答要简短、可爱，多用颜文字(emoji)。如果是中文对话请用中文回复。不要长篇大论。";
+            
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: message }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                
+                const messagesDiv = document.getElementById('chat-messages');
+                const loadingMsg = document.getElementById(loadingMsgId);
+                if(loadingMsg) messagesDiv.removeChild(loadingMsg);
+
+                if (data.candidates && data.candidates[0].content) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    addMessageToChat(reply, 'bot');
+                    triggerJump();
+                } else {
+                    addMessageToChat('贝贝好像走神了... (API Error)', 'bot');
+                }
+
+            } catch (error) {
+                console.error(error);
+                const messagesDiv = document.getElementById('chat-messages');
+                const loadingMsg = document.getElementById(loadingMsgId);
+                if(loadingMsg) messagesDiv.removeChild(loadingMsg);
+                addMessageToChat('贝贝连不上网啦... 🌐', 'bot');
+            } finally {
+                sendBtn.disabled = false;
+                inputEl.focus();
+            }
+        }
+
+        function addMessageToChat(text, type) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${type}`;
+            msgDiv.innerText = text;
+            
+            if (type === 'loading') {
+                const id = 'loading-' + Date.now();
+                msgDiv.id = id;
+                messagesDiv.appendChild(msgDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                return id;
+            }
+
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            return null;
+        }
+
+        function triggerJump() {
+            if (!isJumping) {
+                isJumping = true;
+                jumpTime = 0;
+            }
+        }
+    </script>
+</body>
+</html>

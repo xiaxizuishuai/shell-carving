@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贝雕云工坊 - 在线非遗体验</title>
+    <style>
+        /* --- 全局样式 --- */
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #eef2f5;
+            user-select: none; /* 防止长按选中文本 */
+        }
+
+        /* --- 顶部标题栏 --- */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-sizing: border-box;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            color: #3498db;
+        }
+
+        .actions button {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            margin-left: 10px;
+        }
+
+        .actions button:hover {
+            background: #34495e;
+            transform: translateY(-1px);
+        }
+
+        .actions button.save-btn {
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+        }
+
+        /* --- 左侧工具栏 --- */
+        #toolbar {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            width: 280px; /*稍微加宽以容纳贴纸面板*/
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        /* 隐藏滚动条但保留功能 */
+        #toolbar::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .tool-group {
+            margin-bottom: 25px;
+        }
+
+        .group-title {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        /* 模式切换按钮 */
+        .mode-switch {
+            display: flex;
+            background: #ecf0f1;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #7f8c8d;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: #2c3e50;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-weight: bold;
+        }
+
+        /* 工具网格 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tool-btn {
+            border: 2px solid #ecf0f1;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-btn:hover {
+            border-color: #bdc3c7;
+            transform: translateY(-2px);
+        }
+
+        .tool-btn.active {
+            border-color: #3498db;
+            background: #ebf5fb;
+            color: #3498db;
+        }
+
+        .tool-icon {
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+
+        .tool-name {
+            font-size: 12px;
+        }
+
+        /* --- 贴纸专用样式 --- */
+        .sticker-preview {
+            width: 100%;
+            height: 80px;
+            object-fit: contain; /* 保持比例 */
+            border-radius: 4px;
+            background: #fff;
+            margin-bottom: 4px;
+        }
+
+        /* 颜色选择器容器 */
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ecf0f1;
+            margin-bottom: 15px;
+        }
+        
+        input[type=color] {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+            margin-right: 10px;
+        }
+        
+        .color-label {
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* 滑块样式 */
+        .slider-container {
+            margin-top: 15px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: #3498db;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            appearance: none;
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #3498db;
+            margin-top: -6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+        }
+
+        /* 底部贝壳选择器 */
+        #shell-selector {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+            background: rgba(255,255,255,0.8);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .shell-option {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            transition: 0.3s;
+            opacity: 0.7;
+        }
+
+        .shell-option:hover {
+            transform: translateY(-5px);
+            opacity: 1;
+        }
+
+        .shell-option.active {
+            border-color: #3498db;
+            transform: scale(1.1);
+            opacity: 1;
+            background: #ebf5fb;
+        }
+
+        /* 加载动画 */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.5s;
+        }
+
+        .spinner {
+            font-size: 50px;
+            animation: spin 2s infinite linear;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 提示信息 */
+        .toast {
+            position: fixed;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s, top 0.3s;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* 鼠标样式 */
+        .cursor-pointer { cursor: pointer; }
+        .cursor-crosshair { cursor: crosshair; }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部导航 -->
+    <header>
+        <div class="brand">🐚 贝雕<span>云工坊</span></div>
+        <div class="actions">
+            <button onclick="resetCanvas()">🔄 重置</button>
+            <button class="save-btn" onclick="exportImage()">📸 保存作品</button>
+        </div>
+    </header>
+
+    <!-- 左侧工具箱 -->
+    <div id="toolbar">
+        <div class="tool-group">
+            <div class="group-title">创作模式</div>
+            <div class="mode-switch">
+                <button class="mode-btn active" onclick="setMode('carve')" id="btn-carve">雕刻</button>
+                <button class="mode-btn" onclick="setMode('paint')" id="btn-paint">彩绘</button>
+                <button class="mode-btn" onclick="setMode('sticker')" id="btn-sticker">贴纸✨</button>
+            </div>
+        </div>
+
+        <!-- 1. 雕刻工具面板 -->
+        <div id="panel-carve" class="tool-group">
+            <div class="group-title">选择刀具</div>
+            <div class="tools-grid">
+                <div class="tool-btn active" onclick="setTool('sub_sharp')">
+                    <span class="tool-icon">🖋️</span>
+                    <span class="tool-name">尖刀 (V形)</span>
+                </div>
+                <div class="tool-btn" onclick="setTool('sub_round')">
+                    <span class="tool-icon">🥄</span>
+                    <span class="tool-name">圆刀 (U形)</span>
+                </div>
+                <div class="tool-btn" onclick="setTool('sub_flat')">
+                    <span class="tool-icon">⬛</span>
+                    <span class="tool-name">平刀 (铲)</span>
+                </div>
+                <div class="tool-btn" onclick="setTool('add_round')">
+                    <span class="tool-icon">💧</span>
+                    <span class="tool-name">堆塑 (阳刻)</span>
+                </div>
+            </div>
+            
+            <div class="slider-container">
+                <div class="slider-label"><span>刀头大小</span> <span id="size-val">20</span></div>
+                <input type="range" min="5" max="50" value="20" oninput="updateSize(this.value)">
+            </div>
+            <div class="slider-container">
+                <div class="slider-label"><span>雕刻力度</span> <span id="strength-val">80%</span></div>
+                <input type="range" min="10" max="100" value="80" oninput="updateStrength(this.value)">
+            </div>
+        </div>
+
+        <!-- 2. 彩绘工具面板 -->
+        <div id="panel-paint" class="tool-group" style="display: none;">
+            <div class="group-title">颜料与画笔</div>
+            <div class="color-picker-container">
+                <input type="color" id="colorPicker" value="#ff6b6b">
+                <span class="color-label">点击选择颜色</span>
+            </div>
+            
+            <div class="tools-grid">
+                <div class="tool-btn active" onclick="setTool('paint_brush')">
+                    <span class="tool-icon">🖌️</span>
+                    <span class="tool-name">毛笔</span>
+                </div>
+                <div class="tool-btn" onclick="setTool('paint_spray')">
+                    <span class="tool-icon">💨</span>
+                    <span class="tool-name">喷枪</span>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-label"><span>笔刷大小</span> <span id="paint-size-val">20</span></div>
+                <input type="range" min="2" max="60" value="20" oninput="updateSize(this.value, 'paint')">
+            </div>
+            <div class="slider-container">
+                <div class="slider-label"><span>色彩浓度</span> <span id="paint-strength-val">80%</span></div>
+                <input type="range" min="10" max="100" value="80" oninput="updateStrength(this.value, 'paint')">
+            </div>
+        </div>
+
+        <!-- 3. 贴纸工具面板 (新增) -->
+        <div id="panel-sticker" class="tool-group" style="display: none;">
+            <div class="group-title">装饰贴纸</div>
+            <p style="font-size:12px; color:#95a5a6; margin-top:-5px; margin-bottom:10px;">点击贝壳表面即可粘贴</p>
+            
+            <!-- 贴纸列表 -->
+            <div class="tools-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="tool-btn active" onclick="setSticker('印花1')" data-sticker="印花1">
+                    <img src="印花1.jpg" alt="印花1" class="sticker-preview" onerror="this.src='https://via.placeholder.com/100?text=Ind1'">
+                    <span class="tool-name">青花纹</span>
+                </div>
+                <div class="tool-btn" onclick="setSticker('印花2')" data-sticker="印花2">
+                    <img src="印花2.jpg" alt="印花2" class="sticker-preview" onerror="this.src='https://via.placeholder.com/100?text=Ind2'">
+                    <span class="tool-name">缠枝纹</span>
+                </div>
+                <div class="tool-btn" onclick="setSticker('印花3')" data-sticker="印花3">
+                    <img src="印花3.jpg" alt="印花3" class="sticker-preview" onerror="this.src='https://via.placeholder.com/100?text=Ind3'">
+                    <span class="tool-name">莲花纹</span>
+                </div>
+                <div class="tool-btn" onclick="setSticker('印花4')" data-sticker="印花4">
+                    <img src="印花4.jpg" alt="印花4" class="sticker-preview" onerror="this.src='https://via.placeholder.com/100?text=Ind4'">
+                    <span class="tool-name">海棠纹</span>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-label"><span>贴纸缩放</span> <span id="sticker-size-val">0.5</span></div>
+                <input type="range" min="0.2" max="1.5" step="0.1" value="0.5" oninput="updateStickerSize(this.value)">
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button class="tool-btn" onclick="undoLastSticker()" style="width: 100%; margin-bottom:10px; flex-direction:row; justify-content:center;">
+                    <span class="tool-icon" style="font-size:16px; margin-right:5px;">↩️</span>
+                    <span class="tool-name">撤销上一个</span>
+                </button>
+                <button class="tool-btn" onclick="clearStickers()" style="width: 100%; background: #fff0f0; color: #e74c3c; border-color:#ffcccc; flex-direction:row; justify-content:center;">
+                    <span class="tool-icon" style="font-size:16px; margin-right:5px;">🗑️</span>
+                    <span class="tool-name">清除所有</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部贝壳选择 -->
+    <div id="shell-selector">
+        <div class="shell-option active" onclick="changeShell(0)" title="扇贝">🐚</div>
+        <div class="shell-option" onclick="changeShell(1)" title="椭圆贝">🥚</div>
+        <div class="shell-option" onclick="changeShell(2)" title="螺旋贝">🌀</div>
+    </div>
+
+    <!-- 提示框 -->
+    <div id="toast" class="toast">操作成功</div>
+
+    <!-- 加载层 -->
+    <div id="loader">
+        <div class="spinner">🌊</div>
+        <p style="color:#7f8c8d; margin-top:10px; font-size: 14px;">工坊准备中...</p>
+    </div>
+
+    <!-- 引入 Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- 全局变量 ---
+        let scene, camera, renderer, controls;
+        let currentMesh; // 当前贝壳模型
+        let raycaster = new THREE.Raycaster();
+        let mouse = new THREE.Vector2();
+        
+        // 绘制相关
+        let isDrawing = false;
+        let lastUV = null;
+        const TEX_SIZE = 1024;
+        let canvasDisp, ctxDisp, texDisp; // 置换贴图 (雕刻)
+        let canvasColor, ctxColor, texColor; // 颜色贴图 (彩绘)
+        let needsUpdateDisp = false;
+        let needsUpdateColor = false;
+
+        // 贴纸相关
+        const stickers = [];
+        const stickerTextures = {};
+        
+        // 状态管理
+        const state = {
+            mode: 'carve',      // carve, paint, sticker
+            tool: 'sub_sharp',  // sub_sharp, sub_round, etc.
+            size: 20,
+            strength: 0.8,
+            color: '#ff6b6b',
+            currentSticker: '印花1',
+            stickerSize: 0.5
+        };
+
+        const geometries = []; // 存储3种贝壳几何体
+
+        // 初始化
+        init();
+
+        function init() {
+            // 1. 场景设置
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeef2f5);
+            scene.fog = new THREE.Fog(0xeef2f5, 10, 50);
+
+            // 2. 相机
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 8, 6);
+
+            // 3. 渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap; // 柔和阴影
+            document.body.appendChild(renderer.domElement);
+
+            // 4. 灯光
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(5, 10, 5);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            scene.add(mainLight);
+
+            const rimLight = new THREE.SpotLight(0x3498db, 0.8);
+            rimLight.position.set(-5, 2, -5);
+            rimLight.lookAt(0, 0, 0);
+            scene.add(rimLight);
+
+            // 5. 初始化材质画布和几何体
+            initCanvases();
+            initShellGeometries();
+            loadShell(0); // 默认加载第一个
+            loadStickerTextures(); // 加载贴纸
+
+            // 6. 控制器
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.minDistance = 3;
+            controls.maxDistance = 15;
+
+            // 7. 事件监听
+            window.addEventListener('resize', onWindowResize);
+            renderer.domElement.addEventListener('pointerdown', onPointerDown);
+            renderer.domElement.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+
+            // 隐藏加载动画
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = 0;
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 800);
+
+            animate();
+        }
+
+        // --- 画布初始化 (核心技术：使用Canvas做纹理) ---
+        function initCanvases() {
+            // 雕刻画布 (Displacement Map): 灰色(128)为基准，黑色下凹，白色凸起
+            canvasDisp = document.createElement('canvas');
+            canvasDisp.width = TEX_SIZE;
+            canvasDisp.height = TEX_SIZE;
+            ctxDisp = canvasDisp.getContext('2d');
+            ctxDisp.fillStyle = 'rgb(128, 128, 128)';
+            ctxDisp.fillRect(0, 0, TEX_SIZE, TEX_SIZE);
+
+            // 彩绘画布 (Color Map)
+            canvasColor = document.createElement('canvas');
+            canvasColor.width = TEX_SIZE;
+            canvasColor.height = TEX_SIZE;
+            ctxColor = canvasColor.getContext('2d');
+            ctxColor.fillStyle = '#FFFFFF';
+            ctxColor.fillRect(0, 0, TEX_SIZE, TEX_SIZE);
+            addTextureNoise(ctxColor); // 添加一点贝壳纹理噪点
+
+            texDisp = new THREE.CanvasTexture(canvasDisp);
+            texColor = new THREE.CanvasTexture(canvasColor);
+            
+            // 关键：避免纹理接缝
+            texDisp.wrapS = texDisp.wrapT = THREE.ClampToEdgeWrapping;
+            texColor.wrapS = texColor.wrapT = THREE.ClampToEdgeWrapping;
+        }
+
+        function addTextureNoise(ctx) {
+            const w = ctx.canvas.width;
+            const h = ctx.canvas.height;
+            // 绘制一些淡淡的纹理条纹
+            ctx.globalAlpha = 0.05;
+            ctx.fillStyle = "#000";
+            for(let i=0; i<50; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random()*w, Math.random()*h, Math.random()*100, 0, Math.PI*2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1.0;
+        }
+
+        // --- 几何体生成 ---
+        function initShellGeometries() {
+            // 1. 扇贝 (Sphere修改版)
+            const geo1 = new THREE.SphereGeometry(2, 256, 128, 0, Math.PI * 2, 0, Math.PI / 2);
+            geo1.scale(1, 0.2, 1);
+            const pos1 = geo1.attributes.position;
+            const vec = new THREE.Vector3();
+            for (let i = 0; i < pos1.count; i++) {
+                vec.fromBufferAttribute(pos1, i);
+                const angle = Math.atan2(vec.z, vec.x);
+                const r = Math.sqrt(vec.x*vec.x + vec.z*vec.z);
+                // 放射状波纹
+                const wave = Math.cos(angle * 12) * r * 0.15; 
+                pos1.setY(i, vec.y + wave);
+            }
+            geo1.computeVertexNormals();
+            geometries.push(geo1);
+
+            // 2. 椭圆贝
+            const geo2 = new THREE.SphereGeometry(1.8, 128, 128, 0, Math.PI * 2, 0, Math.PI / 2.2);
+            geo2.scale(1, 0.5, 1.4);
+            geometries.push(geo2);
+
+            // 3. 螺旋贝
+            const points = [];
+            for (let i = 0; i < 25; i++) {
+                const t = i / 25;
+                const r = (1 - t) * 1.5 + Math.sin(t * Math.PI * 10) * 0.05;
+                const y = t * 4 - 2;
+                points.push(new THREE.Vector2(r, y));
+            }
+            const geo3 = new THREE.LatheGeometry(points, 128);
+            geometries.push(geo3);
+        }
+
+        function loadShell(index) {
+            if (currentMesh) {
+                // 清除之前的贴纸
+                stickers.forEach(s => scene.remove(s));
+                stickers.length = 0;
+                scene.remove(currentMesh);
+            }
+
+            const geometry = geometries[index];
+            
+            // 贝壳材质
+            const material = new THREE.MeshStandardMaterial({
+                map: texColor,
+                displacementMap: texDisp,
+                displacementScale: 0.4, // 雕刻深度
+                color: 0xffffff,
+                roughness: 0.4,
+                metalness: 0.1,
+                side: THREE.DoubleSide
+            });
+
+            currentMesh = new THREE.Mesh(geometry, material);
+            currentMesh.castShadow = true;
+            currentMesh.receiveShadow = true;
+
+            // 居中
+            geometry.computeBoundingBox();
+            const center = new THREE.Vector3();
+            geometry.boundingBox.getCenter(center);
+            currentMesh.position.sub(center);
+
+            // 调整初始角度
+            if (index === 2) currentMesh.rotation.x = Math.PI/2;
+            else currentMesh.rotation.x = Math.PI / 6;
+
+            scene.add(currentMesh);
+            
+            // 重置画布内容但保留贝壳类型
+            // 修正调用，确保 resetCanvas 可用
+            resetCanvas(true); 
+        }
+
+        // --- 核心绘制逻辑 ---
+        function paint(uv) {
+            const x = uv.x * TEX_SIZE;
+            const y = uv.y * TEX_SIZE;
+            const size = state.size;
+            const strength = state.strength; // 0.1 - 1.0
+
+            if (state.mode === 'carve') {
+                // 雕刻模式：修改 Disp Map
+                ctxDisp.beginPath();
+                
+                // 不同刀具效果
+                if (state.tool === 'sub_flat') {
+                    // 平刀：方形
+                    ctxDisp.rect(x - size/2, y - size/2, size, size);
+                } else {
+                    // 圆刀/尖刀：圆形
+                    ctxDisp.arc(x, y, size, 0, Math.PI * 2);
+                }
+
+                if (state.tool === 'sub_flat') {
+                    // 平刀直接填充颜色
+                    const val = Math.max(0, 128 - strength * 120); 
+                    ctxDisp.fillStyle = `rgb(${val},${val},${val})`;
+                    ctxDisp.fill();
+                } else {
+                    // 其他刀具有渐变（模拟深度）
+                    const grad = ctxDisp.createRadialGradient(x, y, 0, x, y, size);
+                    
+                    if (state.tool === 'sub_sharp') { // 尖刀 (中间深)
+                        const val = Math.max(0, 128 - strength * 200);
+                        grad.addColorStop(0, `rgb(${val},${val},${val})`);
+                        grad.addColorStop(0.5, 'rgb(128,128,128)'); 
+                        grad.addColorStop(1, 'rgba(128,128,128,0)');
+                    } else if (state.tool === 'sub_round') { // 圆刀 (比较柔和)
+                        const val = Math.max(40, 128 - strength * 100);
+                        grad.addColorStop(0, `rgb(${val},${val},${val})`);
+                        grad.addColorStop(1, 'rgba(128,128,128,0)');
+                    } else if (state.tool === 'add_round') { // 堆塑 (变亮)
+                        const val = Math.min(255, 128 + strength * 120);
+                        grad.addColorStop(0, `rgb(${val},${val},${val})`);
+                        grad.addColorStop(1, 'rgba(128,128,128,0)');
+                    }
+                    
+                    ctxDisp.fillStyle = grad;
+                    ctxDisp.fill();
+                }
+                
+                needsUpdateDisp = true;
+
+            } else if (state.mode === 'paint') {
+                // 彩绘模式：修改 Color Map
+                ctxColor.beginPath();
+                
+                if (state.tool === 'paint_brush') {
+                    ctxColor.arc(x, y, size * 0.5, 0, Math.PI * 2);
+                    ctxColor.fillStyle = state.color;
+                    ctxColor.fill();
+                } else if (state.tool === 'paint_spray') {
+                    const grad = ctxColor.createRadialGradient(x, y, 0, x, y, size * 2);
+                    const r = parseInt(state.color.slice(1,3), 16);
+                    const g = parseInt(state.color.slice(3,5), 16);
+                    const b = parseInt(state.color.slice(5,7), 16);
+                    grad.addColorStop(0, `rgba(${r},${g},${b}, ${strength * 0.2})`);
+                    grad.addColorStop(1, `rgba(${r},${g},${b}, 0)`);
+                    
+                    ctxColor.fillStyle = grad;
+                    ctxColor.arc(x, y, size * 2, 0, Math.PI * 2);
+                    ctxColor.fill();
+                }
+                needsUpdateColor = true;
+            }
+        }
+
+        // 笔触插值（防止快速移动断裂）
+        function drawStroke(startUV, endUV) {
+            const dx = endUV.x - startUV.x;
+            const dy = endUV.y - startUV.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            
+            if (dist < 0.001) return; // 距离太小不绘制
+
+            const steps = Math.ceil(dist * 1000); // 根据距离决定插值密度
+            for (let i = 0; i < steps; i++) {
+                const t = i / steps;
+                const uv = {
+                    x: startUV.x + dx * t,
+                    y: startUV.y + dy * t
+                };
+                paint(uv);
+            }
+            paint(endUV); // 绘制终点
+        }
+
+        // --- 贴纸功能 ---
+        function loadStickerTextures() {
+            const loader = new THREE.TextureLoader();
+            const files = ['印花1.jpg', '印花2.jpg', '印花3.jpg', '印花4.jpg'];
+            const names = ['印花1', '印花2', '印花3', '印花4'];
+
+            files.forEach((file, index) => {
+                const name = names[index];
+                // 假设图片在同一目录下
+                loader.load(file, (tex) => {
+                    // 重要：JPG没有透明通道，使用贴图前需要处理
+                    tex.colorSpace = THREE.SRGBColorSpace;
+                    stickerTextures[name] = tex;
+                }, undefined, (err) => {
+                    console.warn(`贴纸 ${file} 加载失败，请确保文件存在。`, err);
+                });
+            });
+        }
+
+        function placeSticker(intersect) {
+            const tex = stickerTextures[state.currentSticker];
+            if (!tex) {
+                showToast("贴纸图片加载中或未找到");
+                return;
+            }
+
+            // 1. 创建贴纸网格
+            // 使用 MultiplyBlending (正片叠底) 去除白色背景
+            const mat = new THREE.MeshBasicMaterial({
+                map: tex,
+                transparent: true,
+                blending: THREE.MultiplyBlending, // 关键：白色变透明，深色保留
+                depthWrite: false, // 不写入深度，避免遮挡问题
+                polygonOffset: true, 
+                polygonOffsetFactor: -2, // 向前偏移，防止与贝壳Z-fighting
+                side: THREE.DoubleSide
+            });
+
+            const geo = new THREE.PlaneGeometry(1, 1);
+            const sticker = new THREE.Mesh(geo, mat);
+
+            // 2. 定位与旋转
+            const pos = intersect.point;
+            const normal = intersect.face.normal.clone();
+            normal.transformDirection(currentMesh.matrixWorld).normalize();
+
+            sticker.position.copy(pos);
+            // 稍微沿法线浮起一点点，配合 polygonOffset 确保显示
+            sticker.position.add(normal.multiplyScalar(0.01)); 
+
+            // 使贴纸朝向法线方向
+            const q = new THREE.Quaternion();
+            q.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
+            sticker.quaternion.copy(q);
+
+            // 3. 缩放
+            const s = state.stickerSize;
+            sticker.scale.set(s, s, 1);
+
+            scene.add(sticker);
+            stickers.push(sticker);
+            
+            showToast("✨ 贴纸已装饰");
+        }
+
+        // --- 交互处理 ---
+        function onPointerDown(e) {
+            if (e.button !== 0) return; // 只响应左键
+
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(currentMesh);
+
+            if (intersects.length > 0) {
+                const hit = intersects[0];
+                
+                if (state.mode === 'sticker') {
+                    placeSticker(hit);
+                } else {
+                    isDrawing = true;
+                    controls.enabled = false; // 绘画时禁用旋转
+                    lastUV = hit.uv;
+                    paint(lastUV);
+                }
+            }
+        }
+
+        function onPointerMove(e) {
+            if (!isDrawing) return;
+
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(currentMesh);
+
+            if (intersects.length > 0) {
+                const currentUV = intersects[0].uv;
+                if (lastUV) {
+                    drawStroke(lastUV, currentUV);
+                }
+                lastUV = currentUV;
+            } else {
+                lastUV = null;
+            }
+        }
+
+        function onPointerUp() {
+            isDrawing = false;
+            controls.enabled = true;
+            lastUV = null;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // 只有需要时才更新纹理，节省性能
+            if (needsUpdateDisp) {
+                texDisp.needsUpdate = true;
+                needsUpdateDisp = false;
+            }
+            if (needsUpdateColor) {
+                texColor.needsUpdate = true;
+                needsUpdateColor = false;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // --- UI 绑定 (修复: 使用命名函数，确保在 init 之前可用) ---
+        
+        function setMode(m) {
+            state.mode = m;
+            // 更新按钮状态
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${m}`).classList.add('active');
+            
+            // 切换面板
+            ['carve', 'paint', 'sticker'].forEach(p => {
+                document.getElementById(`panel-${p}`).style.display = (p === m) ? 'block' : 'none';
+            });
+            
+            // 更改鼠标手势
+            document.body.style.cursor = (m === 'sticker') ? 'copy' : 'default';
+        }
+
+        function setTool(t) {
+            state.tool = t;
+            // 更新所有含有 tool-btn 的按钮状态
+            const allBtns = document.querySelectorAll('.tool-btn');
+            allBtns.forEach(b => b.classList.remove('active'));
+            // 重新高亮当前点击的
+            if (event) event.currentTarget.classList.add('active');
+        }
+
+        function setSticker(name) {
+            state.currentSticker = name;
+            // 更新UI
+            document.querySelectorAll('#panel-sticker .tool-btn').forEach(b => b.classList.remove('active'));
+            if (event) event.currentTarget.classList.add('active');
+        }
+
+        function updateSize(val, type='carve') {
+            state.size = parseInt(val);
+            const id = type === 'paint' ? 'paint-size-val' : 'size-val';
+            document.getElementById(id).innerText = val;
+        }
+
+        function updateStrength(val, type='carve') {
+            state.strength = parseInt(val) / 100;
+            const id = type === 'paint' ? 'paint-strength-val' : 'strength-val';
+            document.getElementById(id).innerText = val + '%';
+        }
+
+        function updateStickerSize(val) {
+            state.stickerSize = parseFloat(val);
+            document.getElementById('sticker-size-val').innerText = val;
+        }
+
+        function undoLastSticker() {
+            if (stickers.length > 0) {
+                const s = stickers.pop();
+                scene.remove(s);
+                s.geometry.dispose();
+                s.material.dispose();
+                showToast("已撤销");
+            }
+        }
+
+        function clearStickers() {
+            stickers.forEach(s => {
+                scene.remove(s);
+                s.geometry.dispose();
+                s.material.dispose();
+            });
+            stickers.length = 0;
+            showToast("贴纸已清空");
+        }
+
+        function changeShell(idx) {
+            loadShell(idx);
+            document.querySelectorAll('.shell-option').forEach((el, i) => {
+                el.classList.toggle('active', i === idx);
+            });
+        }
+
+        function resetCanvas(clearAll) {
+            // 重置雕刻
+            ctxDisp.fillStyle = 'rgb(128, 128, 128)';
+            ctxDisp.fillRect(0, 0, TEX_SIZE, TEX_SIZE);
+            needsUpdateDisp = true;
+            
+            if (clearAll) {
+                // 重置彩绘
+                ctxColor.fillStyle = '#FFFFFF';
+                ctxColor.fillRect(0, 0, TEX_SIZE, TEX_SIZE);
+                addTextureNoise(ctxColor);
+                needsUpdateColor = true;
+                
+                clearStickers();
+            }
+            showToast("画布重置完成");
+        }
+
+        function exportImage() {
+            renderer.render(scene, camera);
+            const link = document.createElement('a');
+            link.download = `贝雕作品_${Date.now()}.png`;
+            link.href = renderer.domElement.toDataURL('image/png');
+            link.click();
+            showToast("作品海报已保存！");
+        }
+
+        // 将函数暴露给 Window，以便 HTML 按钮可以调用
+        window.setMode = setMode;
+        window.setTool = setTool;
+        window.setSticker = setSticker;
+        window.updateSize = updateSize;
+        window.updateStrength = updateStrength;
+        window.updateStickerSize = updateStickerSize;
+        window.undoLastSticker = undoLastSticker;
+        window.clearStickers = clearStickers;
+        window.changeShell = changeShell;
+        window.resetCanvas = resetCanvas;
+        window.exportImage = exportImage;
+        
+        // 颜色选择器
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            state.color = e.target.value;
+        });
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (t) {
+                t.innerText = msg;
+                t.style.opacity = 1;
+                t.style.top = '100px';
+                setTimeout(() => {
+                    t.style.opacity = 0;
+                    t.style.top = '90px';
+                }, 2000);
+            }
+        }
+
+    </script>
+</body>
+</html>

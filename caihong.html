@@ -1,0 +1,125 @@
+import { useState } from 'react';
+import cuteToysImage from 'figma:asset/33f3ab99dd0b82fa5d6ff3f451b974cb2cd040dd.png';
+
+export default function App() {
+  const [selectedEffect, setSelectedEffect] = useState('rainbow-glow');
+
+  const effects = [
+    { id: 'rainbow-glow', name: '彩虹光晕' },
+    { id: 'colorful-shadow', name: '彩色阴影' },
+    { id: 'gradient-border', name: '渐变边框' },
+    { id: 'neon-glow', name: '霓虹发光' },
+    { id: 'aurora', name: '极光效果' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex flex-col items-center justify-center p-8">
+      <div className="mb-8">
+        <h1 className="text-center text-gray-800 mb-4">彩色渲染效果</h1>
+        <div className="flex flex-wrap gap-3 justify-center">
+          {effects.map((effect) => (
+            <button
+              key={effect.id}
+              onClick={() => setSelectedEffect(effect.id)}
+              className={`px-6 py-2 rounded-full transition-all ${
+                selectedEffect === effect.id
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+              }`}
+            >
+              {effect.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative">
+        {/* Rainbow Glow Effect */}
+        {selectedEffect === 'rainbow-glow' && (
+          <div className="relative p-8">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 blur-2xl opacity-75 animate-pulse"></div>
+            <img
+              src={cuteToysImage}
+              alt="Cute toys"
+              className="relative rounded-2xl shadow-2xl max-w-2xl w-full"
+            />
+          </div>
+        )}
+
+        {/* Colorful Shadow Effect */}
+        {selectedEffect === 'colorful-shadow' && (
+          <div className="relative">
+            <img
+              src={cuteToysImage}
+              alt="Cute toys"
+              className="rounded-2xl max-w-2xl w-full"
+              style={{
+                boxShadow: `
+                  0 0 40px rgba(255, 0, 255, 0.6),
+                  0 0 60px rgba(0, 255, 255, 0.5),
+                  0 0 80px rgba(255, 255, 0, 0.4),
+                  0 0 100px rgba(255, 0, 0, 0.3)
+                `
+              }}
+            />
+          </div>
+        )}
+
+        {/* Gradient Border Effect */}
+        {selectedEffect === 'gradient-border' && (
+          <div className="p-1 rounded-3xl bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-teal-500 shadow-2xl">
+            <div className="p-2 rounded-3xl bg-gradient-to-r from-pink-400 via-purple-400 via-blue-400 to-teal-400">
+              <img
+                src={cuteToysImage}
+                alt="Cute toys"
+                className="rounded-2xl max-w-2xl w-full"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Neon Glow Effect */}
+        {selectedEffect === 'neon-glow' && (
+          <div className="relative">
+            <div className="absolute inset-0 rounded-2xl animate-pulse"
+              style={{
+                boxShadow: `
+                  inset 0 0 20px rgba(255, 0, 255, 0.8),
+                  0 0 20px rgba(255, 0, 255, 0.8),
+                  0 0 40px rgba(0, 255, 255, 0.6),
+                  0 0 60px rgba(255, 255, 0, 0.4),
+                  0 0 80px rgba(255, 0, 0, 0.3)
+                `
+              }}
+            ></div>
+            <img
+              src={cuteToysImage}
+              alt="Cute toys"
+              className="relative rounded-2xl max-w-2xl w-full"
+            />
+          </div>
+        )}
+
+        {/* Aurora Effect */}
+        {selectedEffect === 'aurora' && (
+          <div className="relative p-12">
+            <div className="absolute inset-0 overflow-hidden rounded-3xl">
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/40 via-pink-500/40 to-transparent blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-0 right-0 w-full h-full bg-gradient-to-tl from-blue-500/40 via-teal-500/40 to-transparent blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-r from-yellow-500/30 via-green-500/30 to-transparent blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+            </div>
+            <img
+              src={cuteToysImage}
+              alt="Cute toys"
+              className="relative rounded-2xl shadow-2xl max-w-2xl w-full"
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="mt-8 text-center text-gray-600 max-w-md">
+        <p>点击上方按钮切换不同的彩色渲染效果</p>
+      </div>
+    </div>
+  );
+}
