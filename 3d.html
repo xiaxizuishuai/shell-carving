@@ -528,8 +528,13 @@
 
     <script>
         // --- Gemini API Configuration ---
+        // 声明 CONFIG，防止缺失 config.js 导致整个脚本崩溃
+        if (typeof window.CONFIG === 'undefined') {
+            window.CONFIG = {};
+        }
+
         // 从配置文件读取 API Key
-        const apiKey = CONFIG && CONFIG.GEMINI_API_KEY ? CONFIG.GEMINI_API_KEY : "";
+        const apiKey = window.CONFIG && window.CONFIG.GEMINI_API_KEY ? window.CONFIG.GEMINI_API_KEY : "";
 
         // 检查 API Key 是否配置
         if (!apiKey) {
