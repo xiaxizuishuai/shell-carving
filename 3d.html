@@ -741,7 +741,17 @@
                 if (loadingEl) {
                     loadingEl.style.opacity = 0;
                 }
-            }, undefined, function (error) {
+            }, function (xhr) {
+                if (loadingEl) {
+                    if (xhr.lengthComputable && xhr.total > 0) {
+                        const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
+                        loadingEl.innerHTML = '正在加载可爱的小熊... ' + percentComplete + '%';
+                    } else {
+                        const mbLoaded = (xhr.loaded / (1024 * 1024)).toFixed(1);
+                        loadingEl.innerHTML = '正在加载可爱的小熊... 已加载 ' + mbLoaded + ' MB';
+                    }
+                }
+            }, function (error) {
                 console.error('加载模型失败:', error);
                 if (loadingEl) {
                     loadingEl.innerHTML = '❌ 加载3D模型失败';
