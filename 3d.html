@@ -383,6 +383,8 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <!-- 引入 GLTFLoader -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- 引入 DRACOLoader (用于加载压缩过的GLB模型) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
     <!-- 引入配置文件 -->
     <script src="config.js"></script>
     <script>
@@ -700,9 +702,15 @@
             rightEyeOriginalY = 0;
 
             const loader = new THREE.GLTFLoader();
+
+            // 为 GLTFLoader 添加 DRACO 解压支持
+            const dracoLoader = new THREE.DRACOLoader();
+            dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+            loader.setDRACOLoader(dracoLoader);
+
             const loadingEl = document.getElementById('loading');
 
-            loader.load('3D/teddy+bear+3d+model111.glb', function (gltf) {
+            loader.load('3D/teddybear-v1.glb', function (gltf) {
                 const model = gltf.scene;
 
                 // 调整模型的缩放，使其大小合适
