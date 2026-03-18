@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="贝壳展览馆虚拟画廊 - 探索自然之美与AI创新的设计世界">
+    <title>贝壳展览馆 · 元创空间</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Model Viewer for 3D GLB models -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <style>
+        /* ============================================
+           DESIGN SYSTEM - Aquatic Glassmorphism
+           ============================================ */
+        :root {
+            --color-primary: #b3e5fc;
+            --color-primary-gradient: linear-gradient(180deg, #e1f5fe 0%, #b3e5fc 100%);
+            --color-accent: #ffccbc;
+            --color-text-heading: #102a43;
+            --color-text-body: #334e68;
+            --color-text-muted: #627d98;
+            --color-glass-panel: rgba(240, 248, 255, 0.65);
+            --color-glass-panel-hover: rgba(240, 248, 255, 0.8);
+            --color-white-transparent: rgba(255, 255, 255, 0.5);
+            --color-border-subtle: rgba(179, 229, 252, 0.6);
+            --color-border-highlight: rgba(255, 255, 255, 0.9);
+            --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            --shadow-button: 0 4px 15px rgba(179, 229, 252, 0.6);
+            --shadow-bubble-inner: inset 0 0 20px rgba(255,255,255,0.8), inset 0 0 10px rgba(179,229,252,0.4);
+            --shadow-frame-inner: inset 0 2px 4px rgba(0,0,0,0.05);
+            --radius-card: 20px;
+            --radius-button: 50px;
+            --font-logo: 'Dancing Script', 'Brush Script MT', cursive;
+            --font-heading: 'Playfair Display', 'Merriweather', serif;
+            --font-body: 'Inter', 'System-UI', sans-serif;
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #c8e6f5;
+        }
+
+        /* ============================================
+           BACKGROUND
+           ============================================ */
+        .app-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background-image: url('02c842f4b4d38589dba34652fcef0f17.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* ============================================
+           PAGE SYSTEM
+           ============================================ */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            min-height: 100vh;
+        }
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ============================================
+           GLASS CARD MIXIN
+           ============================================ */
+        .glass-card {
+            background: var(--color-glass-panel);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--color-border-highlight);
+            box-shadow: var(--shadow-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 28px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            background: var(--color-glass-panel-hover);
+            box-shadow: 0 8px 40px 0 rgba(31, 38, 135, 0.12);
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 32px;
+            border-radius: var(--radius-button);
+            border: 1px solid var(--color-border-highlight);
+            background: var(--color-primary-gradient);
+            box-shadow: var(--shadow-button);
+            color: var(--color-text-heading);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(179, 229, 252, 0.8);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-small {
+            padding: 6px 18px;
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           NAVBAR
+           ============================================ */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 48px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .navbar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .navbar-logo .logo-main {
+            font-family: var(--font-logo);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-text-heading);
+            line-height: 1.1;
+            letter-spacing: 1px;
+        }
+
+        .navbar-logo .logo-sub {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            letter-spacing: 3px;
+            margin-top: 2px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            font-family: var(--font-body);
+            font-weight: 500;
+            color: var(--color-text-heading);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .navbar-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #a2c2e0, #a8d5ba);
+            transition: width 0.3s ease;
+        }
+        .navbar-links a:hover::after {
+            width: 100%;
+        }
+        .navbar-links a:hover {
+            color: #4a90d9;
+        }
+
+        .navbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a2c2e0, #a8d5ba);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: white;
+            cursor: pointer;
+            position: relative;
+        }
+        .navbar-avatar .dropdown-arrow {
+            position: absolute;
+            right: -14px;
+            font-size: 0.6rem;
+            color: var(--color-text-muted);
+        }
+
+        /* ============================================
+           PAGE 1: HOME / GALLERY
+           ============================================ */
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--color-text-heading);
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+        .hero .subtitle {
+            font-size: 1rem;
+            color: var(--color-text-body);
+            margin-bottom: 28px;
+            font-weight: 300;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px 32px;
+        }
+
+        .gallery-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        /* Section Titles inside cards */
+        .section-title {
+            font-family: var(--font-body);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--color-text-heading);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Featured Collection Items */
+        .collection-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .collection-item {
+            text-align: center;
+        }
+
+        /* Gradient Frame for Featured Collection */
+        .gradient-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+            padding: 4px;
+            background: linear-gradient(135deg, #a2c2e0 0%, #88c9b8 30%, #a8d5ba 60%, #b5d8e8 100%);
+            box-shadow:
+                0 4px 16px rgba(162, 194, 224, 0.35),
+                inset 0 1px 2px rgba(255,255,255,0.5);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gradient-frame:hover {
+            transform: scale(1.03);
+            box-shadow:
+                0 6px 24px rgba(162, 194, 224, 0.5),
+                inset 0 1px 2px rgba(255,255,255,0.5);
+        }
+
+        .gradient-frame-inner {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: var(--shadow-frame-inner);
+        }
+
+        .gradient-frame-inner img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+        }
+
+        .item-name {
+            font-family: var(--font-body);
+            font-weight: 600;
+            color: var(--color-text-heading);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+        .item-desc {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            padding: 0 4px;
+        }
+
+        /* 3D Gallery Bubble Items */
+        .gallery-3d-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .gallery-3d-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* === 3D BUBBLE EFFECT === */
+        .bubble-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 14px;
+        }
+
+        .bubble {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            background: radial-gradient(
+                circle at 35% 35%,
+                rgba(255, 255, 255, 0.05) 0%,
+                rgba(255, 255, 255, 0.02) 30%,
+                rgba(200, 220, 255, 0.08) 60%,
+                rgba(180, 200, 240, 0.15) 100%
+            );
+            box-shadow:
+                /* outer glow */
+                0 0 20px rgba(179, 229, 252, 0.25),
+                0 4px 16px rgba(100, 160, 220, 0.15),
+                /* inner highlight top-left */
+                inset -8px -8px 20px rgba(200, 210, 240, 0.2),
+                inset 8px 8px 25px rgba(255, 255, 255, 0.7),
+                /* inner dark bottom-right */
+                inset -4px -4px 12px rgba(150, 180, 220, 0.15);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+        .bubble:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow:
+                0 0 30px rgba(179, 229, 252, 0.4),
+                0 8px 24px rgba(100, 160, 220, 0.25),
+                inset -8px -8px 20px rgba(200, 210, 240, 0.2),
+                inset 8px 8px 25px rgba(255, 255, 255, 0.8),
+                inset -4px -4px 12px rgba(150, 180, 220, 0.15);
+        }
+
+        /* Bubble highlight arc */
+        .bubble::before {
+            content: '';
+            position: absolute;
+            top: 8%;
+            left: 12%;
+            width: 50%;
+            height: 35%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, 0.6) 0%,
+                rgba(255, 255, 255, 0.1) 60%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            transform: rotate(-15deg);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Small secondary highlight */
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 18%;
+            right: 14%;
+            width: 18%;
+            height: 12%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, 0.35) 0%,
+                transparent 80%
+            );
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .bubble img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            z-index: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        /* Mini bubbles decoration */
+        .mini-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.5), rgba(200,225,250,0.15));
+            border: 1px solid rgba(255,255,255,0.35);
+            pointer-events: none;
+            animation: float-bubble 4s ease-in-out infinite;
+        }
+        .mini-bubble-1 {
+            width: 18px; height: 18px;
+            top: -8px; right: -4px;
+            animation-delay: 0s;
+        }
+        .mini-bubble-2 {
+            width: 12px; height: 12px;
+            bottom: 10px; left: -10px;
+            animation-delay: 1.2s;
+        }
+        .mini-bubble-3 {
+            width: 10px; height: 10px;
+            top: 30%; right: -12px;
+            animation-delay: 0.7s;
+        }
+
+        @keyframes float-bubble {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-6px) scale(1.1); opacity: 1; }
+        }
+
+        /* ============================================
+           BOTTOM BANNER
+           ============================================ */
+        .bottom-banner {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 32px;
+        }
+        .banner-card {
+            text-align: center;
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .banner-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(255, 182, 193, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(173, 216, 230, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(200, 180, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .banner-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        .banner-card h2 {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--color-text-heading);
+            margin-bottom: 8px;
+        }
+        .banner-card p {
+            font-size: 0.9rem;
+            color: var(--color-text-body);
+            margin-bottom: 20px;
+        }
+
+        /* ============================================
+           PAGE 2: 3D MODEL INSPECTION
+           ============================================ */
+        .inspection-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 32px 40px;
+            min-height: calc(100vh - 80px);
+            align-items: start;
+        }
+
+        /* Side panels */
+        .side-panel {
+            padding: 0;
+        }
+        .side-panel .panel-header {
+            background: linear-gradient(135deg, #b3e5fc 0%, #81d4fa 100%);
+            border-radius: 12px;
+            padding: 12px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+        .side-panel .panel-header.coral {
+            background: linear-gradient(135deg, #ffccbc 0%, #ef9a9a 100%);
+        }
+
+        .data-field {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(179, 229, 252, 0.3);
+        }
+        .data-field:last-child {
+            border-bottom: none;
+        }
+        .data-field-label {
+            font-weight: 600;
+            color: var(--color-text-heading);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .data-field-value {
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Toggle switch */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(179, 229, 252, 0.3);
+        }
+        .toggle-label {
+            font-weight: 600;
+            color: var(--color-text-heading);
+            font-size: 0.9rem;
+        }
+        .toggle-switch {
+            width: 48px;
+            height: 26px;
+            background: #b3e5fc;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle-switch.active {
+            background: #4fc3f7;
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+
+        .cross-section-img {
+            width: 100%;
+            max-width: 200px;
+            margin: 16px auto 0;
+            display: block;
+            opacity: 0.7;
+            border-radius: 8px;
+        }
+
+        /* Center 3D viewer */
+        .model-viewer-center {
+            text-align: center;
+        }
+        .model-viewer-center h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--color-text-heading);
+            margin-bottom: 20px;
+        }
+        .model-viewer-area {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .model-viewer-area img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+            transition: transform 0.5s ease;
+            cursor: grab;
+        }
+        .model-viewer-area img:hover {
+            transform: rotateY(15deg) scale(1.05);
+        }
+
+        /* Carousel dots */
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .carousel-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(179, 229, 252, 0.5);
+            border: 1px solid rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .carousel-dot.active {
+            background: #4fc3f7;
+            width: 24px;
+            border-radius: 5px;
+        }
+
+        .design-btn {
+            margin-top: 24px;
+        }
+
+        /* Right panel - Historical Context */
+        .history-section {
+            margin-bottom: 18px;
+        }
+        .history-section h4 {
+            font-weight: 600;
+            color: var(--color-text-heading);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+        .history-section p {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        .history-thumbs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-top: 14px;
+        }
+
+        .history-thumb {
+            aspect-ratio: 1/1;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(179,229,252,0.4);
+            background: rgba(255,255,255,0.4);
+        }
+        .history-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.3s;
+        }
+        .history-thumb:hover img {
+            opacity: 1;
+        }
+
+        /* ============================================
+           PAGE 3: AI DESIGN STUDIO
+           ============================================ */
+        .studio-title {
+            font-family: var(--font-logo);
+            font-size: 3rem;
+            color: var(--color-text-heading);
+            text-align: center;
+            padding-top: 20px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 8px rgba(255,255,255,0.5);
+        }
+
+        .studio-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px 32px;
+            text-align: center;
+        }
+
+        /* The big prompt bubble */
+        .prompt-bubble-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 32px;
+        }
+
+        .prompt-bubble {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at 40% 35%,
+                rgba(255,255,255,0.25) 0%,
+                rgba(255,255,255,0.08) 40%,
+                rgba(220,200,240,0.1) 70%,
+                rgba(200,180,230,0.18) 100%
+            );
+            box-shadow:
+                0 0 40px rgba(200,180,230,0.2),
+                0 8px 32px rgba(150,130,200,0.15),
+                inset 10px 10px 30px rgba(255,255,255,0.6),
+                inset -10px -10px 25px rgba(180,160,220,0.15);
+            border: 1.5px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            animation: gentle-float 6s ease-in-out infinite;
+        }
+        .prompt-bubble::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 15%;
+            width: 45%;
+            height: 30%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255,255,255,0.5) 0%,
+                rgba(255,255,255,0.1) 60%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            transform: rotate(-20deg);
+            pointer-events: none;
+        }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .prompt-bubble .prompt-text {
+            font-size: 0.85rem;
+            color: var(--color-text-body);
+            line-height: 1.6;
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* Generated artwork display */
+        .artwork-display {
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .artwork-display .glass-card {
+            padding: 12px;
+        }
+        .artwork-display img {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+        }
+
+        /* Studio action buttons */
+        .studio-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .studio-actions .btn-primary {
+            background: linear-gradient(135deg, #e8eaf6 0%, #e1f5fe 50%, #f3e5f5 100%);
+            border: 1.5px solid rgba(255,255,255,0.8);
+        }
+
+        /* ============================================
+           FLOATING PARTICLES (Ambient)
+           ============================================ */
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: drift linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0) scale(0.5);
+            }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.2; }
+            100% {
+                opacity: 0;
+                transform: translateY(-20vh) translateX(60px) scale(1);
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 900px) {
+            .gallery-row {
+                grid-template-columns: 1fr;
+            }
+            .inspection-layout {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                padding: 12px 20px;
+            }
+            .navbar-links {
+                gap: 16px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .studio-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(179, 229, 252, 0.5);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(179, 229, 252, 0.8);
+        }
+
+        /* ============================================
+           LOADING SCREEN
+           ============================================ */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 50%, #e8f5e9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-content {
+            text-align: center;
+        }
+        .loading-content .logo-load {
+            font-family: var(--font-logo);
+            font-size: 3rem;
+            color: var(--color-text-heading);
+            margin-bottom: 20px;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(179,229,252,0.3);
+            border-top-color: #4fc3f7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+        <div class="logo-load">贝壳🐚展览馆</div>
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<!-- Animated Background -->
+<div class="app-background"></div>
+
+<!-- Floating Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- ================================================================
+     PAGE 1: HOME / GALLERY
+     ================================================================ -->
+<div class="page active" id="page-home">
+
+    <!-- Navbar -->
+    <nav class="navbar" id="nav-home">
+        <div class="navbar-logo">
+            <span class="logo-main">贝壳🐚展览馆</span>
+            <span class="logo-sub">元创空间</span>
+        </div>
+        <div class="navbar-links">
+            <a onclick="showPage('home')">藏品展览</a>
+            <a onclick="showPage('inspection')">3D模型</a>
+            <a onclick="showPage('home')">历史溯源</a>
+            <a onclick="showPage('studio')">设计工坊</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero-section">
+        <h1>探索设计的奥秘</h1>
+        <p class="subtitle">从贝壳的曲线中，生长出你的创意表达</p>
+        <button class="btn-primary" onclick="showPage('inspection')">
+            🌊 开启虚拟旅程
+        </button>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="gallery-row">
+
+            <!-- Featured Collection -->
+            <div class="glass-card" id="featured-collection">
+                <h2 class="section-title">精选藏品</h2>
+                <div class="collection-items">
+
+                    <!-- Queen Conch -->
+                    <div class="collection-item">
+                        <div class="gradient-frame">
+                            <div class="gradient-frame-inner">
+                                <img src="queen_conch.png" alt="Queen Conch" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="item-name">女王凤凰螺</div>
+                        <p class="item-desc">女王凤凰螺以其优雅的粉色唇缘和宏大的外壳闻名，广泛分布于加勒比海域，是海洋贝壳中最具标志性的品种之一……</p>
+                    </div>
+
+                    <!-- Nautilus -->
+                    <div class="collection-item">
+                        <div class="gradient-frame">
+                            <div class="gradient-frame-inner">
+                                <img src="nautilus_shell.png" alt="Nautilus" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="item-name">鹦鹉螺</div>
+                        <p class="item-desc">鹦鹉螺是活化石的代表，其壳体内部呈现完美的对数螺旋结构，被誉为自然界中数学之美的极致体现……</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 3D Gallery -->
+            <div class="glass-card" id="gallery-3d">
+                <h2 class="section-title">3D 展廊</h2>
+                <div class="gallery-3d-items" style="grid-template-columns: 1fr 1fr 1fr;">
+
+                    <!-- Murex -->
+                    <div class="gallery-3d-item">
+                        <div class="bubble-container">
+                            <div class="bubble" onclick="showInspection('murex')">
+                                <img src="murex_shell.png" alt="骨螺" loading="lazy">
+                            </div>
+                            <div class="mini-bubble mini-bubble-1"></div>
+                            <div class="mini-bubble mini-bubble-2"></div>
+                            <div class="mini-bubble mini-bubble-3"></div>
+                        </div>
+                        <div class="item-name">骨螺</div>
+                        <button class="btn-primary btn-small" onclick="showInspection('murex')">查看模型</button>
+                    </div>
+
+                    <!-- Rose Murex / 玄瑰千手螺 -->
+                    <div class="gallery-3d-item">
+                        <div class="bubble-container">
+                            <div class="bubble" onclick="showInspection('rose_murex')">
+                                <img src="rose_murex.png" alt="玄瑰千手螺" loading="lazy">
+                            </div>
+                            <div class="mini-bubble mini-bubble-1"></div>
+                            <div class="mini-bubble mini-bubble-2"></div>
+                            <div class="mini-bubble mini-bubble-3"></div>
+                        </div>
+                        <div class="item-name">玄瑰千手螺</div>
+                        <button class="btn-primary btn-small" onclick="showInspection('rose_murex')">查看模型</button>
+                    </div>
+
+                    <!-- Scallop -->
+                    <div class="gallery-3d-item">
+                        <div class="bubble-container">
+                            <div class="bubble" onclick="showInspection('scallop')">
+                                <img src="scallop_shell.png" alt="扇贝" loading="lazy">
+                            </div>
+                            <div class="mini-bubble mini-bubble-1"></div>
+                            <div class="mini-bubble mini-bubble-2"></div>
+                            <div class="mini-bubble mini-bubble-3"></div>
+                        </div>
+                        <div class="item-name">扇贝</div>
+                        <button class="btn-primary btn-small" onclick="showInspection('scallop')">查看模型</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Banner -->
+    <div class="bottom-banner">
+        <div class="glass-card banner-card" id="ai-banner">
+            <h2>无界智绘</h2>
+            <p>从贝壳的曲线中，生长出你的创意表达</p>
+            <button class="btn-primary" onclick="showPage('studio')">
+                ✨ 借助AI设计你的贝雕
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================================================================
+     PAGE 2: 3D MODEL INSPECTION
+     ================================================================ -->
+<div class="page" id="page-inspection">
+
+    <nav class="navbar">
+        <div class="navbar-logo" style="flex-direction:row; align-items:center; gap:12px;">
+            <span style="font-size:1.6rem;">🐚</span>
+            <span class="logo-main" style="font-family:var(--font-body); font-size:1.2rem; font-weight:600;">贝壳博物馆 & AI工坊</span>
+        </div>
+        <div class="navbar-links">
+            <a onclick="showPage('home')">展品</a>
+            <a onclick="showPage('home')">藏品</a>
+            <a onclick="showPage('studio')">AI工坊</a>
+            <a onclick="showPage('home')">关于</a>
+            <div class="navbar-avatar">
+                <span>👤</span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="inspection-layout">
+
+        <!-- Left Panel: Scientific Data -->
+        <div class="glass-card side-panel" id="scientific-data-panel">
+            <div class="panel-header">科学数据</div>
+            <div style="padding: 8px 16px 16px;">
+                <div class="data-field">
+                    <div class="data-field-label">分类</div>
+                    <div class="data-field-value">头足纲</div>
+                </div>
+                <div class="data-field">
+                    <div class="data-field-label">物种</div>
+                    <div class="data-field-value">鹦鹉螺 (Nautilus pompilius)</div>
+                </div>
+                <div class="data-field">
+                    <div class="data-field-label">年代</div>
+                    <div class="data-field-value">白垩纪（约一亿年前）</div>
+                </div>
+                <div class="data-field">
+                    <div class="data-field-label">尺寸</div>
+                    <div class="data-field-value">直径可达26厘米</div>
+                </div>
+                <div class="toggle-row">
+                    <span class="toggle-label">显示横截面</span>
+                    <div class="toggle-switch active" id="crossSectionToggle" onclick="toggleCrossSection()"></div>
+                </div>
+                <img src="nautilus_crosssection.png" alt="Cross Section" class="cross-section-img" id="crossSectionImg" style="display:block;">
+            </div>
+        </div>
+
+        <!-- Center: 3D Model Viewer -->
+        <div class="glass-card model-viewer-center" id="model-viewer">
+            <h1 id="inspectionTitle">3D 贝壳模型鉴赏：鹦鹉螺</h1>
+            <!-- Static image viewer (default for shells without GLB) -->
+            <div class="model-viewer-area" id="staticModelArea">
+                <img src="nautilus_3d.png" alt="鹦鹉螺 3D 模型" id="modelImage">
+            </div>
+            <!-- Interactive 3D GLB viewer (for Rose Murex) -->
+            <div class="model-viewer-area" id="glbModelArea" style="display:none;">
+                <model-viewer
+                    id="glbViewer"
+                    src="meiguiseashell3dmodel-v1.glb"
+                    alt="玄瑰千手螺 3D 模型"
+                    auto-rotate
+                    camera-controls
+                    touch-action="pan-y"
+                    shadow-intensity="0.8"
+                    exposure="1.2"
+                    style="width:100%; height:100%; border-radius:12px; background:transparent;"
+                ></model-viewer>
+            </div>
+            <div class="carousel-dots">
+                <div class="carousel-dot active" onclick="switchShell('nautilus')"></div>
+                <div class="carousel-dot" onclick="switchShell('rose_murex')"></div>
+                <div class="carousel-dot" onclick="switchShell('murex')"></div>
+            </div>
+            <button class="btn-primary design-btn" onclick="showPage('studio')">
+                ✏️ 用此造型设计
+            </button>
+        </div>
+
+        <!-- Right Panel: Historical Context -->
+        <div class="glass-card side-panel" id="history-panel">
+            <div class="panel-header coral">历史背景</div>
+            <div style="padding: 8px 16px 16px;">
+                <div class="history-section">
+                    <h4>象征：生长与完美</h4>
+                    <p>鹦鹉螺的螺旋体现了自然界中生长与完美的统一——从深海峡谷到广袤大洋，它是品质、对称与不断演化的生动见证。</p>
+                </div>
+                <div class="history-section">
+                    <h4>发现历程</h4>
+                    <p>1758年由林奈首次描述。鹦鹉螺壳被认为是自然界中数学完美的最迷人案例之一，其对数螺旋结构令人叹为观止。</p>
+                </div>
+                <div class="history-section">
+                    <h4>文化意义</h4>
+                    <p>广泛应用于艺术与数学（黄金比例）的研究中。这种贝壳激发了全世界艺术家、建筑师和设计师的无限灵感。</p>
+                </div>
+                <div class="history-thumbs">
+                    <div class="history-thumb"><img src="nautilus_shell.png" alt="Historical 1"></div>
+                    <div class="history-thumb"><img src="queen_conch.png" alt="Historical 2"></div>
+                    <div class="history-thumb"><img src="scallop_shell.png" alt="Historical 3"></div>
+                    <div class="history-thumb"><img src="murex_shell.png" alt="Historical 4"></div>
+                    <div class="history-thumb"><img src="nautilus_crosssection.png" alt="Historical 5"></div>
+                    <div class="history-thumb"><img src="nautilus_3d.png" alt="Historical 6"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================================================================
+     PAGE 3: AI DESIGN STUDIO
+     ================================================================ -->
+<div class="page" id="page-studio">
+
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <span class="logo-main" style="font-size:1.6rem;">AI 贝壳设计创意工坊</span>
+        </div>
+        <div class="navbar-links">
+            <a onclick="showPage('home')">画廊</a>
+            <a onclick="showPage('home')">关于</a>
+            <a>个人中心</a>
+        </div>
+    </nav>
+
+    <div class="studio-content">
+
+        <h1 class="studio-title">AI 贝壳设计创意工坊</h1>
+
+        <!-- Prompt Bubble -->
+        <div class="prompt-bubble-wrapper">
+            <div class="prompt-bubble">
+                <p class="prompt-text">描述你的贝壳灵感创作（例如：“一把螺旋贝壳造型的茶壶，饰有虹彩珊瑚纹路”）...</p>
+            </div>
+            <!-- Decorative mini bubbles around the prompt -->
+            <div class="mini-bubble" style="width:22px;height:22px;top:-5px;left:40px;animation-delay:0.3s;"></div>
+            <div class="mini-bubble" style="width:16px;height:16px;top:20px;right:-10px;animation-delay:1s;"></div>
+            <div class="mini-bubble" style="width:12px;height:12px;bottom:10px;left:-8px;animation-delay:1.8s;"></div>
+        </div>
+
+        <!-- Generated Artwork -->
+        <div class="artwork-display" id="artwork-display">
+            <div class="glass-card">
+                <img src="shell_teapot.png" alt="AI Generated Shell Design" loading="lazy">
+            </div>
+        </div>
+
+        <!-- Studio Action Buttons -->
+        <div class="studio-actions">
+            <button class="btn-primary" id="btn-refine">
+                ✏️ 优化调整
+            </button>
+            <button class="btn-primary" id="btn-export">
+                📦 导出3D
+            </button>
+            <button class="btn-primary" id="btn-share">
+                🐚 分享到展馆
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+    // ---- Loading Screen ----
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loadingScreen').classList.add('hidden');
+        }, 800);
+    });
+
+    // ---- Page Navigation ----
+    function showPage(pageName) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => {
+            page.classList.remove('active');
+            page.style.opacity = '0';
+        });
+
+        const targetPage = document.getElementById('page-' + pageName);
+        if (targetPage) {
+            setTimeout(() => {
+                targetPage.classList.add('active');
+                setTimeout(() => {
+                    targetPage.style.opacity = '1';
+                }, 50);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 300);
+        }
+    }
+
+    // ---- Shell Data Registry ----
+    const shellData = {
+        nautilus: {
+            title: '3D 贝壳模型鉴赏：鹦鹉螺',
+            image: 'nautilus_3d.png',
+            useGLB: false,
+            classification: '头足纲',
+            species: '鹦鹉螺 (Nautilus pompilius)',
+            age: '白垩纪（约一亿年前）',
+            size: '直径可达26厘米',
+            symbolism: '鹦鹉螺的螺旋体现了自然界中生长与完美的统一——从深海峡谷到广袤大洋，它是品质、对称与不断演化的生动见证。',
+            discovery: '1758年由林奈首次描述。鹦鹉螺壳被认为是自然界中数学完美的最迷人案例之一，其对数螺旋结构令人叹为观止。',
+            culture: '广泛应用于艺术与数学（黄金比例）的研究中。这种贝壳激发了全世界艺术家、建筑师和设计师的无限灵感。'
+        },
+        rose_murex: {
+            title: '3D 贝壳模型鉴赏：玫瑰千手螺',
+            image: 'rose_murex.png',
+            useGLB: true,
+            classification: '腹足纲',
+            species: '玫瑰千手螺 (Hexaplex rosarium)',
+            age: '现代种，化石记录追溯至新近纪',
+            size: '壳长可达15厘米',
+            symbolism: '玫瑰千手螺以其繁密的棘刺和玫瑰般的色泽著称，象征着自然界中极致的防御美学与生存智慧。',
+            discovery: '分布于西非沿海水域，其独特的多棘结构使其成为贝壳收藏家眼中的珍品，也是贝雕艺术的理想素材。',
+            culture: '在贝雕艺术中，玫瑰千手螺的复杂纹理为雕刻师提供了丰富的创作空间，常被雕琢为精美的装饰品与艺术摆件。'
+        },
+        murex: {
+            title: '3D 贝壳模型鉴赏：骨螺',
+            image: 'murex_shell.png',
+            useGLB: false,
+            classification: '腹足纲',
+            species: '骨螺 (Murex)',
+            age: '化石记录可追溯至白垩纪',
+            size: '壳长约8-15厘米',
+            symbolism: '骨螺曾是古代紫色染料"泰尔紫"的唯一来源，在地中海文明中象征着皇室与权力。',
+            discovery: '古罗马时期已被广泛记录。其分泌的紫色染料是古代世界最昂贵的颜料之一，价值远超同等重量的黄金。',
+            culture: '骨螺在人类文明中扮演了重要角色，从腓尼基人的紫色贸易到现代的海洋生物学研究，它始终是科学与文化的交汇点。'
+        },
+        scallop: {
+            title: '3D 贝壳模型鉴赏：扇贝',
+            image: 'scallop_shell.png',
+            useGLB: false,
+            classification: '双壳纲',
+            species: '扇贝 (Pecten)',
+            age: '化石记录追溯至三叠纪',
+            size: '壳径约5-15厘米',
+            symbolism: '扇贝壳是朝圣者的象征标志，在基督教文化中代表着圣雅各之路，也是维纳斯诞生神话中的经典意象。',
+            discovery: '扇贝化石在全世界的沉积岩中广泛分布，是最常见的海洋化石之一，对地层学研究具有重要价值。',
+            culture: '从波提切利《维纳斯的诞生》到壳牌石油公司的标志，扇贝壳是全球最广为人知的贝壳形态之一。'
+        }
+    };
+
+    // ---- Show Inspection Page for a specific shell ----
+    function showInspection(shellKey) {
+        switchShell(shellKey);
+        showPage('inspection');
+    }
+
+    // ---- Switch Shell in Inspection Page ----
+    function switchShell(shellKey) {
+        const data = shellData[shellKey];
+        if (!data) return;
+
+        // Update title
+        document.getElementById('inspectionTitle').textContent = data.title;
+
+        // Toggle between static image and GLB viewer
+        const staticArea = document.getElementById('staticModelArea');
+        const glbArea = document.getElementById('glbModelArea');
+
+        if (data.useGLB) {
+            staticArea.style.display = 'none';
+            glbArea.style.display = 'flex';
+        } else {
+            staticArea.style.display = 'flex';
+            glbArea.style.display = 'none';
+            document.getElementById('modelImage').src = data.image;
+        }
+
+        // Update scientific data panel
+        const fields = document.querySelectorAll('#scientific-data-panel .data-field');
+        if (fields[0]) { fields[0].querySelector('.data-field-value').textContent = data.classification; }
+        if (fields[1]) { fields[1].querySelector('.data-field-value').textContent = data.species; }
+        if (fields[2]) { fields[2].querySelector('.data-field-value').textContent = data.age; }
+        if (fields[3]) { fields[3].querySelector('.data-field-value').textContent = data.size; }
+
+        // Update historical context panel
+        const sections = document.querySelectorAll('#history-panel .history-section');
+        if (sections[0]) { sections[0].querySelector('p').textContent = data.symbolism; }
+        if (sections[1]) { sections[1].querySelector('p').textContent = data.discovery; }
+        if (sections[2]) { sections[2].querySelector('p').textContent = data.culture; }
+
+        // Update carousel dots
+        const dots = document.querySelectorAll('.carousel-dot');
+        const shellOrder = ['nautilus', 'rose_murex', 'murex'];
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', shellOrder[i] === shellKey);
+        });
+    }
+
+    // ---- Cross-Section Toggle ----
+    function toggleCrossSection() {
+        const toggle = document.getElementById('crossSectionToggle');
+        const img = document.getElementById('crossSectionImg');
+        toggle.classList.toggle('active');
+        if (toggle.classList.contains('active')) {
+            img.style.display = 'block';
+        } else {
+            img.style.display = 'none';
+        }
+    }
+
+    // ---- Floating Particles Generator ----
+    function createParticles() {
+        const container = document.getElementById('particles');
+        const count = 20;
+        for (let i = 0; i < count; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 6 + 2;
+            const x = Math.random() * 100;
+            const duration = Math.random() * 15 + 10;
+            const delay = Math.random() * 15;
+            const hue = Math.random() * 60 + 180; // blues/greens
+
+            particle.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}%;
+                background: radial-gradient(circle, hsla(${hue}, 60%, 80%, 0.6), transparent);
+                animation-duration: ${duration}s;
+                animation-delay: ${delay}s;
+            `;
+            container.appendChild(particle);
+        }
+    }
+    createParticles();
+
+    // ---- Subtle parallax on hero ----
+    document.addEventListener('mousemove', (e) => {
+        const hero = document.getElementById('hero-section');
+        if (!hero) return;
+        const x = (e.clientX / window.innerWidth - 0.5) * 10;
+        const y = (e.clientY / window.innerHeight - 0.5) * 10;
+        hero.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+
+    // ---- Bubble hover sound-like animation pulse ----
+    document.querySelectorAll('.bubble').forEach(bubble => {
+        bubble.addEventListener('mouseenter', () => {
+            bubble.style.transition = 'transform 0.15s ease-out, box-shadow 0.3s ease';
+        });
+        bubble.addEventListener('mouseleave', () => {
+            bubble.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease';
+        });
+    });
+
+    // ---- Model 3D Rotation Drag ----
+    const modelImage = document.getElementById('modelImage');
+    if (modelImage) {
+        let isDragging = false;
+        let startX = 0;
+        let currentRotation = 0;
+
+        modelImage.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            modelImage.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const delta = e.clientX - startX;
+            modelImage.style.transform = `rotateY(${currentRotation + delta * 0.3}deg)`;
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            currentRotation += (e.clientX - startX) * 0.3;
+            modelImage.style.cursor = 'grab';
+        });
+    }
+</script>
+
+</body>
+</html>

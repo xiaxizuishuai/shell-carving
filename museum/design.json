@@ -1,0 +1,121 @@
+{
+    "designSystem": {
+        "name": "Aquatic Glassmorphism",
+        "theme": "Ethereal, underwater, organic, museum gallery, soft pastel",
+        "principles": [
+            "Use soft, diffused lighting and shadows to create depth",
+            "Emulate physical materials like frosted glass and water bubbles",
+            "Pair elegant serif headings with clean sans-serif body text for a gallery feel",
+            "Keep structural borders thin and semi-transparent"
+        ],
+        "tokens": {
+            "colors": {
+                "brand": {
+                    "primary": "#b3e5fc",
+                    "primaryGradient": "linear-gradient(180deg, #e1f5fe 0%, #b3e5fc 100%)",
+                    "accent": "#ffccbc"
+                },
+                "text": {
+                    "heading": "#102a43",
+                    "body": "#334e68",
+                    "muted": "#627d98"
+                },
+                "background": {
+                    "glassPanel": "rgba(240, 248, 255, 0.65)",
+                    "glassPanelHover": "rgba(240, 248, 255, 0.8)",
+                    "whiteTransparent": "rgba(255, 255, 255, 0.5)"
+                },
+                "border": {
+                    "subtle": "rgba(179, 229, 252, 0.6)",
+                    "highlight": "rgba(255, 255, 255, 0.9)"
+                }
+            },
+            "typography": {
+                "fonts": {
+                    "logo": "'Dancing Script', 'Brush Script MT', cursive",
+                    "heading": "'Playfair Display', 'Merriweather', serif",
+                    "body": "'Inter', 'System-UI', sans-serif"
+                },
+                "sizes": {
+                    "h1": "2.5rem",
+                    "h2": "1.5rem",
+                    "body": "0.95rem",
+                    "caption": "0.75rem"
+                },
+                "weights": {
+                    "regular": 400,
+                    "medium": 500,
+                    "semibold": 600
+                }
+            },
+            "effects": {
+                "shadows": {
+                    "glassDrop": "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
+                    "buttonGlow": "0 4px 15px rgba(179, 229, 252, 0.6)",
+                    "bubbleInner": "inset 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(179, 229, 252, 0.4)",
+                    "frameInner": "inset 0 2px 4px rgba(0,0,0,0.05)"
+                },
+                "radii": {
+                    "card": "20px",
+                    "button": "50px",
+                    "bubble": "50%",
+                    "innerFrame": "4px"
+                },
+                "blurs": {
+                    "glassmorphism": "backdrop-filter: blur(8px)"
+                }
+            }
+        },
+        "components": {
+            "layout": {
+                "appBackground": "Requires a rich, illustrative watercolor-style background image containing oceanic elements (coral, kelp). All UI elements float above this."
+            },
+            "navigation": {
+                "type": "Top transparent bar",
+                "logo": "Brand cursive font, dark text, paired with sans-serif subtitle",
+                "links": "Body font, medium weight, dark text, evenly spaced"
+            },
+            "glassCardMain": {
+                "background": "colors.background.glassPanel",
+                "borderRadius": "effects.radii.card",
+                "border": "1px solid colors.border.highlight",
+                "boxShadow": "effects.shadows.glassDrop",
+                "backdropFilter": "effects.blurs.glassmorphism",
+                "padding": "24px"
+            },
+            "buttons": {
+                "primary": {
+                    "background": "colors.brand.primaryGradient",
+                    "borderRadius": "effects.radii.button",
+                    "border": "1px solid colors.border.highlight",
+                    "boxShadow": "effects.shadows.buttonGlow",
+                    "color": "colors.text.heading",
+                    "padding": "10px 24px",
+                    "typography": "Body font, medium weight"
+                }
+            },
+            "displayContainers": {
+                "framedArtwork": {
+                    "description": "Used for static 2D images. Mimics a physical picture frame.",
+                    "background": "colors.background.whiteTransparent",
+                    "border": "2px solid colors.border.subtle",
+                    "boxShadow": "effects.shadows.frameInner",
+                    "padding": "8px"
+                },
+                "bubble3D": {
+                    "description": "Used for 3D interactive models. Mimics a floating water bubble.",
+                    "shape": "circle",
+                    "background": "transparent",
+                    "boxShadow": "effects.shadows.bubbleInner",
+                    "border": "1px solid rgba(255,255,255,0.6)"
+                }
+            },
+            "typographyHierarchy": {
+                "heroTitle": "Heading font, h1 size, centered, dark color",
+                "sectionTitle": "Body font, h2 size, medium weight, centered inside glass cards",
+                "itemTitle": "Body font, semibold, dark color, centered beneath items",
+                "itemDescription": "Body font, caption size, muted color, centered beneath item titles"
+            }
+        }
+    }
+}
