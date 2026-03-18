@@ -680,6 +680,62 @@
             margin-top: 24px;
         }
 
+        /* Auto-rotate toggle */
+        .auto-rotate-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            background: rgba(240, 248, 255, 0.6);
+            border: 1px solid rgba(255,255,255,0.7);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .auto-rotate-toggle:hover {
+            background: rgba(240, 248, 255, 0.85);
+            box-shadow: 0 2px 12px rgba(179, 229, 252, 0.4);
+        }
+        .auto-rotate-toggle .rotate-icon {
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: transform 0.4s ease;
+        }
+        .auto-rotate-toggle.active .rotate-icon {
+            animation: spin-icon 2s linear infinite;
+        }
+        @keyframes spin-icon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .auto-rotate-toggle .rotate-label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--color-text-heading);
+        }
+        .auto-rotate-toggle .rotate-status {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .auto-rotate-toggle.active .rotate-status {
+            background: linear-gradient(135deg, #b3e5fc, #81d4fa);
+            color: white;
+        }
+        .auto-rotate-toggle:not(.active) .rotate-status {
+            background: rgba(0,0,0,0.06);
+            color: var(--color-text-muted);
+        }
+
         /* Right panel - Historical Context */
         .history-section {
             margin-bottom: 18px;
@@ -797,12 +853,25 @@
             50% { transform: translateY(-10px); }
         }
 
-        .prompt-bubble .prompt-text {
-            font-size: 0.85rem;
+        .prompt-textarea {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            resize: none;
             color: var(--color-text-body);
+            font-size: 0.85rem;
             line-height: 1.6;
             text-align: center;
-            z-index: 1;
+            font-family: inherit;
+            outline: none;
+            z-index: 10;
+        }
+        .prompt-textarea::placeholder {
+            color: rgba(51, 78, 104, 0.6);
+        }
+        .prompt-textarea:focus {
+            box-shadow: none;
         }
 
         /* Generated artwork display */
@@ -974,6 +1043,7 @@
         <div class="navbar-links">
             <a onclick="showPage('home')">藏品展览</a>
             <a onclick="showPage('inspection')">3D模型</a>
+            <a href="exhibition.html">数字藏品</a>
             <a onclick="showPage('home')">历史溯源</a>
             <a onclick="showPage('studio')">设计工坊</a>
         </div>
@@ -1025,34 +1095,34 @@
             <!-- 3D Gallery -->
             <div class="glass-card" id="gallery-3d">
                 <h2 class="section-title">3D 展廊</h2>
-                <div class="gallery-3d-items" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="gallery-3d-items" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px;">
 
-                    <!-- Murex -->
-                    <div class="gallery-3d-item">
-                        <div class="bubble-container">
-                            <div class="bubble" onclick="showInspection('murex')">
-                                <img src="murex_shell.png" alt="骨螺" loading="lazy">
-                            </div>
-                            <div class="mini-bubble mini-bubble-1"></div>
-                            <div class="mini-bubble mini-bubble-2"></div>
-                            <div class="mini-bubble mini-bubble-3"></div>
-                        </div>
-                        <div class="item-name">骨螺</div>
-                        <button class="btn-primary btn-small" onclick="showInspection('murex')">查看模型</button>
-                    </div>
-
-                    <!-- Rose Murex / 玄瑰千手螺 -->
+                    <!-- Rose Murex / 玫瑰千手螺 -->
                     <div class="gallery-3d-item">
                         <div class="bubble-container">
                             <div class="bubble" onclick="showInspection('rose_murex')">
-                                <img src="rose_murex.png" alt="玄瑰千手螺" loading="lazy">
+                                <img src="rose_murex.png" alt="玫瑰千手螺" loading="lazy">
                             </div>
                             <div class="mini-bubble mini-bubble-1"></div>
                             <div class="mini-bubble mini-bubble-2"></div>
                             <div class="mini-bubble mini-bubble-3"></div>
                         </div>
-                        <div class="item-name">玄瑰千手螺</div>
+                        <div class="item-name">玫瑰千手螺</div>
                         <button class="btn-primary btn-small" onclick="showInspection('rose_murex')">查看模型</button>
+                    </div>
+
+                    <!-- Sea Urchin / 海胆壳 -->
+                    <div class="gallery-3d-item">
+                        <div class="bubble-container">
+                            <div class="bubble" onclick="showInspection('haidan')">
+                                <img src="haidan.png" alt="海胆壳" loading="lazy">
+                            </div>
+                            <div class="mini-bubble mini-bubble-1"></div>
+                            <div class="mini-bubble mini-bubble-2"></div>
+                            <div class="mini-bubble mini-bubble-3"></div>
+                        </div>
+                        <div class="item-name">海胆壳</div>
+                        <button class="btn-primary btn-small" onclick="showInspection('haidan')">查看模型</button>
                     </div>
 
                     <!-- Scallop -->
@@ -1067,6 +1137,34 @@
                         </div>
                         <div class="item-name">扇贝</div>
                         <button class="btn-primary btn-small" onclick="showInspection('scallop')">查看模型</button>
+                    </div>
+
+                    <!-- Fulun / 扶轮螺 -->
+                    <div class="gallery-3d-item">
+                        <div class="bubble-container">
+                            <div class="bubble" onclick="showInspection('fulun')">
+                                <img src="fulun.png" alt="扶轮螺" loading="lazy">
+                            </div>
+                            <div class="mini-bubble mini-bubble-1"></div>
+                            <div class="mini-bubble mini-bubble-2"></div>
+                            <div class="mini-bubble mini-bubble-3"></div>
+                        </div>
+                        <div class="item-name">扶轮螺</div>
+                        <button class="btn-primary btn-small" onclick="showInspection('fulun')">查看模型</button>
+                    </div>
+
+                    <!-- Tangguan / 唐冠螺 -->
+                    <div class="gallery-3d-item">
+                        <div class="bubble-container">
+                            <div class="bubble" onclick="showInspection('tangguan')">
+                                <img src="tangguan.png" alt="唐冠螺" loading="lazy">
+                            </div>
+                            <div class="mini-bubble mini-bubble-1"></div>
+                            <div class="mini-bubble mini-bubble-2"></div>
+                            <div class="mini-bubble mini-bubble-3"></div>
+                        </div>
+                        <div class="item-name">唐冠螺</div>
+                        <button class="btn-primary btn-small" onclick="showInspection('tangguan')">查看模型</button>
                     </div>
 
                 </div>
@@ -1101,6 +1199,7 @@
         <div class="navbar-links">
             <a onclick="showPage('home')">展品</a>
             <a onclick="showPage('home')">藏品</a>
+            <a href="exhibition.html">数字藏品</a>
             <a onclick="showPage('studio')">AI工坊</a>
             <a onclick="showPage('home')">关于</a>
             <div class="navbar-avatar">
@@ -1154,6 +1253,7 @@
                     src="meiguiseashell3dmodel-v1.glb"
                     alt="玄瑰千手螺 3D 模型"
                     auto-rotate
+                    rotation-per-second="60deg"
                     camera-controls
                     touch-action="pan-y"
                     shadow-intensity="0.8"
@@ -1161,10 +1261,19 @@
                     style="width:100%; height:100%; border-radius:12px; background:transparent;"
                 ></model-viewer>
             </div>
+            <!-- Auto-Rotate Toggle -->
+            <div class="auto-rotate-toggle active" id="autoRotateToggle" onclick="toggleAutoRotate()">
+                <span class="rotate-icon">🔄</span>
+                <span class="rotate-label">自动旋转</span>
+                <span class="rotate-status" id="rotateStatus">开启</span>
+            </div>
             <div class="carousel-dots">
-                <div class="carousel-dot active" onclick="switchShell('nautilus')"></div>
-                <div class="carousel-dot" onclick="switchShell('rose_murex')"></div>
-                <div class="carousel-dot" onclick="switchShell('murex')"></div>
+                <div class="carousel-dot active" title="鹦鹉螺" onclick="switchShell('nautilus')"></div>
+                <div class="carousel-dot" title="玫瑰千手螺" onclick="switchShell('rose_murex')"></div>
+                <div class="carousel-dot" title="海胆壳" onclick="switchShell('haidan')"></div>
+                <div class="carousel-dot" title="扇贝" onclick="switchShell('scallop')"></div>
+                <div class="carousel-dot" title="扶轮螺" onclick="switchShell('fulun')"></div>
+                <div class="carousel-dot" title="唐冠螺" onclick="switchShell('tangguan')"></div>
             </div>
             <button class="btn-primary design-btn" onclick="showPage('studio')">
                 ✏️ 用此造型设计
@@ -1212,6 +1321,7 @@
         </div>
         <div class="navbar-links">
             <a onclick="showPage('home')">画廊</a>
+            <a href="exhibition.html">数字藏品</a>
             <a onclick="showPage('home')">关于</a>
             <a>个人中心</a>
         </div>
@@ -1224,7 +1334,7 @@
         <!-- Prompt Bubble -->
         <div class="prompt-bubble-wrapper">
             <div class="prompt-bubble">
-                <p class="prompt-text">描述你的贝壳灵感创作（例如：“一把螺旋贝壳造型的茶壶，饰有虹彩珊瑚纹路”）...</p>
+                <textarea id="designPrompt" class="prompt-textarea" placeholder="描述你的贝壳灵感创作...&#10;&#10;例如：“一把螺旋贝壳造型的茶壶，饰有虹彩珊瑚纹路”" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); generateWithSeedream(); }"></textarea>
             </div>
             <!-- Decorative mini bubbles around the prompt -->
             <div class="mini-bubble" style="width:22px;height:22px;top:-5px;left:40px;animation-delay:0.3s;"></div>
@@ -1241,6 +1351,9 @@
 
         <!-- Studio Action Buttons -->
         <div class="studio-actions">
+            <button class="btn-primary" id="btn-generate" onclick="generateWithSeedream()">
+                ✨ 生成设计图 (Seedream)
+            </button>
             <button class="btn-primary" id="btn-refine">
                 ✏️ 优化调整
             </button>
@@ -1304,6 +1417,7 @@
             title: '3D 贝壳模型鉴赏：玫瑰千手螺',
             image: 'rose_murex.png',
             useGLB: true,
+            glbSrc: 'meiguiseashell3dmodel-v1.glb',
             classification: '腹足纲',
             species: '玫瑰千手螺 (Hexaplex rosarium)',
             age: '现代种，化石记录追溯至新近纪',
@@ -1312,22 +1426,24 @@
             discovery: '分布于西非沿海水域，其独特的多棘结构使其成为贝壳收藏家眼中的珍品，也是贝雕艺术的理想素材。',
             culture: '在贝雕艺术中，玫瑰千手螺的复杂纹理为雕刻师提供了丰富的创作空间，常被雕琢为精美的装饰品与艺术摆件。'
         },
-        murex: {
-            title: '3D 贝壳模型鉴赏：骨螺',
-            image: 'murex_shell.png',
-            useGLB: false,
-            classification: '腹足纲',
-            species: '骨螺 (Murex)',
-            age: '化石记录可追溯至白垩纪',
-            size: '壳长约8-15厘米',
-            symbolism: '骨螺曾是古代紫色染料"泰尔紫"的唯一来源，在地中海文明中象征着皇室与权力。',
-            discovery: '古罗马时期已被广泛记录。其分泌的紫色染料是古代世界最昂贵的颜料之一，价值远超同等重量的黄金。',
-            culture: '骨螺在人类文明中扮演了重要角色，从腓尼基人的紫色贸易到现代的海洋生物学研究，它始终是科学与文化的交汇点。'
+        haidan: {
+            title: '3D 贝壳模型鉴赏：海胆壳',
+            image: 'haidan.png',
+            useGLB: true,
+            glbSrc: '../3D/haidanshell3dmodel-v1.glb',
+            classification: '海胆纲',
+            species: '海胆 (Echinoidea)',
+            age: '奥陶纪至今',
+            size: '直径约3-10厘米',
+            symbolism: '海胆壳呈现出完美的辐射对称美学。',
+            discovery: '广泛分布于世界各地的浅海与深海中。',
+            culture: '在许多文化中被视为独特的天然艺术品，用于工艺品和装饰。'
         },
         scallop: {
             title: '3D 贝壳模型鉴赏：扇贝',
             image: 'scallop_shell.png',
-            useGLB: false,
+            useGLB: true,
+            glbSrc: '../3D/shanbeishell3dmodel-v2.glb',
             classification: '双壳纲',
             species: '扇贝 (Pecten)',
             age: '化石记录追溯至三叠纪',
@@ -1335,6 +1451,32 @@
             symbolism: '扇贝壳是朝圣者的象征标志，在基督教文化中代表着圣雅各之路，也是维纳斯诞生神话中的经典意象。',
             discovery: '扇贝化石在全世界的沉积岩中广泛分布，是最常见的海洋化石之一，对地层学研究具有重要价值。',
             culture: '从波提切利《维纳斯的诞生》到壳牌石油公司的标志，扇贝壳是全球最广为人知的贝壳形态之一。'
+        },
+        fulun: {
+            title: '3D 贝壳模型鉴赏：扶轮螺',
+            image: 'fulun.png',
+            useGLB: true,
+            glbSrc: '../3D/fulunseashell3dmodel-v1.glb',
+            classification: '腹足纲',
+            species: '扶轮螺 (Architectonicidae)',
+            age: '新生代',
+            size: '壳径约3-5厘米',
+            symbolism: '宛如车轮般严谨对称的螺旋，展现了自然的几何奥秘。',
+            discovery: '广泛分布于热带及亚热带深海水域。',
+            culture: '车轮螺独特的扁平螺旋结构极具视觉冲击力，常被用于贝雕和精美首饰设计。'
+        },
+        tangguan: {
+            title: '3D 贝壳模型鉴赏：唐冠螺',
+            image: 'tangguan.png',
+            useGLB: true,
+            glbSrc: '../3D/tangguanseashell3dmodel-v1.glb',
+            classification: '腹足纲',
+            species: '唐冠螺 (Cassis cornuta)',
+            age: '现代',
+            size: '大型，可达30厘米',
+            symbolism: '形似唐代文官的冠帽，在中国文化中象征富贵、威严与吉祥。',
+            discovery: '主要栖息在印度洋和太平洋的珊瑚礁海域。',
+            culture: '与万宝螺、凤尾螺和鹦鹉螺并称中国传统四大名螺，是贝雕艺术史上绝佳的高级材质。'
         }
     };
 
@@ -1359,6 +1501,10 @@
         if (data.useGLB) {
             staticArea.style.display = 'none';
             glbArea.style.display = 'flex';
+            const viewer = document.getElementById('glbViewer');
+            if(viewer && data.glbSrc) {
+                viewer.src = encodeURI(data.glbSrc);
+            }
         } else {
             staticArea.style.display = 'flex';
             glbArea.style.display = 'none';
@@ -1380,9 +1526,9 @@
 
         // Update carousel dots
         const dots = document.querySelectorAll('.carousel-dot');
-        const shellOrder = ['nautilus', 'rose_murex', 'murex'];
+        const shellOrder = ['nautilus', 'rose_murex', 'haidan', 'scallop', 'fulun', 'tangguan'];
         dots.forEach((dot, i) => {
-            dot.classList.toggle('active', shellOrder[i] === shellKey);
+            if(dot) dot.classList.toggle('active', shellOrder[i] === shellKey);
         });
     }
 
@@ -1395,6 +1541,23 @@
             img.style.display = 'block';
         } else {
             img.style.display = 'none';
+        }
+    }
+
+    // ---- Auto-Rotate Toggle for 3D Model ----
+    function toggleAutoRotate() {
+        const viewer = document.getElementById('glbViewer');
+        const toggleBtn = document.getElementById('autoRotateToggle');
+        const statusLabel = document.getElementById('rotateStatus');
+
+        if (viewer.hasAttribute('auto-rotate')) {
+            viewer.removeAttribute('auto-rotate');
+            toggleBtn.classList.remove('active');
+            statusLabel.textContent = '关闭';
+        } else {
+            viewer.setAttribute('auto-rotate', '');
+            toggleBtn.classList.add('active');
+            statusLabel.textContent = '开启';
         }
     }
 
@@ -1469,6 +1632,87 @@
             currentRotation += (e.clientX - startX) * 0.3;
             modelImage.style.cursor = 'grab';
         });
+    }
+    // ---- Seedream AI Generation Mock ----
+    async function generateWithSeedream() {
+        const promptInput = document.getElementById('designPrompt').value;
+        if (!promptInput.trim()) {
+            alert('请输入您的设计提示词！');
+            return;
+        }
+
+        const genBtn = document.getElementById('btn-generate');
+        const imgDisplay = document.querySelector('#artwork-display img');
+        
+        genBtn.innerHTML = '✨ 正在连接 Seedream 生成中...';
+        genBtn.disabled = true;
+        genBtn.style.opacity = '0.7';
+        
+        // Show loading effect on img
+        imgDisplay.style.transition = 'all 0.5s ease';
+        imgDisplay.style.filter = 'blur(8px) brightness(0.8)';
+
+        try {
+            // ==========================================
+            // 👇 【已接入真实 Seedream API】 👇
+            // ==========================================
+            
+            const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/images/generations';
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer a2b8ca98-603a-4c9f-b970-c22883fb3656'
+                },
+                body: JSON.stringify({
+                    "model": "doubao-seedream-5-0-260128",
+                    "prompt": promptInput,
+                    "sequential_image_generation": "disabled",
+                    "response_format": "url",
+                    "size": "2K",
+                    "stream": false,
+                    "watermark": true
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.data && data.data.length > 0 && data.data[0].url) {
+                const generatedImageUrl = data.data[0].url; 
+                imgDisplay.src = generatedImageUrl; 
+            } else {
+                throw new Error("Failed to get image url from response");
+            }
+            
+            // ==========================================
+            // 👆 【接入代码结束】 👆
+            // ==========================================
+            
+            imgDisplay.style.filter = 'blur(0px) brightness(1.1)';
+            imgDisplay.style.transform = 'scale(1.02)';
+            
+            setTimeout(() => {
+                imgDisplay.style.transform = 'scale(1)';
+                imgDisplay.style.filter = 'none';
+                genBtn.innerHTML = '✨ 重新生成 (Seedream)';
+                genBtn.disabled = false;
+                genBtn.style.opacity = '1';
+                console.log('Seedream mock created design for:', promptInput);
+            }, 300);
+
+        } catch (error) {
+            console.error('生图 API 调用失败:', error);
+            alert('生成失败，请检查网络或 API 设置。');
+            imgDisplay.style.filter = 'none';
+            genBtn.innerHTML = '✨ 生成设计图 (Seedream)';
+            genBtn.disabled = false;
+            genBtn.style.opacity = '1';
+        }
     }
 </script>
 
