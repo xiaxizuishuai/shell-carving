@@ -43,7 +43,7 @@
 ### API 端点
 
 ```javascript
-const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 ```
 
 ### 请求格式
@@ -251,7 +251,7 @@ const response = await fetch('/api/chat', {
 // 后端处理（Node.js 示例）
 app.post('/api/chat', async (req, res) => {
     const { message } = req.body;
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -308,7 +308,7 @@ app.post('/api/chat', async (req, res) => {
 
 - **免费额度**：每月有一定的免费请求次数
 - **速率限制**：每分钟请求次数有限制
-- **模型版本**：当前使用 `gemini-2.5-flash-preview-09-2025`
+- **模型版本**：当前使用 `gemini-1.5-flash`
 
 ### 优化建议
 
@@ -325,8 +325,8 @@ app.post('/api/chat', async (req, res) => {
 
 ## 🔄 更新日志
 
-- **2025-01-XX**：初始版本，使用 Gemini 2.5 Flash Preview
-- 当前模型：`gemini-2.5-flash-preview-09-2025`
+- **2025-01-XX**：初始版本
+- 当前模型：`gemini-1.5-flash`
 
 ---
 
