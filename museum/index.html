@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <title>贝壳展览馆 · 元创空间</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <!-- Google Model Viewer for 3D GLB models -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
     <style>
@@ -28,8 +31,8 @@
             --color-border-highlight: rgba(255, 255, 255, 0.9);
             --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
             --shadow-button: 0 4px 15px rgba(179, 229, 252, 0.6);
-            --shadow-bubble-inner: inset 0 0 20px rgba(255,255,255,0.8), inset 0 0 10px rgba(179,229,252,0.4);
-            --shadow-frame-inner: inset 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-bubble-inner: inset 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(179, 229, 252, 0.4);
+            --shadow-frame-inner: inset 0 2px 4px rgba(0, 0, 0, 0.05);
             --radius-card: 20px;
             --radius-button: 50px;
             --font-logo: 'Dancing Script', 'Brush Script MT', cursive;
@@ -40,7 +43,9 @@
         /* ============================================
            RESET & BASE
            ============================================ */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -63,8 +68,10 @@
            ============================================ */
         .app-background {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
             background-image: url('02c842f4b4d38589dba34652fcef0f17.png');
             background-size: cover;
@@ -81,6 +88,7 @@
             transition: opacity 0.5s ease;
             min-height: 100vh;
         }
+
         .page.active {
             display: block;
             opacity: 1;
@@ -99,6 +107,7 @@
             padding: 28px;
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
+
         .glass-card:hover {
             background: var(--color-glass-panel-hover);
             box-shadow: 0 8px 40px 0 rgba(31, 38, 135, 0.12);
@@ -110,31 +119,64 @@
         .btn-primary {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             padding: 12px 32px;
-            border-radius: var(--radius-button);
-            border: 1px solid var(--color-border-highlight);
-            background: var(--color-primary-gradient);
-            box-shadow: var(--shadow-button);
+            background-color: transparent;
             color: var(--color-text-heading);
-            font-family: var(--font-body);
-            font-weight: 500;
-            font-size: 0.95rem;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            position: relative;
+            z-index: 1;
+            border: none;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(179, 229, 252, 0.8);
+
+        /* Hand-drawn sketchy background */
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #5a8bb0;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+            background: rgba(190, 230, 250, 0.4);
+            z-index: -1;
+            transition: all 0.3s ease;
+            box-shadow: 3px 4px 0px rgba(90, 139, 176, 0.25);
         }
-        .btn-primary:active {
-            transform: translateY(0);
+
+        /* Hand-drawn accent line */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 3px; left: -2px; right: 2px; bottom: -2px;
+            border: 1px dashed rgba(121, 165, 196, 0.7);
+            border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover::before {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 2px 0px rgba(90, 139, 176, 0.2);
+            background: rgba(190, 230, 250, 0.6);
+        }
+
+        .btn-primary:hover::after {
+            transform: translate(1px, 1px);
+        }
+
+        .btn-primary:active::before {
+            transform: translate(3px, 4px);
+            box-shadow: none;
         }
 
         .btn-small {
-            padding: 6px 18px;
-            font-size: 0.8rem;
+            padding: 8px 24px;
+            font-size: 0.9rem;
         }
 
         /* ============================================
@@ -188,6 +230,7 @@
             cursor: pointer;
             position: relative;
         }
+
         .navbar-links a::after {
             content: '';
             position: absolute;
@@ -198,9 +241,11 @@
             background: linear-gradient(90deg, #a2c2e0, #a8d5ba);
             transition: width 0.3s ease;
         }
+
         .navbar-links a:hover::after {
             width: 100%;
         }
+
         .navbar-links a:hover {
             color: #4a90d9;
         }
@@ -218,6 +263,7 @@
             cursor: pointer;
             position: relative;
         }
+
         .navbar-avatar .dropdown-arrow {
             position: absolute;
             right: -14px;
@@ -234,6 +280,7 @@
             text-align: center;
             padding: 40px 20px 30px;
         }
+
         .hero h1 {
             font-family: var(--font-heading);
             font-size: 2.8rem;
@@ -242,6 +289,7 @@
             margin-bottom: 12px;
             font-style: italic;
         }
+
         .hero .subtitle {
             font-size: 1rem;
             color: var(--color-text-body);
@@ -294,16 +342,17 @@
             background: linear-gradient(135deg, #a2c2e0 0%, #88c9b8 30%, #a8d5ba 60%, #b5d8e8 100%);
             box-shadow:
                 0 4px 16px rgba(162, 194, 224, 0.35),
-                inset 0 1px 2px rgba(255,255,255,0.5);
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
             margin-bottom: 12px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .gradient-frame:hover {
             transform: scale(1.03);
             box-shadow:
                 0 6px 24px rgba(162, 194, 224, 0.5),
-                inset 0 1px 2px rgba(255,255,255,0.5);
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .gradient-frame-inner {
@@ -331,6 +380,7 @@
             font-size: 0.95rem;
             margin-bottom: 6px;
         }
+
         .item-desc {
             font-family: var(--font-body);
             font-size: 0.72rem;
@@ -366,13 +416,11 @@
             height: 100%;
             border-radius: 50%;
             position: relative;
-            background: radial-gradient(
-                circle at 35% 35%,
-                rgba(255, 255, 255, 0.05) 0%,
-                rgba(255, 255, 255, 0.02) 30%,
-                rgba(200, 220, 255, 0.08) 60%,
-                rgba(180, 200, 240, 0.15) 100%
-            );
+            background: radial-gradient(circle at 35% 35%,
+                    rgba(255, 255, 255, 0.05) 0%,
+                    rgba(255, 255, 255, 0.02) 30%,
+                    rgba(200, 220, 255, 0.08) 60%,
+                    rgba(180, 200, 240, 0.15) 100%);
             box-shadow:
                 /* outer glow */
                 0 0 20px rgba(179, 229, 252, 0.25),
@@ -392,6 +440,7 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             cursor: pointer;
         }
+
         .bubble:hover {
             transform: scale(1.08) translateY(-4px);
             box-shadow:
@@ -410,12 +459,10 @@
             left: 12%;
             width: 50%;
             height: 35%;
-            background: radial-gradient(
-                ellipse at center,
-                rgba(255, 255, 255, 0.6) 0%,
-                rgba(255, 255, 255, 0.1) 60%,
-                transparent 100%
-            );
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 255, 255, 0.6) 0%,
+                    rgba(255, 255, 255, 0.1) 60%,
+                    transparent 100%);
             border-radius: 50%;
             transform: rotate(-15deg);
             pointer-events: none;
@@ -430,11 +477,9 @@
             right: 14%;
             width: 18%;
             height: 12%;
-            background: radial-gradient(
-                ellipse at center,
-                rgba(255, 255, 255, 0.35) 0%,
-                transparent 80%
-            );
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 255, 255, 0.35) 0%,
+                    transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 2;
@@ -445,37 +490,55 @@
             height: 70%;
             object-fit: contain;
             z-index: 1;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         /* Mini bubbles decoration */
         .mini-bubble {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.5), rgba(200,225,250,0.15));
-            border: 1px solid rgba(255,255,255,0.35);
+            background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.5), rgba(200, 225, 250, 0.15));
+            border: 1px solid rgba(255, 255, 255, 0.35);
             pointer-events: none;
             animation: float-bubble 4s ease-in-out infinite;
         }
+
         .mini-bubble-1 {
-            width: 18px; height: 18px;
-            top: -8px; right: -4px;
+            width: 18px;
+            height: 18px;
+            top: -8px;
+            right: -4px;
             animation-delay: 0s;
         }
+
         .mini-bubble-2 {
-            width: 12px; height: 12px;
-            bottom: 10px; left: -10px;
+            width: 12px;
+            height: 12px;
+            bottom: 10px;
+            left: -10px;
             animation-delay: 1.2s;
         }
+
         .mini-bubble-3 {
-            width: 10px; height: 10px;
-            top: 30%; right: -12px;
+            width: 10px;
+            height: 10px;
+            top: 30%;
+            right: -12px;
             animation-delay: 0.7s;
         }
 
         @keyframes float-bubble {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-6px) scale(1.1); opacity: 1; }
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translateY(-6px) scale(1.1);
+                opacity: 1;
+            }
         }
 
         /* ============================================
@@ -486,16 +549,21 @@
             margin: 0 auto 40px;
             padding: 0 32px;
         }
+
         .banner-card {
             text-align: center;
             padding: 36px 32px;
             position: relative;
             overflow: hidden;
         }
+
         .banner-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background:
                 radial-gradient(ellipse at 20% 80%, rgba(255, 182, 193, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 20%, rgba(173, 216, 230, 0.15) 0%, transparent 50%),
@@ -503,10 +571,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        .banner-card > * {
+
+        .banner-card>* {
             position: relative;
             z-index: 1;
         }
+
         .banner-card h2 {
             font-family: var(--font-heading);
             font-size: 1.6rem;
@@ -514,6 +584,7 @@
             color: var(--color-text-heading);
             margin-bottom: 8px;
         }
+
         .banner-card p {
             font-size: 0.9rem;
             color: var(--color-text-body);
@@ -538,6 +609,7 @@
         .side-panel {
             padding: 0;
         }
+
         .side-panel .panel-header {
             background: linear-gradient(135deg, #b3e5fc 0%, #81d4fa 100%);
             border-radius: 12px;
@@ -549,6 +621,7 @@
             font-size: 1.05rem;
             letter-spacing: 0.5px;
         }
+
         .side-panel .panel-header.coral {
             background: linear-gradient(135deg, #ffccbc 0%, #ef9a9a 100%);
         }
@@ -558,15 +631,18 @@
             padding-bottom: 16px;
             border-bottom: 1px solid rgba(179, 229, 252, 0.3);
         }
+
         .data-field:last-child {
             border-bottom: none;
         }
+
         .data-field-label {
             font-weight: 600;
             color: var(--color-text-heading);
             font-size: 0.9rem;
             margin-bottom: 4px;
         }
+
         .data-field-value {
             color: var(--color-text-muted);
             font-size: 0.85rem;
@@ -581,11 +657,13 @@
             padding-top: 16px;
             border-top: 1px solid rgba(179, 229, 252, 0.3);
         }
+
         .toggle-label {
             font-weight: 600;
             color: var(--color-text-heading);
             font-size: 0.9rem;
         }
+
         .toggle-switch {
             width: 48px;
             height: 26px;
@@ -595,9 +673,11 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+
         .toggle-switch.active {
             background: #4fc3f7;
         }
+
         .toggle-switch::after {
             content: '';
             position: absolute;
@@ -608,8 +688,9 @@
             top: 3px;
             left: 3px;
             transition: transform 0.3s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
+
         .toggle-switch.active::after {
             transform: translateX(22px);
         }
@@ -627,12 +708,14 @@
         .model-viewer-center {
             text-align: center;
         }
+
         .model-viewer-center h1 {
             font-family: var(--font-heading);
             font-size: 1.8rem;
             color: var(--color-text-heading);
             margin-bottom: 20px;
         }
+
         .model-viewer-area {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -643,14 +726,16 @@
             justify-content: center;
             position: relative;
         }
+
         .model-viewer-area img {
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
-            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.15));
             transition: transform 0.5s ease;
             cursor: grab;
         }
+
         .model-viewer-area img:hover {
             transform: rotateY(15deg) scale(1.05);
         }
@@ -662,14 +747,17 @@
             justify-content: center;
             margin-top: 16px;
         }
+
         .carousel-dot {
-            width: 10px; height: 10px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(179, 229, 252, 0.5);
-            border: 1px solid rgba(255,255,255,0.7);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .carousel-dot.active {
             background: #4fc3f7;
             width: 24px;
@@ -689,16 +777,18 @@
             padding: 8px 20px;
             border-radius: 50px;
             background: rgba(240, 248, 255, 0.6);
-            border: 1px solid rgba(255,255,255,0.7);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(6px);
             cursor: pointer;
             transition: all 0.3s ease;
             user-select: none;
         }
+
         .auto-rotate-toggle:hover {
             background: rgba(240, 248, 255, 0.85);
             box-shadow: 0 2px 12px rgba(179, 229, 252, 0.4);
         }
+
         .auto-rotate-toggle .rotate-icon {
             width: 22px;
             height: 22px;
@@ -708,18 +798,27 @@
             font-size: 1rem;
             transition: transform 0.4s ease;
         }
+
         .auto-rotate-toggle.active .rotate-icon {
             animation: spin-icon 2s linear infinite;
         }
+
         @keyframes spin-icon {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
+
         .auto-rotate-toggle .rotate-label {
             font-size: 0.82rem;
             font-weight: 500;
             color: var(--color-text-heading);
         }
+
         .auto-rotate-toggle .rotate-status {
             font-size: 0.72rem;
             padding: 2px 8px;
@@ -727,12 +826,14 @@
             font-weight: 600;
             transition: all 0.3s;
         }
+
         .auto-rotate-toggle.active .rotate-status {
             background: linear-gradient(135deg, #b3e5fc, #81d4fa);
             color: white;
         }
+
         .auto-rotate-toggle:not(.active) .rotate-status {
-            background: rgba(0,0,0,0.06);
+            background: rgba(0, 0, 0, 0.06);
             color: var(--color-text-muted);
         }
 
@@ -740,12 +841,14 @@
         .history-section {
             margin-bottom: 18px;
         }
+
         .history-section h4 {
             font-weight: 600;
             color: var(--color-text-heading);
             font-size: 0.9rem;
             margin-bottom: 6px;
         }
+
         .history-section p {
             font-size: 0.8rem;
             color: var(--color-text-muted);
@@ -763,9 +866,10 @@
             aspect-ratio: 1/1;
             border-radius: 6px;
             overflow: hidden;
-            border: 1px solid rgba(179,229,252,0.4);
-            background: rgba(255,255,255,0.4);
+            border: 1px solid rgba(179, 229, 252, 0.4);
+            background: rgba(255, 255, 255, 0.4);
         }
+
         .history-thumb img {
             width: 100%;
             height: 100%;
@@ -773,6 +877,7 @@
             opacity: 0.85;
             transition: opacity 0.3s;
         }
+
         .history-thumb:hover img {
             opacity: 1;
         }
@@ -787,7 +892,7 @@
             text-align: center;
             padding-top: 20px;
             margin-bottom: 20px;
-            text-shadow: 0 2px 8px rgba(255,255,255,0.5);
+            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.5);
         }
 
         .studio-content {
@@ -809,19 +914,17 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: radial-gradient(
-                circle at 40% 35%,
-                rgba(255,255,255,0.25) 0%,
-                rgba(255,255,255,0.08) 40%,
-                rgba(220,200,240,0.1) 70%,
-                rgba(200,180,230,0.18) 100%
-            );
+            background: radial-gradient(circle at 40% 35%,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    rgba(255, 255, 255, 0.08) 40%,
+                    rgba(220, 200, 240, 0.1) 70%,
+                    rgba(200, 180, 230, 0.18) 100%);
             box-shadow:
-                0 0 40px rgba(200,180,230,0.2),
-                0 8px 32px rgba(150,130,200,0.15),
-                inset 10px 10px 30px rgba(255,255,255,0.6),
-                inset -10px -10px 25px rgba(180,160,220,0.15);
-            border: 1.5px solid rgba(255,255,255,0.5);
+                0 0 40px rgba(200, 180, 230, 0.2),
+                0 8px 32px rgba(150, 130, 200, 0.15),
+                inset 10px 10px 30px rgba(255, 255, 255, 0.6),
+                inset -10px -10px 25px rgba(180, 160, 220, 0.15);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
@@ -830,6 +933,7 @@
             position: relative;
             animation: gentle-float 6s ease-in-out infinite;
         }
+
         .prompt-bubble::before {
             content: '';
             position: absolute;
@@ -837,20 +941,25 @@
             left: 15%;
             width: 45%;
             height: 30%;
-            background: radial-gradient(
-                ellipse at center,
-                rgba(255,255,255,0.5) 0%,
-                rgba(255,255,255,0.1) 60%,
-                transparent 100%
-            );
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 255, 255, 0.5) 0%,
+                    rgba(255, 255, 255, 0.1) 60%,
+                    transparent 100%);
             border-radius: 50%;
             transform: rotate(-20deg);
             pointer-events: none;
         }
 
         @keyframes gentle-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .prompt-textarea {
@@ -867,9 +976,11 @@
             outline: none;
             z-index: 10;
         }
+
         .prompt-textarea::placeholder {
             color: rgba(51, 78, 104, 0.6);
         }
+
         .prompt-textarea:focus {
             box-shadow: none;
         }
@@ -879,9 +990,11 @@
             max-width: 600px;
             margin: 0 auto 32px;
         }
+
         .artwork-display .glass-card {
             padding: 12px;
         }
+
         .artwork-display img {
             width: 100%;
             border-radius: 12px;
@@ -895,9 +1008,113 @@
             justify-content: center;
             flex-wrap: wrap;
         }
+
         .studio-actions .btn-primary {
             background: linear-gradient(135deg, #e8eaf6 0%, #e1f5fe 50%, #f3e5f5 100%);
-            border: 1.5px solid rgba(255,255,255,0.8);
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* ============================================
+           NEW DESIGN STYLES
+           ============================================ */
+        /* 1. Flat Design 2.0 / Soft Shadow */
+        .flat-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-card);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), 0 4px 15px rgba(0, 0, 0, 0.03);
+            padding: 28px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .flat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px -15px rgba(31, 38, 135, 0.15), 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+        .flat-card .collection-item {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+        .flat-card .collection-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* 2. Neumorphism (新拟态) */
+        .neumorphic-card {
+            background: rgba(238, 242, 245, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--radius-card);
+            padding: 28px;
+            /* Protruding effect */
+            box-shadow: 12px 12px 24px rgba(160, 180, 200, 0.4), -12px -12px 24px rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .neumorphic-item {
+            background: rgba(238, 242, 245, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 20px;
+            /* Convex effect */
+            box-shadow: 8px 8px 16px rgba(160, 180, 200, 0.35), -8px -8px 16px rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+        .neumorphic-item:hover {
+            /* Concave effect on hover */
+            box-shadow: inset 6px 6px 12px rgba(160, 180, 200, 0.35), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+        }
+
+        /* 3. Dark Mode Tech with Gradient Borders */
+        .tech-dark-card {
+            background: rgba(15, 23, 42, 0.7); /* Deep space navy/black */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: relative;
+            color: #f8fafc;
+            border-radius: var(--radius-card);
+            padding: 36px 32px;
+            text-align: center;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 40px rgba(56, 189, 248, 0.1);
+        }
+        /* Gradient Border Wrapper */
+        .tech-dark-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: var(--radius-card);
+            padding: 2px; /* Border thickness */
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #e879f9);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .tech-dark-card h2, .tech-dark-card p {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(56, 189, 248, 0.5);
+            position: relative;
+            z-index: 3;
+        }
+        .tech-dark-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.15), transparent 70%);
+            z-index: 1;
         }
 
         /* ============================================
@@ -905,12 +1122,15 @@
            ============================================ */
         .particles {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
         }
+
         .particle {
             position: absolute;
             border-radius: 50%;
@@ -923,8 +1143,15 @@
                 opacity: 0;
                 transform: translateY(100vh) translateX(0) scale(0.5);
             }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.2; }
+
+            10% {
+                opacity: 0.4;
+            }
+
+            90% {
+                opacity: 0.2;
+            }
+
             100% {
                 opacity: 0;
                 transform: translateY(-20vh) translateX(60px) scale(1);
@@ -938,18 +1165,23 @@
             .gallery-row {
                 grid-template-columns: 1fr;
             }
+
             .inspection-layout {
                 grid-template-columns: 1fr;
             }
+
             .navbar {
                 padding: 12px 20px;
             }
+
             .navbar-links {
                 gap: 16px;
             }
+
             .hero h1 {
                 font-size: 2rem;
             }
+
             .studio-title {
                 font-size: 2rem;
             }
@@ -961,13 +1193,16 @@
         ::-webkit-scrollbar {
             width: 8px;
         }
+
         ::-webkit-scrollbar-track {
             background: transparent;
         }
+
         ::-webkit-scrollbar-thumb {
             background: rgba(179, 229, 252, 0.5);
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(179, 229, 252, 0.8);
         }
@@ -977,8 +1212,10 @@
            ============================================ */
         .loading-screen {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 50%, #e8f5e9 100%);
             display: flex;
             align-items: center;
@@ -986,595 +1223,655 @@
             z-index: 9999;
             transition: opacity 0.8s ease;
         }
+
         .loading-screen.hidden {
             opacity: 0;
             pointer-events: none;
         }
+
         .loading-content {
             text-align: center;
         }
+
         .loading-content .logo-load {
             font-family: var(--font-logo);
             font-size: 3rem;
             color: var(--color-text-heading);
             margin-bottom: 20px;
         }
+
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(179,229,252,0.3);
+            border: 3px solid rgba(179, 229, 252, 0.3);
             border-top-color: #4fc3f7;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- Loading Screen -->
-<div class="loading-screen" id="loadingScreen">
-    <div class="loading-content">
-        <div class="logo-load">贝壳🐚展览馆</div>
-        <div class="loading-spinner"></div>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="logo-load">贝壳🐚展览馆</div>
+            <div class="loading-spinner"></div>
+        </div>
     </div>
-</div>
 
-<!-- Animated Background -->
-<div class="app-background"></div>
+    <!-- Animated Background -->
+    <div class="app-background"></div>
 
-<!-- Floating Particles -->
-<div class="particles" id="particles"></div>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
 
-<!-- ================================================================
+    <!-- ================================================================
      PAGE 1: HOME / GALLERY
      ================================================================ -->
-<div class="page active" id="page-home">
+    <div class="page active" id="page-home">
 
-    <!-- Navbar -->
-    <nav class="navbar" id="nav-home">
-        <div class="navbar-logo">
-            <span class="logo-main">贝壳🐚展览馆</span>
-            <span class="logo-sub">元创空间</span>
-        </div>
-        <div class="navbar-links">
-            <a onclick="showPage('home')">藏品展览</a>
-            <a onclick="showPage('inspection')">3D模型</a>
-            <a href="exhibition.html">数字藏品</a>
-            <a onclick="showPage('home')">历史溯源</a>
-            <a onclick="showPage('studio')">设计工坊</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero" id="hero-section">
-        <h1>探索设计的奥秘</h1>
-        <p class="subtitle">从贝壳的曲线中，生长出你的创意表达</p>
-        <button class="btn-primary" onclick="showPage('inspection')">
-            🌊 开启虚拟旅程
-        </button>
-    </section>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="gallery-row">
-
-            <!-- Featured Collection -->
-            <div class="glass-card" id="featured-collection">
-                <h2 class="section-title">精选藏品</h2>
-                <div class="collection-items">
-
-                    <!-- Queen Conch -->
-                    <div class="collection-item">
-                        <div class="gradient-frame">
-                            <div class="gradient-frame-inner">
-                                <img src="queen_conch.png" alt="Queen Conch" loading="lazy">
-                            </div>
-                        </div>
-                        <div class="item-name">女王凤凰螺</div>
-                        <p class="item-desc">女王凤凰螺以其优雅的粉色唇缘和宏大的外壳闻名，广泛分布于加勒比海域，是海洋贝壳中最具标志性的品种之一……</p>
-                    </div>
-
-                    <!-- Nautilus -->
-                    <div class="collection-item">
-                        <div class="gradient-frame">
-                            <div class="gradient-frame-inner">
-                                <img src="nautilus_shell.png" alt="Nautilus" loading="lazy">
-                            </div>
-                        </div>
-                        <div class="item-name">鹦鹉螺</div>
-                        <p class="item-desc">鹦鹉螺是活化石的代表，其壳体内部呈现完美的对数螺旋结构，被誉为自然界中数学之美的极致体现……</p>
-                    </div>
-
-                </div>
+        <!-- Navbar -->
+        <nav class="navbar" id="nav-home">
+            <div class="navbar-logo">
+                <span class="logo-main">贝壳🐚展览馆</span>
+                <span class="logo-sub">元创空间</span>
             </div>
-
-            <!-- 3D Gallery -->
-            <div class="glass-card" id="gallery-3d">
-                <h2 class="section-title">3D 展廊</h2>
-                <div class="gallery-3d-items" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px;">
-
-                    <!-- Rose Murex / 玫瑰千手螺 -->
-                    <div class="gallery-3d-item">
-                        <div class="bubble-container">
-                            <div class="bubble" onclick="showInspection('rose_murex')">
-                                <img src="rose_murex.png" alt="玫瑰千手螺" loading="lazy">
-                            </div>
-                            <div class="mini-bubble mini-bubble-1"></div>
-                            <div class="mini-bubble mini-bubble-2"></div>
-                            <div class="mini-bubble mini-bubble-3"></div>
-                        </div>
-                        <div class="item-name">玫瑰千手螺</div>
-                        <button class="btn-primary btn-small" onclick="showInspection('rose_murex')">查看模型</button>
-                    </div>
-
-                    <!-- Sea Urchin / 海胆壳 -->
-                    <div class="gallery-3d-item">
-                        <div class="bubble-container">
-                            <div class="bubble" onclick="showInspection('haidan')">
-                                <img src="haidan.png" alt="海胆壳" loading="lazy">
-                            </div>
-                            <div class="mini-bubble mini-bubble-1"></div>
-                            <div class="mini-bubble mini-bubble-2"></div>
-                            <div class="mini-bubble mini-bubble-3"></div>
-                        </div>
-                        <div class="item-name">海胆壳</div>
-                        <button class="btn-primary btn-small" onclick="showInspection('haidan')">查看模型</button>
-                    </div>
-
-                    <!-- Scallop -->
-                    <div class="gallery-3d-item">
-                        <div class="bubble-container">
-                            <div class="bubble" onclick="showInspection('scallop')">
-                                <img src="scallop_shell.png" alt="扇贝" loading="lazy">
-                            </div>
-                            <div class="mini-bubble mini-bubble-1"></div>
-                            <div class="mini-bubble mini-bubble-2"></div>
-                            <div class="mini-bubble mini-bubble-3"></div>
-                        </div>
-                        <div class="item-name">扇贝</div>
-                        <button class="btn-primary btn-small" onclick="showInspection('scallop')">查看模型</button>
-                    </div>
-
-                    <!-- Fulun / 扶轮螺 -->
-                    <div class="gallery-3d-item">
-                        <div class="bubble-container">
-                            <div class="bubble" onclick="showInspection('fulun')">
-                                <img src="fulun.png" alt="扶轮螺" loading="lazy">
-                            </div>
-                            <div class="mini-bubble mini-bubble-1"></div>
-                            <div class="mini-bubble mini-bubble-2"></div>
-                            <div class="mini-bubble mini-bubble-3"></div>
-                        </div>
-                        <div class="item-name">扶轮螺</div>
-                        <button class="btn-primary btn-small" onclick="showInspection('fulun')">查看模型</button>
-                    </div>
-
-                    <!-- Tangguan / 唐冠螺 -->
-                    <div class="gallery-3d-item">
-                        <div class="bubble-container">
-                            <div class="bubble" onclick="showInspection('tangguan')">
-                                <img src="tangguan.png" alt="唐冠螺" loading="lazy">
-                            </div>
-                            <div class="mini-bubble mini-bubble-1"></div>
-                            <div class="mini-bubble mini-bubble-2"></div>
-                            <div class="mini-bubble mini-bubble-3"></div>
-                        </div>
-                        <div class="item-name">唐冠螺</div>
-                        <button class="btn-primary btn-small" onclick="showInspection('tangguan')">查看模型</button>
-                    </div>
-
-                </div>
+            <div class="navbar-links">
+                <a onclick="showPage('home')">藏品展览</a>
+                <a onclick="showPage('inspection')">3D模型</a>
+                <a href="exhibition.html">数字藏品</a>
+                <a onclick="showPage('home')">历史溯源</a>
+                <a onclick="showPage('studio')">设计工坊</a>
             </div>
+        </nav>
 
-        </div>
-    </div>
-
-    <!-- Bottom Banner -->
-    <div class="bottom-banner">
-        <div class="glass-card banner-card" id="ai-banner">
-            <h2>无界智绘</h2>
-            <p>从贝壳的曲线中，生长出你的创意表达</p>
-            <button class="btn-primary" onclick="showPage('studio')">
-                ✨ 借助AI设计你的贝雕
+        <!-- Hero Section -->
+        <section class="hero" id="hero-section">
+            <h1>探索设计的奥秘</h1>
+            <p class="subtitle">从贝壳的曲线中，生长出你的创意表达</p>
+            <button class="btn-primary" onclick="showPage('inspection')">
+                🌊 开启虚拟旅程
             </button>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="gallery-row">
+
+                <!-- Featured Collection -->
+                <div class="flat-card" id="featured-collection">
+                    <h2 class="section-title">精选藏品</h2>
+                    <div class="collection-items">
+
+                        <!-- Queen Conch -->
+                        <div class="collection-item">
+                            <div class="gradient-frame">
+                                <div class="gradient-frame-inner">
+                                    <img src="queen_conch.png" alt="Queen Conch" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="item-name">女王凤凰螺</div>
+                            <p class="item-desc">女王凤凰螺以其优雅的粉色唇缘和宏大的外壳闻名，广泛分布于加勒比海域，是海洋贝壳中最具标志性的品种之一……</p>
+                        </div>
+
+                        <!-- Nautilus -->
+                        <div class="collection-item">
+                            <div class="gradient-frame">
+                                <div class="gradient-frame-inner">
+                                    <img src="nautilus_shell.png" alt="Nautilus" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="item-name">鹦鹉螺</div>
+                            <p class="item-desc">鹦鹉螺是活化石的代表，其壳体内部呈现完美的对数螺旋结构，被誉为自然界中数学之美的极致体现……</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 3D Gallery -->
+                <div class="neumorphic-card" id="gallery-3d" style="position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h2 class="section-title" style="margin-bottom: 0;">3D 展廊</h2>
+                        <button class="btn-primary btn-small" id="toggleGalleryBtn" onclick="toggle3DGallery()" style="padding: 6px 16px;">
+                            收起 🔼
+                        </button>
+                    </div>
+                    <div class="gallery-3d-items" id="gallery-3d-items"
+                        style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; transition: gap 0.4s ease;">
+
+                        <!-- Rose Murex / 玫瑰千手螺 -->
+                        <div class="gallery-3d-item neumorphic-item">
+                            <div class="bubble-container">
+                                <div class="bubble" onclick="showInspection('rose_murex')">
+                                    <img src="rose_murex.png" alt="玫瑰千手螺" loading="lazy">
+                                </div>
+                                <div class="mini-bubble mini-bubble-1"></div>
+                                <div class="mini-bubble mini-bubble-2"></div>
+                                <div class="mini-bubble mini-bubble-3"></div>
+                            </div>
+                            <div class="item-name">玫瑰千手螺</div>
+                            <button class="btn-primary btn-small" onclick="showInspection('rose_murex')">查看模型</button>
+                        </div>
+
+                        <!-- Sea Urchin / 海胆壳 -->
+                        <div class="gallery-3d-item neumorphic-item">
+                            <div class="bubble-container">
+                                <div class="bubble" onclick="showInspection('haidan')">
+                                    <img src="haidan.png" alt="海胆壳" loading="lazy">
+                                </div>
+                                <div class="mini-bubble mini-bubble-1"></div>
+                                <div class="mini-bubble mini-bubble-2"></div>
+                                <div class="mini-bubble mini-bubble-3"></div>
+                            </div>
+                            <div class="item-name">海胆壳</div>
+                            <button class="btn-primary btn-small" onclick="showInspection('haidan')">查看模型</button>
+                        </div>
+
+                        <!-- Scallop -->
+                        <div class="gallery-3d-item neumorphic-item">
+                            <div class="bubble-container">
+                                <div class="bubble" onclick="showInspection('scallop')">
+                                    <img src="scallop_shell.png" alt="扇贝" loading="lazy">
+                                </div>
+                                <div class="mini-bubble mini-bubble-1"></div>
+                                <div class="mini-bubble mini-bubble-2"></div>
+                                <div class="mini-bubble mini-bubble-3"></div>
+                            </div>
+                            <div class="item-name">扇贝</div>
+                            <button class="btn-primary btn-small" onclick="showInspection('scallop')">查看模型</button>
+                        </div>
+
+                        <!-- Fulun / 扶轮螺 -->
+                        <div class="gallery-3d-item neumorphic-item">
+                            <div class="bubble-container">
+                                <div class="bubble" onclick="showInspection('fulun')">
+                                    <img src="fulun.png" alt="扶轮螺" loading="lazy">
+                                </div>
+                                <div class="mini-bubble mini-bubble-1"></div>
+                                <div class="mini-bubble mini-bubble-2"></div>
+                                <div class="mini-bubble mini-bubble-3"></div>
+                            </div>
+                            <div class="item-name">扶轮螺</div>
+                            <button class="btn-primary btn-small" onclick="showInspection('fulun')">查看模型</button>
+                        </div>
+
+                        <!-- Tangguan / 唐冠螺 -->
+                        <div class="gallery-3d-item neumorphic-item">
+                            <div class="bubble-container">
+                                <div class="bubble" onclick="showInspection('tangguan')">
+                                    <img src="tangguan.png" alt="唐冠螺" loading="lazy">
+                                </div>
+                                <div class="mini-bubble mini-bubble-1"></div>
+                                <div class="mini-bubble mini-bubble-2"></div>
+                                <div class="mini-bubble mini-bubble-3"></div>
+                            </div>
+                            <div class="item-name">唐冠螺</div>
+                            <button class="btn-primary btn-small" onclick="showInspection('tangguan')">查看模型</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <!-- Bottom Banner -->
+        <div class="bottom-banner">
+            <div class="tech-dark-card" id="ai-banner">
+                <h2>无界智绘</h2>
+                <p>从贝壳的曲线中，生长出你的创意表达</p>
+                <button class="btn-primary" onclick="showPage('studio')">
+                    ✨ 借助AI设计你的贝雕
+                </button>
+            </div>
+        </div>
+
     </div>
 
-</div>
-
-<!-- ================================================================
+    <!-- ================================================================
      PAGE 2: 3D MODEL INSPECTION
      ================================================================ -->
-<div class="page" id="page-inspection">
+    <div class="page" id="page-inspection">
 
-    <nav class="navbar">
-        <div class="navbar-logo" style="flex-direction:row; align-items:center; gap:12px;">
-            <span style="font-size:1.6rem;">🐚</span>
-            <span class="logo-main" style="font-family:var(--font-body); font-size:1.2rem; font-weight:600;">贝壳博物馆 & AI工坊</span>
+        <nav class="navbar">
+            <div class="navbar-logo" style="flex-direction:row; align-items:center; gap:12px;">
+                <span style="font-size:1.6rem;">🐚</span>
+                <span class="logo-main" style="font-family:var(--font-body); font-size:1.2rem; font-weight:600;">贝壳博物馆 &
+                    AI工坊</span>
+            </div>
+            <div class="navbar-links">
+                <a onclick="showPage('home')">展品</a>
+                <a onclick="showPage('home')">藏品</a>
+                <a href="exhibition.html">数字藏品</a>
+                <a onclick="showPage('studio')">AI工坊</a>
+                <a onclick="showPage('home')">关于</a>
+                <div class="navbar-avatar">
+                    <span>👤</span>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="inspection-layout">
+
+            <!-- Left Panel: Scientific Data -->
+            <div class="glass-card side-panel" id="scientific-data-panel">
+                <div class="panel-header">科学数据</div>
+                <div style="padding: 8px 16px 16px;">
+                    <div class="data-field">
+                        <div class="data-field-label">分类</div>
+                        <div class="data-field-value">头足纲</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">物种</div>
+                        <div class="data-field-value">鹦鹉螺 (Nautilus pompilius)</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">年代</div>
+                        <div class="data-field-value">白垩纪（约一亿年前）</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">尺寸</div>
+                        <div class="data-field-value">直径可达26厘米</div>
+                    </div>
+                    <div class="toggle-row">
+                        <span class="toggle-label">显示横截面</span>
+                        <div class="toggle-switch active" id="crossSectionToggle" onclick="toggleCrossSection()"></div>
+                    </div>
+                    <img src="nautilus_crosssection.png" alt="Cross Section" class="cross-section-img"
+                        id="crossSectionImg" style="display:block;">
+                </div>
+            </div>
+
+            <!-- Center: 3D Model Viewer -->
+            <div class="glass-card model-viewer-center" id="model-viewer">
+                <h1 id="inspectionTitle">3D 贝壳模型鉴赏：鹦鹉螺</h1>
+                <!-- Static image viewer (default for shells without GLB) -->
+                <div class="model-viewer-area" id="staticModelArea">
+                    <img src="nautilus_3d.png" alt="鹦鹉螺 3D 模型" id="modelImage">
+                </div>
+                <!-- Interactive 3D GLB viewer (for Rose Murex) -->
+                <div class="model-viewer-area" id="glbModelArea" style="display:none;">
+                    <model-viewer id="glbViewer" src="meiguiseashell3dmodel-v1.glb" alt="玄瑰千手螺 3D 模型" auto-rotate
+                        rotation-per-second="60deg" camera-controls touch-action="pan-y" shadow-intensity="0.8"
+                        exposure="1.2"
+                        style="width:100%; height:100%; border-radius:12px; background:transparent;"></model-viewer>
+                </div>
+                <!-- Auto-Rotate Toggle -->
+                <div class="auto-rotate-toggle active" id="autoRotateToggle" onclick="toggleAutoRotate()">
+                    <span class="rotate-icon">🔄</span>
+                    <span class="rotate-label">自动旋转</span>
+                    <span class="rotate-status" id="rotateStatus">开启</span>
+                </div>
+                <div class="carousel-dots">
+                    <div class="carousel-dot active" title="鹦鹉螺" onclick="switchShell('nautilus')"></div>
+                    <div class="carousel-dot" title="玫瑰千手螺" onclick="switchShell('rose_murex')"></div>
+                    <div class="carousel-dot" title="海胆壳" onclick="switchShell('haidan')"></div>
+                    <div class="carousel-dot" title="扇贝" onclick="switchShell('scallop')"></div>
+                    <div class="carousel-dot" title="扶轮螺" onclick="switchShell('fulun')"></div>
+                    <div class="carousel-dot" title="唐冠螺" onclick="switchShell('tangguan')"></div>
+                </div>
+                <button class="btn-primary design-btn" onclick="showPage('studio')">
+                    ✏️ 用此造型设计
+                </button>
+            </div>
+
+            <!-- Right Panel: Historical Context -->
+            <div class="glass-card side-panel" id="history-panel">
+                <div class="panel-header coral">历史背景</div>
+                <div style="padding: 8px 16px 16px;">
+                    <div class="history-section">
+                        <h4>象征：生长与完美</h4>
+                        <p>鹦鹉螺的螺旋体现了自然界中生长与完美的统一——从深海峡谷到广袤大洋，它是品质、对称与不断演化的生动见证。</p>
+                    </div>
+                    <div class="history-section">
+                        <h4>发现历程</h4>
+                        <p>1758年由林奈首次描述。鹦鹉螺壳被认为是自然界中数学完美的最迷人案例之一，其对数螺旋结构令人叹为观止。</p>
+                    </div>
+                    <div class="history-section">
+                        <h4>文化意义</h4>
+                        <p>广泛应用于艺术与数学（黄金比例）的研究中。这种贝壳激发了全世界艺术家、建筑师和设计师的无限灵感。</p>
+                    </div>
+                    <div class="history-thumbs">
+                        <div class="history-thumb"><img src="nautilus_shell.png" alt="Historical 1"></div>
+                        <div class="history-thumb"><img src="queen_conch.png" alt="Historical 2"></div>
+                        <div class="history-thumb"><img src="scallop_shell.png" alt="Historical 3"></div>
+                        <div class="history-thumb"><img src="murex_shell.png" alt="Historical 4"></div>
+                        <div class="history-thumb"><img src="nautilus_crosssection.png" alt="Historical 5"></div>
+                        <div class="history-thumb"><img src="nautilus_3d.png" alt="Historical 6"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="navbar-links">
-            <a onclick="showPage('home')">展品</a>
-            <a onclick="showPage('home')">藏品</a>
-            <a href="exhibition.html">数字藏品</a>
-            <a onclick="showPage('studio')">AI工坊</a>
-            <a onclick="showPage('home')">关于</a>
-            <div class="navbar-avatar">
-                <span>👤</span>
-                <span class="dropdown-arrow">▼</span>
-            </div>
-        </div>
-    </nav>
-
-    <div class="inspection-layout">
-
-        <!-- Left Panel: Scientific Data -->
-        <div class="glass-card side-panel" id="scientific-data-panel">
-            <div class="panel-header">科学数据</div>
-            <div style="padding: 8px 16px 16px;">
-                <div class="data-field">
-                    <div class="data-field-label">分类</div>
-                    <div class="data-field-value">头足纲</div>
-                </div>
-                <div class="data-field">
-                    <div class="data-field-label">物种</div>
-                    <div class="data-field-value">鹦鹉螺 (Nautilus pompilius)</div>
-                </div>
-                <div class="data-field">
-                    <div class="data-field-label">年代</div>
-                    <div class="data-field-value">白垩纪（约一亿年前）</div>
-                </div>
-                <div class="data-field">
-                    <div class="data-field-label">尺寸</div>
-                    <div class="data-field-value">直径可达26厘米</div>
-                </div>
-                <div class="toggle-row">
-                    <span class="toggle-label">显示横截面</span>
-                    <div class="toggle-switch active" id="crossSectionToggle" onclick="toggleCrossSection()"></div>
-                </div>
-                <img src="nautilus_crosssection.png" alt="Cross Section" class="cross-section-img" id="crossSectionImg" style="display:block;">
-            </div>
-        </div>
-
-        <!-- Center: 3D Model Viewer -->
-        <div class="glass-card model-viewer-center" id="model-viewer">
-            <h1 id="inspectionTitle">3D 贝壳模型鉴赏：鹦鹉螺</h1>
-            <!-- Static image viewer (default for shells without GLB) -->
-            <div class="model-viewer-area" id="staticModelArea">
-                <img src="nautilus_3d.png" alt="鹦鹉螺 3D 模型" id="modelImage">
-            </div>
-            <!-- Interactive 3D GLB viewer (for Rose Murex) -->
-            <div class="model-viewer-area" id="glbModelArea" style="display:none;">
-                <model-viewer
-                    id="glbViewer"
-                    src="meiguiseashell3dmodel-v1.glb"
-                    alt="玄瑰千手螺 3D 模型"
-                    auto-rotate
-                    rotation-per-second="60deg"
-                    camera-controls
-                    touch-action="pan-y"
-                    shadow-intensity="0.8"
-                    exposure="1.2"
-                    style="width:100%; height:100%; border-radius:12px; background:transparent;"
-                ></model-viewer>
-            </div>
-            <!-- Auto-Rotate Toggle -->
-            <div class="auto-rotate-toggle active" id="autoRotateToggle" onclick="toggleAutoRotate()">
-                <span class="rotate-icon">🔄</span>
-                <span class="rotate-label">自动旋转</span>
-                <span class="rotate-status" id="rotateStatus">开启</span>
-            </div>
-            <div class="carousel-dots">
-                <div class="carousel-dot active" title="鹦鹉螺" onclick="switchShell('nautilus')"></div>
-                <div class="carousel-dot" title="玫瑰千手螺" onclick="switchShell('rose_murex')"></div>
-                <div class="carousel-dot" title="海胆壳" onclick="switchShell('haidan')"></div>
-                <div class="carousel-dot" title="扇贝" onclick="switchShell('scallop')"></div>
-                <div class="carousel-dot" title="扶轮螺" onclick="switchShell('fulun')"></div>
-                <div class="carousel-dot" title="唐冠螺" onclick="switchShell('tangguan')"></div>
-            </div>
-            <button class="btn-primary design-btn" onclick="showPage('studio')">
-                ✏️ 用此造型设计
-            </button>
-        </div>
-
-        <!-- Right Panel: Historical Context -->
-        <div class="glass-card side-panel" id="history-panel">
-            <div class="panel-header coral">历史背景</div>
-            <div style="padding: 8px 16px 16px;">
-                <div class="history-section">
-                    <h4>象征：生长与完美</h4>
-                    <p>鹦鹉螺的螺旋体现了自然界中生长与完美的统一——从深海峡谷到广袤大洋，它是品质、对称与不断演化的生动见证。</p>
-                </div>
-                <div class="history-section">
-                    <h4>发现历程</h4>
-                    <p>1758年由林奈首次描述。鹦鹉螺壳被认为是自然界中数学完美的最迷人案例之一，其对数螺旋结构令人叹为观止。</p>
-                </div>
-                <div class="history-section">
-                    <h4>文化意义</h4>
-                    <p>广泛应用于艺术与数学（黄金比例）的研究中。这种贝壳激发了全世界艺术家、建筑师和设计师的无限灵感。</p>
-                </div>
-                <div class="history-thumbs">
-                    <div class="history-thumb"><img src="nautilus_shell.png" alt="Historical 1"></div>
-                    <div class="history-thumb"><img src="queen_conch.png" alt="Historical 2"></div>
-                    <div class="history-thumb"><img src="scallop_shell.png" alt="Historical 3"></div>
-                    <div class="history-thumb"><img src="murex_shell.png" alt="Historical 4"></div>
-                    <div class="history-thumb"><img src="nautilus_crosssection.png" alt="Historical 5"></div>
-                    <div class="history-thumb"><img src="nautilus_3d.png" alt="Historical 6"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
-</div>
 
-<!-- ================================================================
+    <!-- ================================================================
      PAGE 3: AI DESIGN STUDIO
      ================================================================ -->
-<div class="page" id="page-studio">
+    <div class="page" id="page-studio">
 
-    <nav class="navbar">
-        <div class="navbar-logo">
-            <span class="logo-main" style="font-size:1.6rem;">AI 贝壳设计创意工坊</span>
-        </div>
-        <div class="navbar-links">
-            <a onclick="showPage('home')">画廊</a>
-            <a href="exhibition.html">数字藏品</a>
-            <a onclick="showPage('home')">关于</a>
-            <a>个人中心</a>
-        </div>
-    </nav>
-
-    <div class="studio-content">
-
-        <h1 class="studio-title">AI 贝壳设计创意工坊</h1>
-
-        <!-- Prompt Bubble -->
-        <div class="prompt-bubble-wrapper">
-            <div class="prompt-bubble">
-                <textarea id="designPrompt" class="prompt-textarea" placeholder="描述你的贝壳灵感创作...&#10;&#10;例如：“一把螺旋贝壳造型的茶壶，饰有虹彩珊瑚纹路”" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); generateWithSeedream(); }"></textarea>
+        <nav class="navbar">
+            <div class="navbar-logo">
+                <span class="logo-main" style="font-size:1.6rem;">AI 贝壳设计创意工坊</span>
             </div>
-            <!-- Decorative mini bubbles around the prompt -->
-            <div class="mini-bubble" style="width:22px;height:22px;top:-5px;left:40px;animation-delay:0.3s;"></div>
-            <div class="mini-bubble" style="width:16px;height:16px;top:20px;right:-10px;animation-delay:1s;"></div>
-            <div class="mini-bubble" style="width:12px;height:12px;bottom:10px;left:-8px;animation-delay:1.8s;"></div>
-        </div>
-
-        <!-- Generated Artwork -->
-        <div class="artwork-display" id="artwork-display">
-            <div class="glass-card">
-                <img src="shell_teapot.png" alt="AI Generated Shell Design" loading="lazy">
+            <div class="navbar-links">
+                <a onclick="showPage('home')">画廊</a>
+                <a href="exhibition.html">数字藏品</a>
+                <a onclick="showPage('home')">关于</a>
+                <a>个人中心</a>
             </div>
-        </div>
+        </nav>
 
-        <!-- Studio Action Buttons -->
-        <div class="studio-actions">
-            <button class="btn-primary" id="btn-generate" onclick="generateWithSeedream()">
-                ✨ 生成设计图 (Seedream)
-            </button>
-            <button class="btn-primary" id="btn-refine">
-                ✏️ 优化调整
-            </button>
-            <button class="btn-primary" id="btn-export">
-                📦 导出3D
-            </button>
-            <button class="btn-primary" id="btn-share">
-                🐚 分享到展馆
-            </button>
-        </div>
+        <div class="studio-content">
 
+            <h1 class="studio-title">AI 贝壳设计创意工坊</h1>
+
+            <!-- Prompt Bubble -->
+            <div class="prompt-bubble-wrapper">
+                <div class="prompt-bubble">
+                    <textarea id="designPrompt" class="prompt-textarea"
+                        placeholder="描述你的贝壳灵感创作...&#10;&#10;例如：“一把螺旋贝壳造型的茶壶，饰有虹彩珊瑚纹路”"
+                        onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); generateWithSeedream(); }"></textarea>
+                </div>
+                <!-- Decorative mini bubbles around the prompt -->
+                <div class="mini-bubble" style="width:22px;height:22px;top:-5px;left:40px;animation-delay:0.3s;"></div>
+                <div class="mini-bubble" style="width:16px;height:16px;top:20px;right:-10px;animation-delay:1s;"></div>
+                <div class="mini-bubble" style="width:12px;height:12px;bottom:10px;left:-8px;animation-delay:1.8s;">
+                </div>
+            </div>
+
+            <!-- Generated Artwork -->
+            <div class="artwork-display" id="artwork-display">
+                <div class="glass-card">
+                    <img src="shell_teapot.png" alt="AI Generated Shell Design" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Studio Action Buttons -->
+            <div class="studio-actions">
+                <button class="btn-primary" id="btn-generate" onclick="generateWithSeedream()">
+                    ✨ 生成设计图 (Seedream)
+                </button>
+                <button class="btn-primary" id="btn-refine">
+                    ✏️ 优化调整
+                </button>
+                <button class="btn-primary" id="btn-export">
+                    📦 导出3D
+                </button>
+                <button class="btn-primary" id="btn-share">
+                    🐚 分享到展馆
+                </button>
+            </div>
+
+        </div>
     </div>
-</div>
 
-<!-- ================================================================
+    <!-- ================================================================
      JAVASCRIPT
      ================================================================ -->
-<script>
-    // ---- Loading Screen ----
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.getElementById('loadingScreen').classList.add('hidden');
-        }, 800);
-    });
-
-    // ---- Page Navigation ----
-    function showPage(pageName) {
-        const pages = document.querySelectorAll('.page');
-        pages.forEach(page => {
-            page.classList.remove('active');
-            page.style.opacity = '0';
-        });
-
-        const targetPage = document.getElementById('page-' + pageName);
-        if (targetPage) {
+    <script>
+        // ---- Loading Screen ----
+        window.addEventListener('load', () => {
             setTimeout(() => {
-                targetPage.classList.add('active');
-                setTimeout(() => {
-                    targetPage.style.opacity = '1';
-                }, 50);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 300);
-        }
-    }
-
-    // ---- Shell Data Registry ----
-    const shellData = {
-        nautilus: {
-            title: '3D 贝壳模型鉴赏：鹦鹉螺',
-            image: 'nautilus_3d.png',
-            useGLB: false,
-            classification: '头足纲',
-            species: '鹦鹉螺 (Nautilus pompilius)',
-            age: '白垩纪（约一亿年前）',
-            size: '直径可达26厘米',
-            symbolism: '鹦鹉螺的螺旋体现了自然界中生长与完美的统一——从深海峡谷到广袤大洋，它是品质、对称与不断演化的生动见证。',
-            discovery: '1758年由林奈首次描述。鹦鹉螺壳被认为是自然界中数学完美的最迷人案例之一，其对数螺旋结构令人叹为观止。',
-            culture: '广泛应用于艺术与数学（黄金比例）的研究中。这种贝壳激发了全世界艺术家、建筑师和设计师的无限灵感。'
-        },
-        rose_murex: {
-            title: '3D 贝壳模型鉴赏：玫瑰千手螺',
-            image: 'rose_murex.png',
-            useGLB: true,
-            glbSrc: 'meiguiseashell3dmodel-v1.glb',
-            classification: '腹足纲',
-            species: '玫瑰千手螺 (Hexaplex rosarium)',
-            age: '现代种，化石记录追溯至新近纪',
-            size: '壳长可达15厘米',
-            symbolism: '玫瑰千手螺以其繁密的棘刺和玫瑰般的色泽著称，象征着自然界中极致的防御美学与生存智慧。',
-            discovery: '分布于西非沿海水域，其独特的多棘结构使其成为贝壳收藏家眼中的珍品，也是贝雕艺术的理想素材。',
-            culture: '在贝雕艺术中，玫瑰千手螺的复杂纹理为雕刻师提供了丰富的创作空间，常被雕琢为精美的装饰品与艺术摆件。'
-        },
-        haidan: {
-            title: '3D 贝壳模型鉴赏：海胆壳',
-            image: 'haidan.png',
-            useGLB: true,
-            glbSrc: '../3D/haidanshell3dmodel-v1.glb',
-            classification: '海胆纲',
-            species: '海胆 (Echinoidea)',
-            age: '奥陶纪至今',
-            size: '直径约3-10厘米',
-            symbolism: '海胆壳呈现出完美的辐射对称美学。',
-            discovery: '广泛分布于世界各地的浅海与深海中。',
-            culture: '在许多文化中被视为独特的天然艺术品，用于工艺品和装饰。'
-        },
-        scallop: {
-            title: '3D 贝壳模型鉴赏：扇贝',
-            image: 'scallop_shell.png',
-            useGLB: true,
-            glbSrc: '../3D/shanbeishell3dmodel-v2.glb',
-            classification: '双壳纲',
-            species: '扇贝 (Pecten)',
-            age: '化石记录追溯至三叠纪',
-            size: '壳径约5-15厘米',
-            symbolism: '扇贝壳是朝圣者的象征标志，在基督教文化中代表着圣雅各之路，也是维纳斯诞生神话中的经典意象。',
-            discovery: '扇贝化石在全世界的沉积岩中广泛分布，是最常见的海洋化石之一，对地层学研究具有重要价值。',
-            culture: '从波提切利《维纳斯的诞生》到壳牌石油公司的标志，扇贝壳是全球最广为人知的贝壳形态之一。'
-        },
-        fulun: {
-            title: '3D 贝壳模型鉴赏：扶轮螺',
-            image: 'fulun.png',
-            useGLB: true,
-            glbSrc: '../3D/fulunseashell3dmodel-v1.glb',
-            classification: '腹足纲',
-            species: '扶轮螺 (Architectonicidae)',
-            age: '新生代',
-            size: '壳径约3-5厘米',
-            symbolism: '宛如车轮般严谨对称的螺旋，展现了自然的几何奥秘。',
-            discovery: '广泛分布于热带及亚热带深海水域。',
-            culture: '车轮螺独特的扁平螺旋结构极具视觉冲击力，常被用于贝雕和精美首饰设计。'
-        },
-        tangguan: {
-            title: '3D 贝壳模型鉴赏：唐冠螺',
-            image: 'tangguan.png',
-            useGLB: true,
-            glbSrc: '../3D/tangguanseashell3dmodel-v1.glb',
-            classification: '腹足纲',
-            species: '唐冠螺 (Cassis cornuta)',
-            age: '现代',
-            size: '大型，可达30厘米',
-            symbolism: '形似唐代文官的冠帽，在中国文化中象征富贵、威严与吉祥。',
-            discovery: '主要栖息在印度洋和太平洋的珊瑚礁海域。',
-            culture: '与万宝螺、凤尾螺和鹦鹉螺并称中国传统四大名螺，是贝雕艺术史上绝佳的高级材质。'
-        }
-    };
-
-    // ---- Show Inspection Page for a specific shell ----
-    function showInspection(shellKey) {
-        switchShell(shellKey);
-        showPage('inspection');
-    }
-
-    // ---- Switch Shell in Inspection Page ----
-    function switchShell(shellKey) {
-        const data = shellData[shellKey];
-        if (!data) return;
-
-        // Update title
-        document.getElementById('inspectionTitle').textContent = data.title;
-
-        // Toggle between static image and GLB viewer
-        const staticArea = document.getElementById('staticModelArea');
-        const glbArea = document.getElementById('glbModelArea');
-
-        if (data.useGLB) {
-            staticArea.style.display = 'none';
-            glbArea.style.display = 'flex';
-            const viewer = document.getElementById('glbViewer');
-            if(viewer && data.glbSrc) {
-                viewer.src = encodeURI(data.glbSrc);
-            }
-        } else {
-            staticArea.style.display = 'flex';
-            glbArea.style.display = 'none';
-            document.getElementById('modelImage').src = data.image;
-        }
-
-        // Update scientific data panel
-        const fields = document.querySelectorAll('#scientific-data-panel .data-field');
-        if (fields[0]) { fields[0].querySelector('.data-field-value').textContent = data.classification; }
-        if (fields[1]) { fields[1].querySelector('.data-field-value').textContent = data.species; }
-        if (fields[2]) { fields[2].querySelector('.data-field-value').textContent = data.age; }
-        if (fields[3]) { fields[3].querySelector('.data-field-value').textContent = data.size; }
-
-        // Update historical context panel
-        const sections = document.querySelectorAll('#history-panel .history-section');
-        if (sections[0]) { sections[0].querySelector('p').textContent = data.symbolism; }
-        if (sections[1]) { sections[1].querySelector('p').textContent = data.discovery; }
-        if (sections[2]) { sections[2].querySelector('p').textContent = data.culture; }
-
-        // Update carousel dots
-        const dots = document.querySelectorAll('.carousel-dot');
-        const shellOrder = ['nautilus', 'rose_murex', 'haidan', 'scallop', 'fulun', 'tangguan'];
-        dots.forEach((dot, i) => {
-            if(dot) dot.classList.toggle('active', shellOrder[i] === shellKey);
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 800);
         });
-    }
 
-    // ---- Cross-Section Toggle ----
-    function toggleCrossSection() {
-        const toggle = document.getElementById('crossSectionToggle');
-        const img = document.getElementById('crossSectionImg');
-        toggle.classList.toggle('active');
-        if (toggle.classList.contains('active')) {
-            img.style.display = 'block';
-        } else {
-            img.style.display = 'none';
+        // ---- Page Navigation ----
+        function showPage(pageName) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+                page.style.opacity = '0';
+            });
+
+            const targetPage = document.getElementById('page-' + pageName);
+            if (targetPage) {
+                setTimeout(() => {
+                    targetPage.classList.add('active');
+                    setTimeout(() => {
+                        targetPage.style.opacity = '1';
+                    }, 50);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 300);
+            }
         }
-    }
 
-    // ---- Auto-Rotate Toggle for 3D Model ----
-    function toggleAutoRotate() {
-        const viewer = document.getElementById('glbViewer');
-        const toggleBtn = document.getElementById('autoRotateToggle');
-        const statusLabel = document.getElementById('rotateStatus');
+        // ---- Shell Data Registry ----
+        const shellData = {
+            nautilus: {
+                title: '3D 贝壳模型鉴赏：鹦鹉螺',
+                image: 'nautilus_3d.png',
+                useGLB: false,
+                classification: '头足纲',
+                species: '鹦鹉螺 (Nautilus pompilius)',
+                age: '白垩纪（约一亿年前）',
+                size: '直径可达26厘米',
+                symbolism: '鹦鹉螺的螺旋体现了自然界中生长与完美的统一——从深海峡谷到广袤大洋，它是品质、对称与不断演化的生动见证。',
+                discovery: '1758年由林奈首次描述。鹦鹉螺壳被认为是自然界中数学完美的最迷人案例之一，其对数螺旋结构令人叹为观止。',
+                culture: '广泛应用于艺术与数学（黄金比例）的研究中。这种贝壳激发了全世界艺术家、建筑师和设计师的无限灵感。'
+            },
+            rose_murex: {
+                title: '3D 贝壳模型鉴赏：玫瑰千手螺',
+                image: 'rose_murex.png',
+                useGLB: true,
+                glbSrc: 'meiguiseashell3dmodel-v1.glb',
+                classification: '腹足纲',
+                species: '玫瑰千手螺 (Hexaplex rosarium)',
+                age: '现代种，化石记录追溯至新近纪',
+                size: '壳长可达15厘米',
+                symbolism: '玫瑰千手螺以其繁密的棘刺和玫瑰般的色泽著称，象征着自然界中极致的防御美学与生存智慧。',
+                discovery: '分布于西非沿海水域，其独特的多棘结构使其成为贝壳收藏家眼中的珍品，也是贝雕艺术的理想素材。',
+                culture: '在贝雕艺术中，玫瑰千手螺的复杂纹理为雕刻师提供了丰富的创作空间，常被雕琢为精美的装饰品与艺术摆件。'
+            },
+            haidan: {
+                title: '3D 贝壳模型鉴赏：海胆壳',
+                image: 'haidan.png',
+                useGLB: true,
+                glbSrc: '../3D/haidanshell3dmodel-v1.glb',
+                classification: '海胆纲',
+                species: '海胆 (Echinoidea)',
+                age: '奥陶纪至今',
+                size: '直径约3-10厘米',
+                symbolism: '海胆壳呈现出完美的辐射对称美学。',
+                discovery: '广泛分布于世界各地的浅海与深海中。',
+                culture: '在许多文化中被视为独特的天然艺术品，用于工艺品和装饰。'
+            },
+            scallop: {
+                title: '3D 贝壳模型鉴赏：扇贝',
+                image: 'scallop_shell.png',
+                useGLB: true,
+                glbSrc: '../3D/shanbeishell3dmodel-v2.glb',
+                classification: '双壳纲',
+                species: '扇贝 (Pecten)',
+                age: '化石记录追溯至三叠纪',
+                size: '壳径约5-15厘米',
+                symbolism: '扇贝壳是朝圣者的象征标志，在基督教文化中代表着圣雅各之路，也是维纳斯诞生神话中的经典意象。',
+                discovery: '扇贝化石在全世界的沉积岩中广泛分布，是最常见的海洋化石之一，对地层学研究具有重要价值。',
+                culture: '从波提切利《维纳斯的诞生》到壳牌石油公司的标志，扇贝壳是全球最广为人知的贝壳形态之一。'
+            },
+            fulun: {
+                title: '3D 贝壳模型鉴赏：扶轮螺',
+                image: 'fulun.png',
+                useGLB: true,
+                glbSrc: '../3D/fulunseashell3dmodel-v1.glb',
+                classification: '腹足纲',
+                species: '扶轮螺 (Architectonicidae)',
+                age: '新生代',
+                size: '壳径约3-5厘米',
+                symbolism: '宛如车轮般严谨对称的螺旋，展现了自然的几何奥秘。',
+                discovery: '广泛分布于热带及亚热带深海水域。',
+                culture: '车轮螺独特的扁平螺旋结构极具视觉冲击力，常被用于贝雕和精美首饰设计。'
+            },
+            tangguan: {
+                title: '3D 贝壳模型鉴赏：唐冠螺',
+                image: 'tangguan.png',
+                useGLB: true,
+                glbSrc: '../3D/tangguanseashell3dmodel-v1.glb',
+                classification: '腹足纲',
+                species: '唐冠螺 (Cassis cornuta)',
+                age: '现代',
+                size: '大型，可达30厘米',
+                symbolism: '形似唐代文官的冠帽，在中国文化中象征富贵、威严与吉祥。',
+                discovery: '主要栖息在印度洋和太平洋的珊瑚礁海域。',
+                culture: '与万宝螺、凤尾螺和鹦鹉螺并称中国传统四大名螺，是贝雕艺术史上绝佳的高级材质。'
+            }
+        };
 
-        if (viewer.hasAttribute('auto-rotate')) {
-            viewer.removeAttribute('auto-rotate');
-            toggleBtn.classList.remove('active');
-            statusLabel.textContent = '关闭';
-        } else {
-            viewer.setAttribute('auto-rotate', '');
-            toggleBtn.classList.add('active');
-            statusLabel.textContent = '开启';
+        // ---- Show Inspection Page for a specific shell ----
+        function showInspection(shellKey) {
+            switchShell(shellKey);
+            showPage('inspection');
         }
-    }
 
-    // ---- Floating Particles Generator ----
-    function createParticles() {
-        const container = document.getElementById('particles');
-        const count = 20;
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            const size = Math.random() * 6 + 2;
-            const x = Math.random() * 100;
-            const duration = Math.random() * 15 + 10;
-            const delay = Math.random() * 15;
-            const hue = Math.random() * 60 + 180; // blues/greens
+        // ---- Switch Shell in Inspection Page ----
+        function switchShell(shellKey) {
+            const data = shellData[shellKey];
+            if (!data) return;
 
-            particle.style.cssText = `
+            // Update title
+            document.getElementById('inspectionTitle').textContent = data.title;
+
+            // Toggle between static image and GLB viewer
+            const staticArea = document.getElementById('staticModelArea');
+            const glbArea = document.getElementById('glbModelArea');
+
+            if (data.useGLB) {
+                staticArea.style.display = 'none';
+                glbArea.style.display = 'flex';
+                const viewer = document.getElementById('glbViewer');
+                if (viewer && data.glbSrc) {
+                    viewer.src = encodeURI(data.glbSrc);
+                }
+            } else {
+                staticArea.style.display = 'flex';
+                glbArea.style.display = 'none';
+                document.getElementById('modelImage').src = data.image;
+            }
+
+            // Update scientific data panel
+            const fields = document.querySelectorAll('#scientific-data-panel .data-field');
+            if (fields[0]) { fields[0].querySelector('.data-field-value').textContent = data.classification; }
+            if (fields[1]) { fields[1].querySelector('.data-field-value').textContent = data.species; }
+            if (fields[2]) { fields[2].querySelector('.data-field-value').textContent = data.age; }
+            if (fields[3]) { fields[3].querySelector('.data-field-value').textContent = data.size; }
+
+            // Update historical context panel
+            const sections = document.querySelectorAll('#history-panel .history-section');
+            if (sections[0]) { sections[0].querySelector('p').textContent = data.symbolism; }
+            if (sections[1]) { sections[1].querySelector('p').textContent = data.discovery; }
+            if (sections[2]) { sections[2].querySelector('p').textContent = data.culture; }
+
+            // Update carousel dots
+            const dots = document.querySelectorAll('.carousel-dot');
+            const shellOrder = ['nautilus', 'rose_murex', 'haidan', 'scallop', 'fulun', 'tangguan'];
+            dots.forEach((dot, i) => {
+                if (dot) dot.classList.toggle('active', shellOrder[i] === shellKey);
+            });
+        }
+
+        // ---- Cross-Section Toggle ----
+        function toggleCrossSection() {
+            const toggle = document.getElementById('crossSectionToggle');
+            const img = document.getElementById('crossSectionImg');
+            toggle.classList.toggle('active');
+            if (toggle.classList.contains('active')) {
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+        }
+
+        // ---- 3D Gallery Expand/Collapse Toggle ----
+        function toggle3DGallery() {
+            const container = document.getElementById('gallery-3d-items');
+            const items = container.querySelectorAll('.gallery-3d-item');
+            const btn = document.getElementById('toggleGalleryBtn');
+            const isCollapsed = container.classList.contains('collapsed');
+
+            if (isCollapsed) {
+                // Expanding
+                items.forEach((item, index) => {
+                    if (index >= 2) {
+                        item.style.display = ''; 
+                        // force reflow
+                        void item.offsetWidth;
+                        
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0) scale(1)';
+                        item.style.maxHeight = '600px';
+                        item.style.margin = '';
+                        item.style.padding = '';
+                        item.style.borderWidth = '';
+                    }
+                });
+                container.classList.remove('collapsed');
+                btn.innerHTML = '收起 🔼';
+            } else {
+                // Collapsing
+                items.forEach((item, index) => {
+                    if (index >= 2) {
+                        item.style.overflow = 'hidden';
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(-20px) scale(0.95)';
+                        item.style.maxHeight = '0px';
+                        item.style.margin = '0px';
+                        item.style.padding = '0px';
+                        item.style.borderWidth = '0px';
+                        
+                        setTimeout(() => {
+                            if (container.classList.contains('collapsed')) {
+                                item.style.display = 'none';
+                            }
+                        }, 300); // Wait for CSS transition
+                    }
+                });
+                container.classList.add('collapsed');
+                btn.innerHTML = '展开 🔽';
+            }
+        }
+
+        // ---- Auto-Rotate Toggle for 3D Model ----
+        function toggleAutoRotate() {
+            const viewer = document.getElementById('glbViewer');
+            const toggleBtn = document.getElementById('autoRotateToggle');
+            const statusLabel = document.getElementById('rotateStatus');
+
+            if (viewer.hasAttribute('auto-rotate')) {
+                viewer.removeAttribute('auto-rotate');
+                toggleBtn.classList.remove('active');
+                statusLabel.textContent = '关闭';
+            } else {
+                viewer.setAttribute('auto-rotate', '');
+                toggleBtn.classList.add('active');
+                statusLabel.textContent = '开启';
+            }
+        }
+
+        // ---- Floating Particles Generator ----
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const count = 20;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 6 + 2;
+                const x = Math.random() * 100;
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 15;
+                const hue = Math.random() * 60 + 180; // blues/greens
+
+                particle.style.cssText = `
                 width: ${size}px;
                 height: ${size}px;
                 left: ${x}%;
@@ -1582,139 +1879,140 @@
                 animation-duration: ${duration}s;
                 animation-delay: ${delay}s;
             `;
-            container.appendChild(particle);
+                container.appendChild(particle);
+            }
         }
-    }
-    createParticles();
+        createParticles();
 
-    // ---- Subtle parallax on hero ----
-    document.addEventListener('mousemove', (e) => {
-        const hero = document.getElementById('hero-section');
-        if (!hero) return;
-        const x = (e.clientX / window.innerWidth - 0.5) * 10;
-        const y = (e.clientY / window.innerHeight - 0.5) * 10;
-        hero.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-    });
-
-    // ---- Bubble hover sound-like animation pulse ----
-    document.querySelectorAll('.bubble').forEach(bubble => {
-        bubble.addEventListener('mouseenter', () => {
-            bubble.style.transition = 'transform 0.15s ease-out, box-shadow 0.3s ease';
-        });
-        bubble.addEventListener('mouseleave', () => {
-            bubble.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease';
-        });
-    });
-
-    // ---- Model 3D Rotation Drag ----
-    const modelImage = document.getElementById('modelImage');
-    if (modelImage) {
-        let isDragging = false;
-        let startX = 0;
-        let currentRotation = 0;
-
-        modelImage.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-            modelImage.style.cursor = 'grabbing';
-            e.preventDefault();
-        });
-
+        // ---- Subtle parallax on hero ----
         document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const delta = e.clientX - startX;
-            modelImage.style.transform = `rotateY(${currentRotation + delta * 0.3}deg)`;
+            const hero = document.getElementById('hero-section');
+            if (!hero) return;
+            const x = (e.clientX / window.innerWidth - 0.5) * 10;
+            const y = (e.clientY / window.innerHeight - 0.5) * 10;
+            hero.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
         });
 
-        document.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            currentRotation += (e.clientX - startX) * 0.3;
-            modelImage.style.cursor = 'grab';
+        // ---- Bubble hover sound-like animation pulse ----
+        document.querySelectorAll('.bubble').forEach(bubble => {
+            bubble.addEventListener('mouseenter', () => {
+                bubble.style.transition = 'transform 0.15s ease-out, box-shadow 0.3s ease';
+            });
+            bubble.addEventListener('mouseleave', () => {
+                bubble.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease';
+            });
         });
-    }
-    // ---- Seedream AI Generation Mock ----
-    async function generateWithSeedream() {
-        const promptInput = document.getElementById('designPrompt').value;
-        if (!promptInput.trim()) {
-            alert('请输入您的设计提示词！');
-            return;
-        }
 
-        const genBtn = document.getElementById('btn-generate');
-        const imgDisplay = document.querySelector('#artwork-display img');
-        
-        genBtn.innerHTML = '✨ 正在连接 Seedream 生成中...';
-        genBtn.disabled = true;
-        genBtn.style.opacity = '0.7';
-        
-        // Show loading effect on img
-        imgDisplay.style.transition = 'all 0.5s ease';
-        imgDisplay.style.filter = 'blur(8px) brightness(0.8)';
+        // ---- Model 3D Rotation Drag ----
+        const modelImage = document.getElementById('modelImage');
+        if (modelImage) {
+            let isDragging = false;
+            let startX = 0;
+            let currentRotation = 0;
 
-        try {
-            // ==========================================
-            // 👇 【已接入真实 Seedream API】 👇
-            // ==========================================
-            
-            const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/images/generations';
-
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer a2b8ca98-603a-4c9f-b970-c22883fb3656'
-                },
-                body: JSON.stringify({
-                    "model": "doubao-seedream-5-0-260128",
-                    "prompt": promptInput,
-                    "sequential_image_generation": "disabled",
-                    "response_format": "url",
-                    "size": "2K",
-                    "stream": false,
-                    "watermark": true
-                })
+            modelImage.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                modelImage.style.cursor = 'grabbing';
+                e.preventDefault();
             });
 
-            if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const delta = e.clientX - startX;
+                modelImage.style.transform = `rotateY(${currentRotation + delta * 0.3}deg)`;
+            });
+
+            document.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                currentRotation += (e.clientX - startX) * 0.3;
+                modelImage.style.cursor = 'grab';
+            });
+        }
+        // ---- Seedream AI Generation Mock ----
+        async function generateWithSeedream() {
+            const promptInput = document.getElementById('designPrompt').value;
+            if (!promptInput.trim()) {
+                alert('请输入您的设计提示词！');
+                return;
             }
 
-            const data = await response.json();
-            
-            if (data.data && data.data.length > 0 && data.data[0].url) {
-                const generatedImageUrl = data.data[0].url; 
-                imgDisplay.src = generatedImageUrl; 
-            } else {
-                throw new Error("Failed to get image url from response");
-            }
-            
-            // ==========================================
-            // 👆 【接入代码结束】 👆
-            // ==========================================
-            
-            imgDisplay.style.filter = 'blur(0px) brightness(1.1)';
-            imgDisplay.style.transform = 'scale(1.02)';
-            
-            setTimeout(() => {
-                imgDisplay.style.transform = 'scale(1)';
+            const genBtn = document.getElementById('btn-generate');
+            const imgDisplay = document.querySelector('#artwork-display img');
+
+            genBtn.innerHTML = '✨ 正在连接 Seedream 生成中...';
+            genBtn.disabled = true;
+            genBtn.style.opacity = '0.7';
+
+            // Show loading effect on img
+            imgDisplay.style.transition = 'all 0.5s ease';
+            imgDisplay.style.filter = 'blur(8px) brightness(0.8)';
+
+            try {
+                // ==========================================
+                // 👇 【已接入真实 Seedream API】 👇
+                // ==========================================
+
+                const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/images/generations';
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer a2b8ca98-603a-4c9f-b970-c22883fb3656'
+                    },
+                    body: JSON.stringify({
+                        "model": "doubao-seedream-5-0-260128",
+                        "prompt": promptInput,
+                        "sequential_image_generation": "disabled",
+                        "response_format": "url",
+                        "size": "2K",
+                        "stream": false,
+                        "watermark": true
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.data && data.data.length > 0 && data.data[0].url) {
+                    const generatedImageUrl = data.data[0].url;
+                    imgDisplay.src = generatedImageUrl;
+                } else {
+                    throw new Error("Failed to get image url from response");
+                }
+
+                // ==========================================
+                // 👆 【接入代码结束】 👆
+                // ==========================================
+
+                imgDisplay.style.filter = 'blur(0px) brightness(1.1)';
+                imgDisplay.style.transform = 'scale(1.02)';
+
+                setTimeout(() => {
+                    imgDisplay.style.transform = 'scale(1)';
+                    imgDisplay.style.filter = 'none';
+                    genBtn.innerHTML = '✨ 重新生成 (Seedream)';
+                    genBtn.disabled = false;
+                    genBtn.style.opacity = '1';
+                    console.log('Seedream mock created design for:', promptInput);
+                }, 300);
+
+            } catch (error) {
+                console.error('生图 API 调用失败:', error);
+                alert('生成失败，请检查网络或 API 设置。');
                 imgDisplay.style.filter = 'none';
-                genBtn.innerHTML = '✨ 重新生成 (Seedream)';
+                genBtn.innerHTML = '✨ 生成设计图 (Seedream)';
                 genBtn.disabled = false;
                 genBtn.style.opacity = '1';
-                console.log('Seedream mock created design for:', promptInput);
-            }, 300);
-
-        } catch (error) {
-            console.error('生图 API 调用失败:', error);
-            alert('生成失败，请检查网络或 API 设置。');
-            imgDisplay.style.filter = 'none';
-            genBtn.innerHTML = '✨ 生成设计图 (Seedream)';
-            genBtn.disabled = false;
-            genBtn.style.opacity = '1';
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
+
 </html>

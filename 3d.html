@@ -436,7 +436,7 @@
 
     <div id="loading">正在加载可爱的小熊...</div>
     <div id="canvas-container"></div>
-    <div class="controls-info">拖动旋转 • 滚动缩放</div>
+    <div class="controls-info">左键旋转 • 滚轮缩放 • 右键平移</div>
 
     <!-- 返回按钮 -->
     <a href="ip.html" id="back-button">
@@ -662,7 +662,9 @@
             controls.dampingFactor = 0.05;
             controls.minDistance = 3;
             controls.maxDistance = 15;
-            controls.target.set(0, 0, 0);
+            controls.enablePan = true;
+            controls.panSpeed = 1.0;
+            controls.target.set(0, 1.2, 0);
 
             // 6.5. 初始化鼠标悬停检测
             raycaster = new THREE.Raycaster();
