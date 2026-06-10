@@ -136,10 +136,10 @@
     ],
   
     "images": {
-      "ipMain": "images/beibei-main.png",
-      "friendTiantian": "images/tiantian-crab.png",
-      "friendPaopao": "images/paopao-fish.png", 
-      "friendRourou": "images/rourou-jellyfish.png",
-      "background": "images/ocean-bg.jpg"
+      "ipMain": "https://xiaxizuishuai.github.io/shell-carving/images/beibei-main.png",
+      "friendTiantian": "https://xiaxizuishuai.github.io/shell-carving/images/tiantian-crab.png",
+      "friendPaopao": "https://xiaxizuishuai.github.io/shell-carving/images/paopao-fish.png", 
+      "friendRourou": "https://xiaxizuishuai.github.io/shell-carving/images/rourou-jellyfish.png",
+      "background": "https://xiaxizuishuai.github.io/shell-carving/images/ocean-bg.jpg"
     }
   }
