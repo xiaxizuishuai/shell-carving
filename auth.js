@@ -6,22 +6,22 @@ const UserStorage = {
     const users = localStorage.getItem('shellArtUsers');
     return users ? JSON.parse(users) : {};
   },
-  
+
   saveUsers(users) {
     localStorage.setItem('shellArtUsers', JSON.stringify(users));
   },
-  
+
   getCurrentUser() {
     const userId = localStorage.getItem('currentUserId');
     if (!userId) return null;
     const users = this.getUsers();
     return users[userId] || null;
   },
-  
+
   setCurrentUser(userId) {
     localStorage.setItem('currentUserId', userId);
   },
-  
+
   clearCurrentUser() {
     localStorage.removeItem('currentUserId');
   }
@@ -31,12 +31,12 @@ const UserStorage = {
 const Auth = {
   register(userData) {
     const users = UserStorage.getUsers();
-    
+
     // 检查邮箱是否已存在
     if (users[userData.email]) {
       throw new Error('该邮箱已被注册');
     }
-    
+
     // 创建新用户
     const newUser = {
       id: Date.now().toString(),
@@ -47,34 +47,34 @@ const Auth = {
       addresses: [],
       createdAt: new Date().toISOString()
     };
-    
+
     users[userData.email] = newUser;
     UserStorage.saveUsers(users);
     UserStorage.setCurrentUser(userData.email);
-    
+
     return newUser;
   },
-  
+
   login(username, password) {
     const users = UserStorage.getUsers();
-    
+
     // 通过用户名查找用户
     const userList = Object.values(users);
     const user = userList.find(u => u.name === username);
-    
+
     if (!user) {
       throw new Error('用户名或密码错误');
     }
-    
+
     if (user.password !== password) {
       throw new Error('用户名或密码错误');
     }
-    
+
     // 使用邮箱作为唯一标识存储
     UserStorage.setCurrentUser(user.email);
     return user;
   },
-  
+
   logout() {
     UserStorage.clearCurrentUser();
     updateUI();
@@ -87,19 +87,19 @@ const AddressManager = {
     const user = UserStorage.getCurrentUser();
     return user ? user.addresses || [] : [];
   },
-  
+
   addAddress(addressData) {
     const user = UserStorage.getCurrentUser();
     if (!user) throw new Error('请先登录');
-    
+
     const users = UserStorage.getUsers();
     const addresses = user.addresses || [];
-    
+
     // 如果设为默认地址，取消其他默认地址
     if (addressData.isDefault) {
       addresses.forEach(addr => addr.isDefault = false);
     }
-    
+
     const newAddress = {
       id: Date.now().toString(),
       name: addressData.name,
@@ -108,44 +108,44 @@ const AddressManager = {
       detail: addressData.detail,
       isDefault: addressData.isDefault || false
     };
-    
+
     addresses.push(newAddress);
     user.addresses = addresses;
     users[user.email] = user;
     UserStorage.saveUsers(users);
-    
+
     return newAddress;
   },
-  
+
   updateAddress(addressId, addressData) {
     const user = UserStorage.getCurrentUser();
     if (!user) throw new Error('请先登录');
-    
+
     const users = UserStorage.getUsers();
     const addresses = user.addresses || [];
     const index = addresses.findIndex(addr => addr.id === addressId);
-    
+
     if (index === -1) throw new Error('地址不存在');
-    
+
     // 如果设为默认地址，取消其他默认地址
     if (addressData.isDefault) {
       addresses.forEach((addr, i) => {
         if (i !== index) addr.isDefault = false;
       });
     }
-    
+
     addresses[index] = { ...addresses[index], ...addressData };
     user.addresses = addresses;
     users[user.email] = user;
     UserStorage.saveUsers(users);
-    
+
     return addresses[index];
   },
-  
+
   deleteAddress(addressId) {
     const user = UserStorage.getCurrentUser();
     if (!user) throw new Error('请先登录');
-    
+
     const users = UserStorage.getUsers();
     const addresses = user.addresses || [];
     user.addresses = addresses.filter(addr => addr.id !== addressId);
@@ -158,7 +158,7 @@ const AddressManager = {
 function updateUI() {
   const user = UserStorage.getCurrentUser();
   const userButtonText = document.getElementById('userButtonText');
-  
+
   if (user) {
     userButtonText.textContent = user.name || '我的账户';
     // 如果模态框已打开，切换到用户信息面板
@@ -197,13 +197,13 @@ function showRegisterForm() {
 function showUserInfoPanel() {
   const user = UserStorage.getCurrentUser();
   if (!user) return;
-  
+
   document.getElementById('loginForm').classList.remove('active');
   document.getElementById('registerForm').classList.remove('active');
   document.getElementById('userInfoPanel').classList.add('active');
   document.getElementById('addressPanel').classList.remove('active');
   document.getElementById('addressFormPanel').classList.remove('active');
-  
+
   document.getElementById('userNameDisplay').textContent = user.name;
   document.getElementById('userEmailDisplay').textContent = user.email;
   document.getElementById('userModalTitle').textContent = '我的账户';
@@ -219,10 +219,10 @@ function showAddressPanel() {
 function showAddressForm(addressId = null) {
   document.getElementById('addressPanel').classList.remove('active');
   document.getElementById('addressFormPanel').classList.add('active');
-  
+
   const form = document.getElementById('addressForm');
   const formTitle = document.getElementById('addressFormTitle');
-  
+
   if (addressId) {
     formTitle.textContent = '编辑收货地址';
     const addresses = AddressManager.getAddresses();
@@ -245,12 +245,12 @@ function showAddressForm(addressId = null) {
 function renderAddressList() {
   const addressList = document.getElementById('addressList');
   const addresses = AddressManager.getAddresses();
-  
+
   if (addresses.length === 0) {
     addressList.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">暂无收货地址，请添加</div>';
     return;
   }
-  
+
   addressList.innerHTML = addresses.map(address => `
     <div class="address-item ${address.isDefault ? 'default' : ''}">
       <div class="address-item-header">
@@ -271,7 +271,7 @@ function renderAddressList() {
 
 function deleteAddress(addressId) {
   if (!confirm('确定要删除这个地址吗？')) return;
-  
+
   try {
     AddressManager.deleteAddress(addressId);
     renderAddressList();
@@ -285,23 +285,23 @@ function openUserModal() {
   console.log('openUserModal 被调用');
   const backdrop = document.getElementById('userBackdrop');
   const modal = document.getElementById('userModal');
-  
+
   if (!backdrop) {
     console.error('userBackdrop 元素未找到');
     return;
   }
-  
+
   if (!modal) {
     console.error('userModal 元素未找到');
     return;
   }
-  
+
   console.log('显示模态框');
   backdrop.classList.add('visible');
   modal.classList.add('visible');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  
+
   // 确保显示登录表单
   const user = UserStorage.getCurrentUser();
   if (user) {
@@ -314,12 +314,12 @@ function openUserModal() {
 function closeUserModal() {
   const backdrop = document.getElementById('userBackdrop');
   const modal = document.getElementById('userModal');
-  
+
   if (!backdrop || !modal) {
     console.error('用户模态框元素未找到');
     return;
   }
-  
+
   backdrop.classList.remove('visible');
   modal.classList.remove('visible');
   modal.setAttribute('aria-hidden', 'true');
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.error('未找到userToggle元素');
   }
-  
+
   const userClose = document.getElementById('userClose');
   if (userClose) {
     userClose.addEventListener('click', closeUserModal);
@@ -350,27 +350,27 @@ document.addEventListener('DOMContentLoaded', () => {
       closeUserModal();
     }
   });
-  
+
   // 表单切换
   document.getElementById('switchToRegister').addEventListener('click', showRegisterForm);
   document.getElementById('switchToLogin').addEventListener('click', showLoginForm);
-  
+
   // 登录表单提交
   document.getElementById('loginFormElement').addEventListener('submit', (e) => {
     e.preventDefault();
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
-    
+
     if (!username) {
       alert('请输入用户名');
       return;
     }
-    
+
     if (!password) {
       alert('请输入密码');
       return;
     }
-    
+
     try {
       Auth.login(username, password);
       updateUI();
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert(error.message);
     }
   });
-  
+
   // 注册表单提交
   document.getElementById('registerFormElement').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
     const phone = document.getElementById('registerPhone').value;
-    
+
     try {
       Auth.register({ name, email, password, phone });
       updateUI();
@@ -402,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert(error.message);
     }
   });
-  
+
   // 用户信息面板
   document.getElementById('manageAddressBtn').addEventListener('click', showAddressPanel);
   document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -411,13 +411,13 @@ document.addEventListener('DOMContentLoaded', () => {
       closeUserModal();
     }
   });
-  
+
   // 地址管理
   document.getElementById('backToUserInfo').addEventListener('click', showUserInfoPanel);
   document.getElementById('addAddressBtn').addEventListener('click', () => showAddressForm());
   document.getElementById('backToAddressList').addEventListener('click', showAddressPanel);
   document.getElementById('cancelAddressBtn').addEventListener('click', showAddressPanel);
-  
+
   // 地址表单提交
   document.getElementById('addressForm').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
       detail: document.getElementById('addressDetail').value,
       isDefault: document.getElementById('addressDefault').checked
     };
-    
+
     try {
       if (form.dataset.editId) {
         AddressManager.updateAddress(form.dataset.editId, addressData);
@@ -443,15 +443,15 @@ document.addEventListener('DOMContentLoaded', () => {
       alert(error.message);
     }
   });
-  
+
   // 编辑资料（占位功能）
   document.getElementById('editProfileBtn').addEventListener('click', () => {
     alert('编辑资料功能开发中...');
   });
-  
+
   // 初始化UI
   updateUI();
-  
+
   // ESC键关闭模态框
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {

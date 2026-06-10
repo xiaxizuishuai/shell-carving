@@ -84,7 +84,7 @@ Write-Host ""
 # 询问是否创建 ZIP
 $createZip = Read-Host "是否创建 ZIP 分发包？(Y/N)"
 if ($createZip -eq "Y" -or $createZip -eq "y") {
-    $zipName = "贝雕艺术探索者-安全版-$(Get-Date -Format 'yyyyMMdd-HHmmss').zip"
+    $zipName = "贝漾涌起-安全版-$(Get-Date -Format 'yyyyMMdd-HHmmss').zip"
     
     Write-Host "正在创建 ZIP 包..." -ForegroundColor Cyan
     

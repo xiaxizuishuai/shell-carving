@@ -1,13 +1,13 @@
 {
     "project": {
-      "name": "贝雕艺术探索者网站复刻",
-      "description": "严格按照原设计复刻贝雕艺术探索者网站的IP形象页面",
+      "name": "贝漾涌起网站复刻",
+      "description": "严格按照原设计复刻贝漾涌起网站的IP形象页面",
       "layout": "单页面应用，包含导航栏、IP形象介绍、页脚等部分"
     },
   
     "header": {
       "logo": {
-        "text": "贝雕艺术探索者",
+        "text": "贝漾涌起",
         "subtitle": "探索贝壳雕刻的千年技艺，认识可爱的贝贝，收藏精美的贝雕艺术品"
       },
       "navigation": {
@@ -71,7 +71,7 @@
     },
   
     "footer": {
-      "copyright": "© 2023 贝雕艺术探索者 | 传承千年贝雕技艺，弘扬海洋文化",
+      "copyright": "© 2023 贝漾涌起 | 传承千年贝雕技艺，弘扬海洋文化",
       "contact": {
         "email": "contact@sheli-art.com",
         "wechat": "关注微信公众号：贝雕艺术"

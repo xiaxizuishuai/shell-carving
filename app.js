@@ -271,13 +271,13 @@ function openImageViewer(product, imageIndex = 0) {
   currentImageViewer.product = product;
   currentImageViewer.currentImageIndex = imageIndex;
   currentImageViewer.isOpen = true;
-  
+
   $('#imageViewerTitle').textContent = product.name;
   $('#imageViewerImg').src = product.images[imageIndex];
   $('#imageViewerImg').alt = product.name;
   updateImageCounter();
   updateNavigationButtons();
-  
+
   $('#imageViewerBackdrop').classList.add('visible');
   document.body.style.overflow = 'hidden'; // 防止背景滚动
 }
@@ -321,7 +321,7 @@ function updateNavigationButtons() {
   const images = currentImageViewer.product.images;
   const prevBtn = $('#prevImage');
   const nextBtn = $('#nextImage');
-  
+
   prevBtn.disabled = currentImageViewer.currentImageIndex === 0;
   nextBtn.disabled = currentImageViewer.currentImageIndex === images.length - 1;
 }
@@ -341,7 +341,7 @@ function wireUI() {
     clearCart();
     closeCart();
   });
-  
+
   // 图片查看器事件监听器
   $('#imageViewerClose').addEventListener('click', closeImageViewer);
   $('#imageViewerBackdrop').addEventListener('click', (e) => {
@@ -351,11 +351,11 @@ function wireUI() {
   });
   $('#prevImage').addEventListener('click', showPrevImage);
   $('#nextImage').addEventListener('click', showNextImage);
-  
+
   // 键盘导航支持
   document.addEventListener('keydown', (e) => {
     if (!currentImageViewer.isOpen) return;
-    
+
     switch (e.key) {
       case 'Escape':
         closeImageViewer();

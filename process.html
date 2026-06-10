@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>制作流程 - 贝雕艺术探索者</title>
+  <title>制作流程 - 贝漾涌起</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <!-- Konva.js 库 -->
   <script src="https://cdn.jsdelivr.net/npm/konva@9/konva.min.js"></script>
 </head>
+
 <body class="process-page">
   <header class="app-header">
     <div class="brand">
       <div class="brand-mark">贝</div>
-      <h1 class="brand-title">贝雕艺术探索者</h1>
+      <h1 class="brand-title">贝漾涌起</h1>
     </div>
     <nav class="nav" aria-label="主导航">
       <a href="index.html" class="pill">首页</a>
@@ -47,7 +51,8 @@
     <section class="process-carousel-wrapper" aria-label="制作流程轮播">
       <button class="carousel-nav-btn carousel-prev" aria-label="上一个流程" id="prevBtn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
 
@@ -66,8 +71,8 @@
                 <span>🔍</span>
                 <span>查看选材秘密</span>
               </a>
-        </div>
-      </div>
+            </div>
+          </div>
 
           <div class="process-card" data-step="2">
             <div class="card-image-wrapper">
@@ -82,8 +87,8 @@
                 <span>🎨</span>
                 <span>开始设计</span>
               </button>
-        </div>
-      </div>
+            </div>
+          </div>
 
           <div class="process-card" data-step="3">
             <div class="card-image-wrapper">
@@ -98,8 +103,8 @@
                 <span>🔨</span>
                 <span>探索雕刻技法</span>
               </a>
-        </div>
-      </div>
+            </div>
+          </div>
 
           <div class="process-card" data-step="4">
             <div class="card-image-wrapper">
@@ -110,8 +115,8 @@
               <div class="card-number">04</div>
               <h3 class="card-title">打磨</h3>
               <p class="card-subtitle">对雕刻完成的作品进行细致的打磨，使表面光滑细腻，突出贝壳的天然光泽和纹理美感。</p>
-        </div>
-      </div>
+            </div>
+          </div>
 
           <div class="process-card" data-step="5">
             <div class="card-image-wrapper">
@@ -122,8 +127,8 @@
               <div class="card-number">05</div>
               <h3 class="card-title">抛光</h3>
               <p class="card-subtitle">通过专业的抛光工艺，让作品呈现出珍珠般的光泽，使其更加精美动人。</p>
-        </div>
-      </div>
+            </div>
+          </div>
 
           <div class="process-card" data-step="6">
             <div class="card-image-wrapper">
@@ -141,7 +146,8 @@
 
       <button class="carousel-nav-btn carousel-next" aria-label="下一个流程" id="nextBtn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
     </section>
@@ -165,14 +171,14 @@
       </div>
       <button id="designClose" class="icon-btn" type="button" aria-label="关闭">✕</button>
     </div>
-    
+
     <div class="design-modal-content">
       <!-- 设计内容展示区 -->
       <div class="design-content-section">
         <div class="design-intro">
           <h3>🌊 沧海拾遗：指尖上的海洋诗篇</h3>
           <p class="design-quote">"每一枚贝壳都听过大海的呼吸，每一刀雕琢都刻录了时光的痕迹。"</p>
-          
+
           <div class="design-showcase">
             <div class="showcase-item">
               <div class="showcase-image" onclick="openImageModal('images/设计1.jpg')" style="cursor: pointer;">
@@ -188,7 +194,7 @@
                 <li><strong>灵动之美：</strong> 每一根羽毛的纹理都经过精细雕琢，鸟身洁白温润，金爪刚劲有力，静止的胸针却拥有破空而出的动态美。</li>
               </ul>
             </div>
-            
+
             <div class="showcase-item">
               <div class="showcase-image" onclick="openImageModal('images/设计2.jpg')" style="cursor: pointer;">
                 <img src="images/设计2.jpg" alt="弦音入鬓 · 琵琶螺钿梳" onerror="this.style.display='none'">
@@ -203,7 +209,7 @@
                 <li><strong>花开无声：</strong> 梳背之上的花卉图案并非彩绘，而是借用贝壳天然的珍珠光泽。随着视角变化，花朵仿佛在木纹间缓缓绽放。这不仅是一把梳子，更是一件可把玩的掌中雅物。</li>
               </ul>
             </div>
-            
+
             <div class="showcase-item">
               <div class="showcase-image" onclick="openImageModal('images/设计3.jpg')" style="cursor: pointer;">
                 <img src="images/设计3.jpg" alt="匠心 · 浑然天成" onerror="this.style.display='none'">
@@ -214,13 +220,14 @@
               <p><strong>【解读】</strong></p>
               <ul>
                 <li><strong>原材之美：</strong> 每一件贝雕的诞生，都始于对数万枚原生贝壳的甄选。无论是夜光螺的莹白，还是鲍鱼贝的绚烂，都是大自然的鬼斧神工。</li>
-                <li><strong>毫厘之功：</strong> 从原贝的切割、打磨，到拼接、镶嵌，匠人需要在极薄的脆性材料上施展毫厘功夫。那双粗糙的手与精致的贝花形成鲜明对比——这正是非遗的真谛：用时间，去打磨永恒。</li>
+                <li><strong>毫厘之功：</strong> 从原贝的切割、打磨，到拼接、镶嵌，匠人需要在极薄的脆性材料上施展毫厘功夫。那双粗糙的手与精致的贝花形成鲜明对比——这正是非遗的真谛：用时间，去打磨永恒。
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- 画板工具区 -->
       <div class="design-canvas-section">
         <div class="canvas-toolbar">
@@ -233,7 +240,7 @@
               <button class="tool-btn" data-tool="eraser" onclick="setTool('eraser')">🧹 橡皮</button>
             </div>
           </div>
-          
+
           <div class="tool-group" id="drawControls">
             <label>画笔设置</label>
             <div class="slider-group">
@@ -245,7 +252,8 @@
               <input type="color" id="brushColor" value="#000000" onchange="updateBrushColor(this.value)">
               <div class="color-presets">
                 <div class="color-preset" style="background: #000000" onclick="setColor('#000000')" title="黑色"></div>
-                <div class="color-preset" style="background: #FFFFFF; border: 1px solid #ccc;" onclick="setColor('#FFFFFF')" title="白色"></div>
+                <div class="color-preset" style="background: #FFFFFF; border: 1px solid #ccc;"
+                  onclick="setColor('#FFFFFF')" title="白色"></div>
                 <div class="color-preset" style="background: #FF0000" onclick="setColor('#FF0000')" title="红色"></div>
                 <div class="color-preset" style="background: #FF6B6B" onclick="setColor('#FF6B6B')" title="粉红"></div>
                 <div class="color-preset" style="background: #FF7043" onclick="setColor('#FF7043')" title="橙红"></div>
@@ -263,7 +271,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="tool-group" id="stickerControls" style="display: none;">
             <label>选择贴纸</label>
             <div class="sticker-grid">
@@ -286,10 +294,11 @@
             </div>
             <div class="slider-group">
               <label>大小: <span id="stickerSizeVal">1.0</span>x</label>
-              <input type="range" id="stickerSize" min="0.5" max="2" step="0.1" value="1" oninput="updateStickerSize(this.value)">
+              <input type="range" id="stickerSize" min="0.5" max="2" step="0.1" value="1"
+                oninput="updateStickerSize(this.value)">
             </div>
           </div>
-          
+
           <div class="tool-group">
             <label>画布背景</label>
             <div class="shell-bg-selector">
@@ -307,7 +316,7 @@
               </button>
             </div>
           </div>
-          
+
           <div class="tool-group">
             <label>画布控制</label>
             <div class="tool-buttons">
@@ -317,10 +326,11 @@
             </div>
             <div class="slider-group">
               <label>缩放: <span id="zoomLevel">100</span>%</label>
-              <input type="range" id="zoomSlider" min="50" max="300" value="100" step="10" oninput="setZoom(this.value)">
+              <input type="range" id="zoomSlider" min="50" max="300" value="100" step="10"
+                oninput="setZoom(this.value)">
             </div>
           </div>
-          
+
           <div class="tool-group">
             <label>绘制辅助</label>
             <div class="slider-group">
@@ -336,7 +346,7 @@
               </label>
             </div>
           </div>
-          
+
           <div class="tool-group">
             <button class="btn-clear" onclick="clearCanvas()">🗑️ 清空画布</button>
             <button class="btn-save" onclick="saveDesign()">💾 保存设计</button>
@@ -344,7 +354,7 @@
             <button class="tool-btn" onclick="redo()" title="重做">↷ 重做</button>
           </div>
         </div>
-        
+
         <div class="canvas-wrapper">
           <div id="designCanvasContainer"></div>
         </div>
@@ -353,7 +363,7 @@
   </div>
 
   <footer class="app-footer">
-    <p>© <span id="year">2023</span> 贝雕艺术探索者 | 传承千年贝雕技艺，弘扬海洋文化</p>
+    <p>© <span id="year">2023</span> 贝漾涌起 | 传承千年贝雕技艺，弘扬海洋文化</p>
     <p>联系我们: contact@sheli-art.com | 关注微信公众号: 贝雕艺术</p>
   </footer>
 
@@ -364,17 +374,17 @@
       if (yearEl) {
         yearEl.textContent = new Date().getFullYear();
       }
-      
+
       initProcessCarousel();
       initSparkleBackground();
     });
 
-      function initProcessCarousel() {
+    function initProcessCarousel() {
       const track = document.getElementById('carouselTrack');
       const cards = document.querySelectorAll('.process-card');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-      
+
       if (!track || cards.length === 0) return;
 
       let currentIndex = 0;
@@ -403,7 +413,7 @@
         cards.forEach((card, index) => {
           // 计算相对于当前索引的位置
           let relativeIndex = index - currentIndex;
-          
+
           // 处理循环：确保相对索引在 -1 到 1 之间（显示3张卡片）
           if (relativeIndex > totalCards / 2) {
             relativeIndex -= totalCards;
@@ -425,7 +435,7 @@
 
           // 更新卡片状态类
           card.classList.remove('active', 'prev', 'next');
-          
+
           if (relativeIndex === 0) {
             card.classList.add('active');
           } else if (relativeIndex === -1) {
@@ -450,7 +460,7 @@
         lastClickTime = now;
 
         const targetIndex = (index + totalCards) % totalCards;
-        
+
         // 如果目标索引与当前相同，不执行
         if (targetIndex === currentIndex && !skipAnimation) {
           return;
@@ -458,10 +468,10 @@
 
         isAnimating = true;
         isTransitioning = true;
-        
+
         currentIndex = targetIndex;
         updateCarousel();
-        
+
         // 动画完成后重置标志
         setTimeout(() => {
           isAnimating = false;
@@ -514,11 +524,11 @@
       prevBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (isAnimating) return;
-        
+
         if (buttonClickTimer) {
           clearTimeout(buttonClickTimer);
         }
-        
+
         buttonClickTimer = setTimeout(() => {
           prevSlide();
           stopAutoPlay();
@@ -529,15 +539,15 @@
           }, 5000); // 点击后5秒再开始自动播放
         }, 50);
       });
-      
+
       nextBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (isAnimating) return;
-        
+
         if (buttonClickTimer) {
           clearTimeout(buttonClickTimer);
         }
-        
+
         buttonClickTimer = setTimeout(() => {
           nextSlide();
           stopAutoPlay();
@@ -588,7 +598,7 @@
         isDragging = false;
         const diffX = startX - e.clientX;
         const dragDuration = Date.now() - dragStartTime;
-        
+
         // 只有拖拽距离足够且时间合理时才触发
         if (Math.abs(diffX) > 50 && dragDuration < 500) {
           if (diffX > 0) {
@@ -623,7 +633,7 @@
         if (!startX || isAnimating) return;
         const diffX = startX - e.changedTouches[0].clientX;
         const dragDuration = Date.now() - dragStartTime;
-        
+
         // 只有拖拽距离足够且时间合理时才触发
         if (Math.abs(diffX) > 50 && dragDuration < 500) {
           if (diffX > 0) {
@@ -692,14 +702,14 @@
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'sparkle-particle';
-        
+
         const size = Math.random() * 4 + 2;
         const color = getWeightedColor();
         const duration = Math.random() * 5 + 3;
         const delay = Math.random() * 2;
         const x = Math.random() * 100;
         const y = Math.random() * 100;
-        
+
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         particle.style.backgroundColor = color;
@@ -707,7 +717,7 @@
         particle.style.top = `${y}%`;
         particle.style.animationDuration = `${duration}s`;
         particle.style.animationDelay = `${delay}s`;
-        
+
         container.appendChild(particle);
       }
     }
@@ -738,25 +748,25 @@
     function openDesignWorkshop() {
       const backdrop = document.getElementById('designBackdrop');
       const modal = document.getElementById('designModal');
-      
+
       if (!backdrop || !modal) {
         console.error('设计工坊模态框元素未找到');
         return;
       }
-      
+
       // 确保模态框有全屏类
       if (!modal.classList.contains('design-modal-fullscreen')) {
         modal.classList.add('design-modal-fullscreen');
       }
-      
+
       backdrop.classList.add('visible');
       modal.classList.add('visible');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      
+
       // 强制重新计算样式
       void modal.offsetWidth;
-      
+
       // 初始化 Konva 画布 - 增加延迟确保DOM完全渲染
       setTimeout(() => {
         initKonvaCanvas();
@@ -770,7 +780,7 @@
     function closeDesignWorkshop() {
       const backdrop = document.getElementById('designBackdrop');
       const modal = document.getElementById('designModal');
-      
+
       if (backdrop) backdrop.classList.remove('visible');
       if (modal) {
         modal.classList.remove('visible');
@@ -785,7 +795,7 @@
         console.error('画布容器元素未找到');
         return;
       }
-      
+
       // 获取容器尺寸
       const rect = container.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) {
@@ -793,13 +803,13 @@
         setTimeout(() => initKonvaCanvas(), 200);
         return;
       }
-      
+
       // 如果已经初始化，先销毁
       if (stage) {
         stage.destroy();
         stage = null;
       }
-      
+
       // 设置容器样式，确保可见
       container.style.display = 'block';
       container.style.width = '1200px';
@@ -811,14 +821,14 @@
       container.style.borderRadius = '12px';
       container.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
       container.style.position = 'relative';
-      
+
       // 创建 Konva Stage
       stage = new Konva.Stage({
         container: 'designCanvasContainer',
         width: 1200,
         height: 900
       });
-      
+
       // 确保画布可见
       const canvas = stage.getContent();
       if (canvas) {
@@ -826,25 +836,25 @@
         canvas.style.width = '1200px';
         canvas.style.height = '900px';
       }
-      
+
       console.log('Konva Stage 创建完成，容器尺寸:', container.offsetWidth, 'x', container.offsetHeight);
-      
+
       // 创建背景层
       backgroundLayer = new Konva.Layer();
       stage.add(backgroundLayer);
-      
+
       // 创建绘制层
       drawingLayer = new Konva.Layer();
       stage.add(drawingLayer);
-      
+
       // 创建贴纸层
       stickerLayer = new Konva.Layer();
       stage.add(stickerLayer);
-      
+
       // 创建画笔预览层
       previewLayer = new Konva.Layer();
       stage.add(previewLayer);
-      
+
       // 创建画笔预览圆圈
       brushPreviewCircle = new Konva.Circle({
         radius: brushSize / 2,
@@ -856,7 +866,7 @@
         listening: false
       });
       previewLayer.add(brushPreviewCircle);
-      
+
       // 设置默认背景
       if (!canvasBackground) {
         canvasBackground = 'white';
@@ -864,27 +874,27 @@
       } else {
         setCanvasBackground(canvasBackground, null);
       }
-      
+
       // 绑定画布事件
       setupKonvaEvents();
-      
+
       // 更新工具状态
       setTool(currentTool);
-      
+
       // 初始化历史记录
       saveHistory();
-      
+
       console.log('Konva.js 画布初始化完成');
     }
-    
+
     function setupKonvaEvents() {
       if (!stage) return;
-      
+
       // 鼠标/触摸按下事件
-      stage.on('mousedown touchstart', function(e) {
+      stage.on('mousedown touchstart', function (e) {
         const pos = stage.getPointerPosition();
         if (!pos) return;
-        
+
         if (currentTool === 'draw') {
           startDrawing(pos);
         } else if (currentTool === 'sticker' && selectedStickerSrc) {
@@ -893,12 +903,12 @@
           startErasing(pos);
         }
       });
-      
+
       // 鼠标/触摸移动事件
-      stage.on('mousemove touchmove', function(e) {
+      stage.on('mousemove touchmove', function (e) {
         const pos = stage.getPointerPosition();
         if (!pos) return;
-        
+
         // 更新画笔预览位置
         if (brushPreviewEnabled && brushPreviewCircle && (currentTool === 'draw' || currentTool === 'eraser')) {
           brushPreviewCircle.position(pos);
@@ -908,35 +918,35 @@
           brushPreviewCircle.visible(true);
           previewLayer.draw();
         }
-        
+
         if (!isDrawing) return;
-        
+
         if (currentTool === 'draw') {
           continueDrawing(pos);
         } else if (currentTool === 'eraser') {
           continueErasing(pos);
         }
       });
-      
+
       // 鼠标/触摸释放事件
-      stage.on('mouseup touchend', function() {
+      stage.on('mouseup touchend', function () {
         if (isDrawing) {
           stopDrawing();
         }
-        
+
         // 隐藏画笔预览
         if (brushPreviewCircle) {
           brushPreviewCircle.visible(false);
           previewLayer.draw();
         }
       });
-      
+
       // 鼠标离开画布
-      stage.on('mouseleave', function() {
+      stage.on('mouseleave', function () {
         if (isDrawing) {
           stopDrawing();
         }
-        
+
         // 隐藏画笔预览
         if (brushPreviewCircle) {
           brushPreviewCircle.visible(false);
@@ -944,16 +954,16 @@
         }
       });
     }
-    
+
     function drawGridBackground() {
       if (!backgroundLayer) return;
-      
+
       // 清除旧的网格
       backgroundLayer.destroyChildren();
-      
+
       const gridSize = 20;
       const gridLines = [];
-      
+
       // 垂直线
       for (let x = 0; x <= stage.width(); x += gridSize) {
         const line = new Konva.Line({
@@ -964,7 +974,7 @@
         });
         gridLines.push(line);
       }
-      
+
       // 水平线
       for (let y = 0; y <= stage.height(); y += gridSize) {
         const line = new Konva.Line({
@@ -975,7 +985,7 @@
         });
         gridLines.push(line);
       }
-      
+
       gridLines.forEach(line => backgroundLayer.add(line));
       backgroundLayer.draw();
     }
@@ -985,9 +995,9 @@
         console.error('画布未初始化');
         return;
       }
-      
+
       canvasBackground = bgSrc;
-      
+
       // 更新按钮状态
       document.querySelectorAll('.shell-bg-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -995,17 +1005,17 @@
       if (btnElement) {
         btnElement.classList.add('active');
       }
-      
+
       // 移除旧的背景图片
       if (backgroundImageNode) {
         backgroundImageNode.destroy();
         backgroundImageNode = null;
       }
-      
+
       // 清除背景层（保留网格）
       const gridLines = backgroundLayer.find('.Line');
       backgroundLayer.destroyChildren();
-      
+
       if (bgSrc === 'white') {
         // 白色背景 + 网格
         stage.fill('#ffffff');
@@ -1013,14 +1023,14 @@
       } else {
         // 图片背景
         const imageObj = new Image();
-        imageObj.onload = function() {
+        imageObj.onload = function () {
           // 计算缩放比例以适应画布
           const scale = Math.min(stage.width() / imageObj.width, stage.height() / imageObj.height);
           const width = imageObj.width * scale;
           const height = imageObj.height * scale;
           const x = (stage.width() - width) / 2;
           const y = (stage.height() - height) / 2;
-          
+
           backgroundImageNode = new Konva.Image({
             x: x,
             y: y,
@@ -1029,11 +1039,11 @@
             height: height,
             listening: false
           });
-          
+
           backgroundLayer.add(backgroundImageNode);
           backgroundLayer.draw();
         };
-        imageObj.onerror = function() {
+        imageObj.onerror = function () {
           // 如果图片加载失败，使用白色背景
           stage.fill('#ffffff');
           drawGridBackground();
@@ -1041,18 +1051,18 @@
         };
         imageObj.src = bgSrc;
       }
-      
+
       backgroundLayer.draw();
     }
-    
+
     // 画笔绘制功能
     function startDrawing(pos) {
       if (!drawingLayer) return;
-      
+
       isDrawing = true;
       smoothingPoints = []; // 重置平滑点数组
       smoothingPoints.push(pos);
-      
+
       // 创建新的线条
       currentLine = new Konva.Line({
         points: [pos.x, pos.y],
@@ -1063,17 +1073,17 @@
         tension: smoothDrawing ? 0.5 : 0,
         globalCompositeOperation: 'source-over'
       });
-      
+
       drawingLayer.add(currentLine);
     }
-    
+
     function continueDrawing(pos) {
       if (!drawingLayer || !currentLine || !isDrawing) return;
-      
+
       if (smoothDrawing) {
         // 平滑绘制：收集点，然后应用平滑算法
         smoothingPoints.push(pos);
-        
+
         // 每3个点更新一次，提高性能
         if (smoothingPoints.length >= 3) {
           const smoothedPoints = smoothPoints(smoothingPoints);
@@ -1088,11 +1098,11 @@
         drawingLayer.draw();
       }
     }
-    
+
     function stopDrawing() {
       if (isDrawing) {
         isDrawing = false;
-        
+
         // 如果使用平滑绘制，最后更新一次
         if (smoothDrawing && smoothingPoints.length > 0 && currentLine) {
           const smoothedPoints = smoothPoints(smoothingPoints);
@@ -1100,21 +1110,21 @@
           currentLine.points(flatPoints);
           drawingLayer.draw();
         }
-        
+
         // 保存历史记录
         if (currentLine) {
           saveHistory();
         }
-        
+
         currentLine = null;
         smoothingPoints = [];
       }
     }
-    
+
     // 平滑点数组（使用简单的移动平均）
     function smoothPoints(points) {
       if (points.length < 3) return points;
-      
+
       const smoothed = [];
       for (let i = 0; i < points.length; i++) {
         if (i === 0) {
@@ -1134,13 +1144,13 @@
       }
       return smoothed;
     }
-    
+
     // 橡皮擦功能
     function startErasing(pos) {
       if (!drawingLayer) return;
-      
+
       isDrawing = true;
-      
+
       // 检查是否点击在对象上
       const shape = stage.getIntersection(pos);
       if (shape && shape.getLayer() === drawingLayer) {
@@ -1151,7 +1161,7 @@
         showToast('已删除对象');
         return;
       }
-      
+
       // 创建橡皮擦线条（使用白色或透明）
       currentLine = new Konva.Line({
         points: [pos.x, pos.y],
@@ -1162,23 +1172,23 @@
         tension: 0.5,
         globalCompositeOperation: 'destination-out'
       });
-      
+
       drawingLayer.add(currentLine);
     }
-    
+
     function continueErasing(pos) {
       if (!drawingLayer || !currentLine || !isDrawing) return;
-      
+
       // 添加点到当前线条
       const newPoints = currentLine.points().concat([pos.x, pos.y]);
       currentLine.points(newPoints);
-      
+
       drawingLayer.draw();
     }
-    
+
     function setTool(tool) {
       currentTool = tool;
-      
+
       // 更新按钮状态
       document.querySelectorAll('.tool-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -1186,11 +1196,11 @@
           btn.classList.add('active');
         }
       });
-      
+
       // 显示/隐藏控制面板
       const drawControls = document.getElementById('drawControls');
       const stickerControls = document.getElementById('stickerControls');
-      
+
       if (tool === 'draw' || tool === 'eraser' || tool === 'fill') {
         if (drawControls) drawControls.style.display = 'block';
         if (stickerControls) stickerControls.style.display = 'none';
@@ -1198,7 +1208,7 @@
         if (drawControls) drawControls.style.display = 'none';
         if (stickerControls) stickerControls.style.display = 'block';
       }
-      
+
       // 更新 Konva Stage 设置
       if (stage) {
         if (tool === 'move') {
@@ -1220,14 +1230,14 @@
               node.draggable(false);
             });
           }
-          
+
           if (tool === 'eraser') {
             stage.container().style.cursor = 'grab';
           } else if (tool === 'fill') {
             stage.container().style.cursor = 'crosshair';
-        } else if (tool === 'sticker') {
+          } else if (tool === 'sticker') {
             stage.container().style.cursor = 'copy';
-        } else {
+          } else {
             stage.container().style.cursor = 'crosshair';
           }
         }
@@ -1258,12 +1268,12 @@
 
     function addSticker(imgSrc) {
       selectedStickerSrc = imgSrc;
-      
+
       // 标记选中的贴纸
       document.querySelectorAll('.sticker-item').forEach(item => {
         item.classList.remove('selected');
       });
-      
+
       // 找到对应的贴纸项并标记
       const stickerItems = document.querySelectorAll('.sticker-item');
       stickerItems.forEach(item => {
@@ -1272,10 +1282,10 @@
           item.classList.add('selected');
         }
       });
-      
+
       // 设置为贴纸模式
       setTool('sticker');
-      
+
       // 提示用户点击画布放置贴纸
       if (stage) {
         stage.container().style.cursor = 'copy';
@@ -1289,25 +1299,25 @@
         showToast('画布未准备好，请稍候再试');
         return;
       }
-      
+
       if (!imgSrc) {
         showToast('请先选择贴纸');
         return;
       }
-      
+
       console.log('加载贴纸:', imgSrc);
-      
+
       // 使用 Konva.Image 加载图片
       const imageObj = new Image();
-      imageObj.onload = function() {
+      imageObj.onload = function () {
         console.log('贴纸加载成功:', imgSrc, '尺寸:', imageObj.width, 'x', imageObj.height);
-        
+
         // 根据画布大小调整贴纸尺寸
         const baseScale = Math.min(stage.width() / 1200, stage.height() / 900);
         const scale = stickerScale * baseScale * 0.2;
         const width = imageObj.width * scale;
         const height = imageObj.height * scale;
-        
+
         // 创建 Konva Image 节点
         const konvaImage = new Konva.Image({
           x: x - width / 2,
@@ -1318,33 +1328,33 @@
           draggable: currentTool === 'move', // 移动模式下可拖拽
           listening: true
         });
-        
+
         // 双击删除贴纸
-        konvaImage.on('dblclick', function() {
+        konvaImage.on('dblclick', function () {
           if (confirm('确定要删除这个贴纸吗？')) {
             this.destroy();
             stickerLayer.draw();
           }
         });
-        
+
         // 拖拽结束事件，确保在移动模式下保持可拖拽
-        konvaImage.on('dragend', function() {
+        konvaImage.on('dragend', function () {
           if (currentTool === 'move') {
             this.draggable(true);
           }
         });
-        
+
         stickerLayer.add(konvaImage);
         stickerLayer.draw();
-        
+
         showToast('贴纸已添加 ✨');
       };
-      
-      imageObj.onerror = function(error) {
+
+      imageObj.onerror = function (error) {
         console.error('贴纸加载失败:', imgSrc, error);
         showToast('贴纸加载失败: ' + imgSrc.split('/').pop() + '，请检查图片是否存在');
       };
-      
+
       imageObj.src = imgSrc;
     }
 
@@ -1353,27 +1363,27 @@
         console.error('画布未初始化');
         return;
       }
-      
+
       if (confirm('确定要清空画布吗？')) {
         // 清空绘制层
         if (drawingLayer) {
           drawingLayer.destroyChildren();
           drawingLayer.draw();
         }
-        
+
         // 清空贴纸层
         if (stickerLayer) {
           stickerLayer.destroyChildren();
           stickerLayer.draw();
         }
-        
+
         // 重新设置背景
         if (canvasBackground === 'white') {
           drawGridBackground();
         } else if (canvasBackground) {
           setCanvasBackground(canvasBackground, null);
         }
-        
+
         showToast('画布已清空');
       }
     }
@@ -1383,20 +1393,20 @@
         console.error('画布未初始化');
         return;
       }
-      
+
       // 使用 Konva 导出为图片
       const dataURL = stage.toDataURL({
         mimeType: 'image/png',
         quality: 1,
         pixelRatio: 1
       });
-      
+
       // 下载
       const link = document.createElement('a');
       link.download = `贝雕设计_${Date.now()}.png`;
       link.href = dataURL;
       link.click();
-      
+
       showToast('设计已保存！');
     }
 
@@ -1417,7 +1427,7 @@
       document.body.style.overflow = 'hidden';
       console.log('图片模态框已打开');
     }
-    
+
     function closeImageModal() {
       const modal = document.getElementById('imageModal');
       if (modal) {
@@ -1425,7 +1435,7 @@
         document.body.style.overflow = '';
       }
     }
-    
+
     function showToast(msg) {
       // 创建或获取toast元素
       let toast = document.getElementById('designToast');
@@ -1435,10 +1445,10 @@
         toast.className = 'design-toast';
         document.body.appendChild(toast);
       }
-      
+
       toast.textContent = msg;
       toast.classList.add('show');
-      
+
       setTimeout(() => {
         toast.classList.remove('show');
       }, 2000);
@@ -1448,11 +1458,11 @@
     document.addEventListener('DOMContentLoaded', () => {
       const closeBtn = document.getElementById('designClose');
       const backdrop = document.getElementById('designBackdrop');
-      
+
       if (closeBtn) {
         closeBtn.addEventListener('click', closeDesignWorkshop);
       }
-      
+
       if (backdrop) {
         backdrop.addEventListener('click', (e) => {
           if (e.target === backdrop) {
@@ -1467,25 +1477,25 @@
       zoomLevel = Math.min(zoomLevel + 0.1, 3);
       applyZoom();
     }
-    
+
     function zoomOut() {
       zoomLevel = Math.max(zoomLevel - 0.1, 0.5);
       applyZoom();
     }
-    
+
     function resetZoom() {
       zoomLevel = 1;
       applyZoom();
     }
-    
+
     function setZoom(value) {
       zoomLevel = value / 100;
       applyZoom();
     }
-    
+
     function applyZoom() {
       if (!stage) return;
-      
+
       const container = document.getElementById('designCanvasContainer');
       if (container) {
         const baseWidth = 1200;
@@ -1494,10 +1504,10 @@
         container.style.height = (baseHeight * zoomLevel) + 'px';
         container.style.overflow = 'auto';
       }
-      
+
       stage.scale({ x: zoomLevel, y: zoomLevel });
       stage.draw();
-      
+
       // 更新缩放显示
       const zoomLevelEl = document.getElementById('zoomLevel');
       if (zoomLevelEl) {
@@ -1508,13 +1518,13 @@
         zoomSlider.value = Math.round(zoomLevel * 100);
       }
     }
-    
+
     // 平滑绘制切换
     function updateSmoothDrawing() {
       const checkbox = document.getElementById('smoothDrawing');
       smoothDrawing = checkbox ? checkbox.checked : true;
     }
-    
+
     // 画笔预览切换
     function updateBrushPreview() {
       const checkbox = document.getElementById('brushPreview');
@@ -1526,20 +1536,20 @@
         }
       }
     }
-    
+
     // 历史记录功能（撤销/重做）
     function saveHistory() {
       if (!stage) return;
-      
+
       // 移除当前索引之后的历史记录
       history = history.slice(0, historyIndex + 1);
-      
+
       // 保存当前画布状态
       try {
         const dataURL = stage.toDataURL();
         history.push(dataURL);
         historyIndex = history.length - 1;
-        
+
         // 限制历史记录数量
         if (history.length > 50) {
           history.shift();
@@ -1549,7 +1559,7 @@
         console.warn('保存历史记录失败:', e);
       }
     }
-    
+
     function undo() {
       if (historyIndex > 0) {
         historyIndex--;
@@ -1559,7 +1569,7 @@
         showToast('无法撤销');
       }
     }
-    
+
     function redo() {
       if (historyIndex < history.length - 1) {
         historyIndex++;
@@ -1569,13 +1579,13 @@
         showToast('无法重做');
       }
     }
-    
+
     function restoreFromHistory() {
       if (!stage || historyIndex < 0 || historyIndex >= history.length) return;
-      
+
       const dataURL = history[historyIndex];
       const img = new Image();
-      img.onload = function() {
+      img.onload = function () {
         // 清空绘制层和贴纸层
         if (drawingLayer) {
           drawingLayer.destroyChildren();
@@ -1583,14 +1593,14 @@
         if (stickerLayer) {
           stickerLayer.destroyChildren();
         }
-        
+
         // 重新绘制背景
         if (canvasBackground === 'white') {
           drawGridBackground();
         } else if (canvasBackground) {
           setCanvasBackground(canvasBackground, null);
         }
-        
+
         // 绘制历史图像
         const historyImage = new Konva.Image({
           image: img,
@@ -1627,5 +1637,7 @@
     window.redo = redo;
   </script>
 </body>
+
 </html>
+
 </html>

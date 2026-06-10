@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan to View Project</title>
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+        }
+        h1 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-top: 0; margin-bottom: 20px; }
+        .qr-container { 
+            padding: 40px; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1); 
+            text-align: center; 
+        }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .link { 
+            margin-top: 20px; 
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            display: inline-block;
+        }
+        a { 
+            color: #0d6efd; 
+            text-decoration: none; 
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="qr-container">
+        <h1>Scan to View on Phone</h1>
+        <p>Make sure your phone is connected to the same Wi-Fi network.</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.20.10.7:8080/indexenglish.html" alt="QR Code">
+        <div class="link">
+            URL: <a href="http://172.20.10.7:8080/indexenglish.html" target="_blank">http://172.20.10.7:8080/indexenglish.html</a>
+        </div>
+    </div>
+</body>
+</html>
