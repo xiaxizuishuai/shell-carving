@@ -12,8 +12,8 @@ const products = [
     description: '采用天然贝壳手工雕刻的装饰挂件',
     price: 128.0,
     images: [
-      'https://xiaxizuishuai.github.io/shell-carving/images/海洋之韵挂饰1.png',
-      'https://xiaxizuishuai.github.io/shell-carving/images/海洋之韵挂饰2.png'
+      './images/海洋之韵挂饰1.png',
+      './images/海洋之韵挂饰2.png'
     ]
   },
   {
@@ -22,9 +22,9 @@ const products = [
     description: '限量版贝贝和它的朋友们手办',
     price: 298.0,
     images: [
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝贝手办套装1.png',
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝贝手办套装2.jpg',
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝贝手办.jpg'
+      './images/贝贝手办套装1.png',
+      './images/贝贝手办套装2.jpg',
+      './images/贝贝手办.jpg'
     ]
   },
   {
@@ -33,7 +33,7 @@ const products = [
     description: '天然珍珠与贝雕艺术完美结合',
     price: 368.0,
     images: [
-      'https://xiaxizuishuai.github.io/shell-carving/images/珍珠贝雕项链.jpg'
+      './images/珍珠贝雕项链.jpg'
     ]
   },
   {
@@ -42,7 +42,7 @@ const products = [
     description: '收录200件经典贝雕作品的精美图册',
     price: 198.0,
     images: [
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝雕艺术图鉴.png'
+      './images/贝雕艺术图鉴.png'
     ]
   },
   {
@@ -51,8 +51,8 @@ const products = [
     description: '纯棉材质，贝贝形象设计',
     price: 168.0,
     images: [
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝贝主题T恤1.jpg',
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝贝主题T恤2.jpg'
+      './images/贝贝主题T恤1.jpg',
+      './images/贝贝主题T恤2.jpg'
     ]
   },
   {
@@ -61,7 +61,7 @@ const products = [
     description: '包含材料和教程的贝雕入门套装',
     price: 328.0,
     images: [
-      'https://xiaxizuishuai.github.io/shell-carving/images/贝雕DIY套装.png'
+      './images/贝雕DIY套装.png'
     ]
   }
 ];
